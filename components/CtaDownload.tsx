@@ -52,7 +52,8 @@ export default function CtaDownload() {
             variants={fadeInUp}
             className="font-syne font-800 text-5xl md:text-6xl lg:text-7xl text-white leading-[0.95] tracking-tight"
           >
-            {ctaContent.title}
+            {ctaContent.title}<br />
+            <span className="text-[#f72585]">{ctaContent.titleAccent}</span>
           </motion.h2>
 
           {/* Sous-titre */}

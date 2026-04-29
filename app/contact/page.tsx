@@ -16,6 +16,7 @@ import {
   Instagram,
   Twitter,
   Youtube,
+  Linkedin,
   MapPin,
   Clock,
   Zap,
@@ -49,7 +50,7 @@ const faqs = [
     id: "f1",
     question: "Mood2Fit est-il gratuit ?",
     answer:
-      "Oui, Mood2Fit est entièrement gratuit au lancement. L'accès à toutes les fonctionnalités — matching, challenges, feed — est inclus sans frais. Une offre premium pourra être introduite plus tard avec des fonctionnalités avancées, mais le cœur de l'app restera gratuit.",
+      "Oui, Mood2Fit est gratuit; l'accès à toutes les fonctionnalités (matching, challenges, feed) est inclus sans frais. Il existe toutefois une offre premium qui inclut des fonctionnalités plus avancées.",
   },
   {
     id: "f2",
@@ -61,7 +62,7 @@ const faqs = [
     id: "f3",
     question: "Mes données personnelles sont-elles protégées ?",
     answer:
-      "Absolument. Mood2Fit est conforme au RGPD. Ta localisation n'est jamais partagée en temps réel — seule ta zone approximative est visible. Tu peux supprimer ton compte et toutes tes données à tout moment depuis l'application.",
+      "Absolument. Mood2Fit est conforme au RGPD. Ta localisation n'est jamais partagée en temps réel, seule ta zone approximative est visible. Tu peux supprimer ton compte et toutes tes données à tout moment depuis l'application.",
   },
   {
     id: "f4",
@@ -73,7 +74,7 @@ const faqs = [
     id: "f5",
     question: "Puis-je utiliser Mood2Fit pour trouver un coach ?",
     answer:
-      "Pour l'instant, Mood2Fit est centré sur le co-sport entre pairs — trouver des partenaires d'entraînement, pas des coachs professionnels. Cette fonctionnalité est dans notre roadmap et pourrait arriver dans une version future.",
+      "Pour l'instant, Mood2Fit est centré sur le co-sport entre pairs. Trouver des partenaires d'entraînement, pas des coachs professionnels. Cette fonctionnalité est dans notre roadmap et pourrait arriver dans une version future.",
   },
   {
     id: "f6",
@@ -142,13 +143,13 @@ const contactInfo = [
   {
     icon: Clock,
     label: "Réponse sous",
-    value: "48h en semaine",
+    value: "48h",
     color: "#06d6a0",
   },
   {
     icon: Zap,
-    label: "Support urgent",
-    value: "Via Instagram DM",
+    label: "Support principal",
+    value: "Instagram",
     color: "#7209b7",
   },
 ];
@@ -388,7 +389,7 @@ export default function ContactPage() {
                 <span className="gradient-text">à l&apos;écoute.</span>
               </motion.h1>
               <motion.p variants={fadeInUp} className="text-lg font-dm font-300 text-[rgba(250,244,255,0.6)] max-w-xl leading-relaxed">
-                Une question, une idée, un partenariat ? Écris-nous — on répond sous 48h.
+                Une question, une idée, un partenariat ? Écris-nous.
               </motion.p>
 
               {/* Infos contact rapides */}
@@ -503,7 +504,7 @@ export default function ContactPage() {
                   className="p-4 rounded-brand bg-[rgba(247,37,133,0.06)] border border-[rgba(247,37,133,0.15)]"
                 >
                   <p className="text-xs font-dm text-[rgba(250,244,255,0.6)] leading-relaxed">
-                    💬 Pour un support urgent, envoie-nous un DM sur Instagram — c'est là qu'on répond le plus vite.
+                    Pour un support urgent, envoie nous un DM sur Instagram, c'est là qu'on répond le plus vite.
                   </p>
                 </motion.div>
               </motion.div>

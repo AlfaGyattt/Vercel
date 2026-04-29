@@ -41,7 +41,8 @@ export default function Testimonials() {
             variants={fadeInUp}
             className="font-syne font-800 text-4xl md:text-5xl lg:text-6xl text-[#faf4ff] leading-tight max-w-2xl"
           >
-            {testimonialsContent.title}
+            {testimonialsContent.title}<br />
+            <span className="text-[#f72585]">{testimonialsContent.titleAccent}</span>
           </motion.h2>
         </motion.div>
 

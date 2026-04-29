@@ -35,16 +35,31 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-0.5 group"
+            className="flex items-center gap-2.5 group"
             aria-label="Mood2Fit — retour à l'accueil"
           >
-            <span className="font-syne font-800 text-xl md:text-2xl text-[#faf4ff] tracking-tight">
-              {navContent.logoText}
-            </span>
-            <span className="font-syne font-800 text-xl md:text-2xl gradient-text tracking-tight">
-              {navContent.logoAccent}
-            </span>
-            <span className="ml-1.5 w-1.5 h-1.5 rounded-full bg-[#f72585] group-hover:bg-[#4cc9f0] transition-colors duration-300 animate-pulse-glow" />
+            {/* Logo image */}
+            <div className="relative flex-shrink-0">
+              <div className="absolute inset-0 rounded-[10px] bg-[#f72585]/40 blur-[8px] scale-110 group-hover:bg-[#f72585]/60 transition-all duration-300" />
+              <img
+                src="/logo.png"
+                alt="Mood2Fit logo"
+                width={38}
+                height={38}
+                className="relative z-10 rounded-[10px] object-contain"
+                style={{ filter: "drop-shadow(0 0 6px rgba(247,37,133,0.5))" }}
+              />
+            </div>
+
+            {/* Texte MOOD2FIT */}
+            <div className="flex items-baseline gap-0">
+              <span className="font-syne font-800 text-xl md:text-2xl text-[#faf4ff] tracking-tight ">
+                {navContent.logoText}
+              </span>
+              <span className="font-syne font-800 text-xl md:text-2xl tracking-tight " style={{ color: "#f72585" }}>
+                {navContent.logoAccent}
+              </span>
+            </div>
           </Link>
 
           {/* Desktop links */}
@@ -134,10 +149,23 @@ export default function Navbar() {
             >
               {/* Drawer header */}
               <div className="flex items-center justify-between px-6 h-16 border-b border-[rgba(247,37,133,0.1)]">
-                <span className="font-syne font-700 text-lg">
-                  <span className="text-[#faf4ff]">Mood</span>
-                  <span className="gradient-text">2Fit</span>
-                </span>
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute inset-0 rounded-[7px] bg-[#f72585]/40 blur-[6px] scale-110" />
+                    <img
+                      src="/logo.png"
+                      alt="Mood2Fit logo"
+                      width={28}
+                      height={28}
+                      className="relative z-10 rounded-[7px] object-contain"
+                      style={{ filter: "drop-shadow(0 0 4px rgba(247,37,133,0.5))" }}
+                    />
+                  </div>
+                  <span className="font-syne font-700 text-lg">
+                    <span className="text-[#faf4ff] uppercase">Mood</span>
+                    <span style={{ color: "#f72585" }} className="uppercase">2Fit</span>
+                  </span>
+                </div>
                 <button
                   className="w-8 h-8 flex items-center justify-center rounded-lg text-[rgba(250,244,255,0.6)] hover:text-[#faf4ff] transition-colors"
                   onClick={() => setMobileOpen(false)}

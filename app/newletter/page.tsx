@@ -38,25 +38,25 @@ type FormData = z.infer<typeof schema>;
 // ─── DONNÉES ────────────────────────────────────────────────
 const benefits = [
   {
-    emoji: "⚡",
+    emoji: "",
     title: "Avant tout le monde",
     desc: "Accède aux nouvelles fonctionnalités en beta avant le reste de la communauté.",
     color: "#f72585",
   },
   {
-    emoji: "📬",
+    emoji: "",
     title: "Tips sport exclusifs",
     desc: "Chaque semaine, un conseil actionnable de nos experts en sport et motivation.",
     color: "#7209b7",
   },
   {
-    emoji: "🎯",
+    emoji: "",
     title: "Événements en avant-première",
     desc: "Sois le premier informé des meetups, sessions collectives et défis communautaires.",
     color: "#4cc9f0",
   },
   {
-    emoji: "🏆",
+    emoji: "",
     title: "Challenges exclusifs",
     desc: "Des défis réservés aux abonnés newsletter avec des récompenses à la clé.",
     color: "#06d6a0",
@@ -71,7 +71,7 @@ const events = [
     desc: "Rejoins 30+ sportifs pour une session ouverte à tous les niveaux. Débutants bienvenus.",
     location: "Paris 19e",
     type: "Street Workout",
-    typeEmoji: "🏋️",
+    typeEmoji: "",
     spots: 12,
     totalSpots: 30,
     color: "#f72585",
@@ -84,7 +84,7 @@ const events = [
     desc: "10km en groupe à allure libre. Chacun son rythme, tous ensemble. Point de départ : Joinville.",
     location: "Joinville-le-Pont",
     type: "Running",
-    typeEmoji: "🏃",
+    typeEmoji: "",
     spots: 8,
     totalSpots: 20,
     color: "#4cc9f0",
@@ -97,7 +97,7 @@ const events = [
     desc: "Le premier grand challenge communautaire. 30 jours, des équipes, des prix. Inscris-toi tôt.",
     location: "En ligne + Paris",
     type: "Challenge",
-    typeEmoji: "🏆",
+    typeEmoji: "",
     spots: 45,
     totalSpots: 100,
     color: "#06d6a0",
@@ -110,7 +110,7 @@ const events = [
     desc: "Se retrouver IRL, partager son expérience Mood2Fit autour d'un verre. Pas de séance, juste du lien.",
     location: "Paris 11e",
     type: "Meetup",
-    typeEmoji: "👥",
+    typeEmoji: "",
     spots: 20,
     totalSpots: 50,
     color: "#7209b7",
@@ -126,7 +126,7 @@ const archives = [
     tag: "Histoire",
     tagColor: "#f72585",
     reads: "1 240",
-    emoji: "🏋️",
+    emoji: "",
   },
   {
     id: "a2",
@@ -135,7 +135,7 @@ const archives = [
     tag: "Tips",
     tagColor: "#4cc9f0",
     reads: "2 100",
-    emoji: "💡",
+    emoji: "",
   },
   {
     id: "a3",
@@ -144,17 +144,17 @@ const archives = [
     tag: "Produit",
     tagColor: "#06d6a0",
     reads: "3 400",
-    emoji: "🚀",
+    emoji: "",
   },
 ];
 
 const interestOptions = [
-  { value: "musculation", label: "💪 Musculation" },
-  { value: "street", label: "🤸 Street Workout" },
-  { value: "running", label: "🏃 Running" },
-  { value: "hiit", label: "🔥 HIIT" },
-  { value: "crossfit", label: "⚔️ CrossFit" },
-  { value: "yoga", label: "🧘 Yoga" },
+  { value: "musculation", label: " Musculation" },
+  { value: "street", label: " Street Workout" },
+  { value: "running", label: " Running" },
+  { value: "hiit", label: " HIIT" },
+  { value: "crossfit", label: " CrossFit" },
+  { value: "yoga", label: " Yoga" },
 ];
 
 // ─── COMPOSANTS ─────────────────────────────────────────────
@@ -192,7 +192,7 @@ function EventCard({ event }: { event: typeof events[0] }) {
             </span>
             {event.hot && (
               <span className="text-xs px-2.5 py-0.5 rounded-pill bg-[rgba(248,210,16,0.1)] border border-[rgba(248,210,16,0.3)] text-[#f8d210] font-dm font-500">
-                🔥 Populaire
+                 Populaire
               </span>
             )}
           </div>
@@ -282,7 +282,7 @@ function NewsletterForm() {
             </div>
             <div>
               <p className="font-syne font-700 text-2xl text-[#faf4ff] mb-2">
-                Tu es dans la boucle. 🔥
+                Tu es dans la boucle. 
               </p>
               <p className="text-sm font-dm text-[rgba(250,244,255,0.55)]">
                 Vérifie ton email pour confirmer ton inscription.

@@ -40,7 +40,8 @@ export default function Articles() {
               variants={fadeInUp}
               className="font-syne font-800 text-4xl md:text-5xl lg:text-6xl text-[#faf4ff] leading-tight"
             >
-              {articlesContent.title}
+              {articlesContent.title}<br />
+              <span className="text-[#f72585]">{articlesContent.titleAccent}</span>
             </motion.h2>
           </div>
 

@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const syne = Syne({
+const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "700", "800"],
-  variable: "--font-syne",
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-dm-sans",
+  weight: ["300", "400", "500", "700", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-roboto",
   display: "swap",
 });
 
@@ -57,8 +51,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${syne.variable} ${dmSans.variable}`}>
-      <body className="font-dm bg-[#080010] text-text-main antialiased overflow-x-hidden">
+    <html lang="fr" className={roboto.variable}>
+      <body className="font-roboto bg-[#080010] text-text-main antialiased overflow-x-hidden">
         {children}
       </body>
     </html>

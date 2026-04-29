@@ -26,6 +26,7 @@ export const navContent: NavContent = {
     { label: "Newsletter", href: "/newletter" },
     { label: "Contact", href: "/contact" },
     { label: "A propos", href: "/apropos" },
+
   ],
   ctaLabel: "Télécharger",
   ctaHref: "/",
@@ -60,10 +61,10 @@ export interface HeroContent {
 
 export const heroContent: HeroContent = {
   eyebrow: "Application mobile",
-  title: ["Entraîne-toi", "avec les bons"],
-  titleAccent: "au bon moment.",
+  title: ["Le sport est", "meilleur"],
+  titleAccent: "à deux.",
   subtitle:
-    "Mood2Fit matche ton énergie du jour avec le parfait partenaire de sport. Musculation, street workout, cardio — plus jamais seul.",
+    "Mood2Fit te connecte avec des sportifs qui partagent tes objectifs, ton niveau et ton emploi du temps. Musculation, street workout, cardio, tu ne seras plus jamais seul.",
   storeButtons: [
     {
       platform: "ios",
@@ -99,25 +100,25 @@ export const statsContent: Stat[] = [
     value: 5600,
     suffix: "+",
     label: "salles de sport en France",
-    source: "FSCF 2024",
+    source: "Toute la Franchise",
   },
   {
     value: 800,
     suffix: "+",
     label: "parks de street workout",
-    source: "WorldUrbanGames",
+    source: "Calibase",
   },
   {
     value: 7,
     suffix: "M+",
-    label: "abonnés salle de sport",
-    source: "IHRSA 2024",
+    label: "abonnés a la salle de sport",
+    source: "Toute la Franchise",
   },
   {
-    value: 29,
+    value: 67,
     suffix: "%",
-    label: "abandonnent faute de motivation",
-    source: "Étude Decathlon 2023",
+    label: "abonnés ne vont pas à la salle",
+    source: "Mirrors Delivered",
   },
 ];
 
@@ -186,10 +187,12 @@ export interface Testimonial {
 export const testimonialsContent: {
   eyebrow: string;
   title: string;
+  titleAccent: string;
   testimonials: Testimonial[];
 } = {
   eyebrow: "Communauté",
-  title: "Pas des avis. Des vraies histoires.",
+  title: "Pas des avis.",
+  titleAccent: "Des vraies histoires.",
   testimonials: [
     {
       id: "t1",
@@ -242,21 +245,23 @@ export interface Article {
 export const articlesContent: {
   eyebrow: string;
   title: string;
+  titleAccent: string;
   articles: Article[];
 } = {
   eyebrow: "Magazine",
-  title: "Pour aller plus loin.",
+  title: "La performance commence ",
+  titleAccent: "dans l'esprit.",
   articles: [
     {
       id: "a1",
       tag: "Motivation",
       tagColor: "#f72585",
-      title: "Pourquoi s'entraîner seul est le meilleur moyen d'abandonner",
+      title: "5 raisons pour lesquelles les gens abandonnent le fitness",
       description:
-        "La science derrière la motivation sociale et comment un partenaire multiplie tes chances de tenir sur la durée.",
+        "Chaque année, des millions de personnes commencent le sport avec de bonnes intentions. Quelques semaines ou quelques mois plus tard, la majorité abandonne.",
       readTime: "4 min",
       imageBg: "from-[#f72585]/30 to-[#7209b7]/30",
-      imageEmoji: "🧠",
+      imageEmoji: "",
     },
     {
       id: "a2",
@@ -267,18 +272,18 @@ export const articlesContent: {
         "Notre sélection des spots incontournables, des débutants aux confirmés. Avec les horaires et l'ambiance.",
       readTime: "6 min",
       imageBg: "from-[#4cc9f0]/30 to-[#7209b7]/30",
-      imageEmoji: "🏙️",
+      imageEmoji: "",
     },
     {
       id: "a3",
       tag: "Nutrition",
       tagColor: "#06d6a0",
-      title: "Manger juste avant la séance : mythe ou réalité ?",
+      title: "Que faut-il manger avant une séance de sport ?",
       description:
-        "Ce que dit vraiment la science sur le timing nutritionnel autour de l'effort. Sans blabla.",
+        "Bien s'alimenter avant une séance de sport pour maximiser les bénéfices de chaque entrainement...",
       readTime: "5 min",
       imageBg: "from-[#06d6a0]/30 to-[#4cc9f0]/30",
-      imageEmoji: "🥗",
+      imageEmoji: "",
     },
   ],
 };
@@ -341,6 +346,7 @@ export const newsletterContent: NewsletterContent = {
 export interface CtaContent {
   eyebrow: string;
   title: string;
+  titleAccent: string;
   subtitle: string;
   mention: string;
   storeButtons: StoreButton[];
@@ -348,7 +354,8 @@ export interface CtaContent {
 
 export const ctaContent: CtaContent = {
   eyebrow: "C'est l'heure",
-  title: "Ton partenaire t'attend.",
+  title: "Plus d'excuse pour",
+  titleAccent: "s'entraîner seul.",
   subtitle:
     "Rejoins des milliers de sportifs qui s'entraînent mieux, ensemble.",
   mention: "Bientôt disponible sur les stores",
@@ -437,6 +444,59 @@ export const footerContent: FooterContent = {
     },
   ],
   copyright: `© ${new Date().getFullYear()} Mood2Fit. Tous droits réservés.`,
+};
+
+// --- APP FEATURES (sticky scroll) ---
+export interface AppFeature {
+  slide: number;
+  icon: string;
+  label: string;
+  title: string;
+  description: string;
+  phoneScreen: string;
+  textSide: "left" | "right";
+  accentColor: string;
+}
+
+export const appFeaturesContent: {
+  eyebrow: string;
+  title: string;
+  features: AppFeature[];
+} = {
+  eyebrow: "L'application",
+  title: "Tout ce dont tu as besoin.",
+  features: [
+    {
+      slide: 0,
+      icon: "Zap",
+      label: "01 · MOOD",
+      title: "Ton humeur, ta séance.",
+      description: "Indique ton énergie du jour — l'app adapte chaque suggestion en temps réel.",
+      phoneScreen: "mood",
+      textSide: "left",
+      accentColor: "#f72585",
+    },
+    {
+      slide: 1,
+      icon: "Target",
+      label: "02 · MATCHING",
+      title: "Le bon partenaire, maintenant.",
+      description: "Algorithme basé sur ton niveau, ta discipline, ta localisation et ton mood.",
+      phoneScreen: "matching",
+      textSide: "right",
+      accentColor: "#4cc9f0",
+    },
+    {
+      slide: 2,
+      icon: "Trophy",
+      label: "03 · CHALLENGES",
+      title: "Dépasse-toi avec les autres.",
+      description: "Défis solo ou en équipe pour rester motivé même les jours sans.",
+      phoneScreen: "challenges",
+      textSide: "left",
+      accentColor: "#06d6a0",
+    },
+  ],
 };
 
 // --- CONTACT ---

@@ -44,8 +44,11 @@ const config: Config = {
         },
       },
       fontFamily: {
-        syne: ["var(--font-syne)", "sans-serif"],
-        dm: ["var(--font-dm-sans)", "sans-serif"],
+        roboto: ["var(--font-roboto)", "sans-serif"],
+        display: ["var(--font-roboto)", "sans-serif"],
+        body: ["var(--font-roboto)", "sans-serif"],
+        syne: ["var(--font-roboto)", "sans-serif"],
+        dm: ["var(--font-roboto)", "sans-serif"],
       },
       borderRadius: {
         brand: "16px",

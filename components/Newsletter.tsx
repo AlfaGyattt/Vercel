@@ -24,7 +24,7 @@ const newsletterSchema = z.object({
 
 type NewsletterFormData = z.infer<typeof newsletterSchema>;
 
-const bulletIcons = ["🔥", "📬", "🎯"];
+const bulletIcons = [];
 
 export default function Newsletter() {
   const ref = useRef<HTMLDivElement>(null);
@@ -91,7 +91,8 @@ export default function Newsletter() {
               variants={fadeInUp}
               className="font-syne font-800 text-4xl md:text-5xl text-[#faf4ff] leading-tight"
             >
-              {title}
+              Dans la boucle avant<br />
+              <span className="text-[#f72585]">tout le monde.</span>
             </motion.h2>
 
             <motion.ul

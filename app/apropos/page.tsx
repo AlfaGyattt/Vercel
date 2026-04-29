@@ -29,21 +29,21 @@ const timeline = [
     year: "2023",
     title: "L'idée naît d'une frustration",
     desc: "Heitor et Karim, amis de salle depuis 4 ans, réalisent qu'ils annulent leurs séances une fois sur deux. Incompatibilité d'horaires, niveaux qui divergent. Il doit exister un meilleur moyen.",
-    emoji: "😤",
+    emoji: "",
     side: "left",
   },
   {
     year: "2025",
     title: "Le premier prototype",
     desc: "La v1 est lancée en beta fermée à Paris. Des testeurs, 50 premiers utilisateurs. Le concept fonctionne.",
-    emoji: "💡",
+    emoji: "",
     side: "right",
   },
   {
     year: "2026",
     title: "Le concept prend forme",
     desc: "Matcher des sportifs non pas sur \"même sport\" mais sur niveau, zone, mood du moment et objectifs. Jade rejoint le projet pour le design, Alfayed pour la tech.",
-    emoji: "🚀",
+    emoji: "",
     side: "left",
   },
 ];
@@ -51,21 +51,21 @@ const timeline = [
 const values = [
   {
     num: "01",
-    icon: "🤝",
+    icon: "",
     title: "Bienveillance",
     desc: "Le sport doit être un espace sûr et positif. On crée des connexions basées sur le respect mutuel, peu importe le niveau ou les objectifs.",
     color: "#f72585",
   },
   {
     num: "02",
-    icon: "📈",
+    icon: "",
     title: "Progression",
-    desc: "Chacun avance à son rythme. On célèbre les progrès — des premières tractions au muscle-up, des 5 kg aux 100 kg. Tout compte.",
+    desc: "Chacun avance à son rythme. On célèbre les progrès, des premières tractions au muscle-up, des 5 kg aux 100 kg. Tout compte.",
     color: "#7209b7",
   },
   {
     num: "03",
-    icon: "👥",
+    icon: "",
     title: "Communauté",
     desc: "Le sport seul c'est bien. Avec d'autres, c'est transformateur. On construit une communauté où les gens se soutiennent, se challengent, se motivent vraiment.",
     color: "#4cc9f0",
@@ -123,9 +123,9 @@ function PhoneMockup() {
             <p className="text-[8px] font-syne font-700 text-[#faf4ff] mb-1.5">Mood du jour</p>
             <div className="grid grid-cols-3 gap-1">
               {[
-                { e: "⚡", l: "Energy", a: true },
-                { e: "💜", l: "Calm", a: false },
-                { e: "🔥", l: "Beast", a: false },
+                { e: "", l: "Energy", a: true },
+                { e: "", l: "Calm", a: false },
+                { e: "", l: "Beast", a: false },
               ].map((m) => (
                 <div key={m.l} className={`rounded-lg p-1.5 text-center border ${m.a ? "bg-[rgba(247,37,133,0.2)] border-[rgba(247,37,133,0.5)]" : "bg-[rgba(250,244,255,0.03)] border-[rgba(250,244,255,0.06)]"}`}>
                   <div className="text-sm">{m.e}</div>
@@ -378,7 +378,7 @@ export default function AProposPage() {
               >
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-brand" />
                 <div className="absolute top-0 right-0 w-40 h-40 bg-[#f72585]/08 blur-[60px] rounded-full" />
-                <div className="text-5xl mb-5">🏋️</div>
+                <div className="text-5xl mb-5"></div>
                 <h3 className="font-syne font-800 text-2xl md:text-3xl text-[#faf4ff] leading-tight mb-4">
                   Des passionnés,<br />
                   pas des <span className="gradient-text">marketeurs.</span>
@@ -423,9 +423,9 @@ export default function AProposPage() {
 
               {/* Tags disciplines */}
               {[
-                { icon: "🏋️", title: "Musculation", desc: "Notre discipline de cœur. La salle, les barres, les kilos." },
-                { icon: "🤸", title: "Street Workout", desc: "Les barres de parc, l'air libre, la liberté du mouvement." },
-                { icon: "⚡", title: "Performance", desc: "Repousser ses limites, ensemble. Toujours plus loin." },
+                { icon: "", title: "Musculation", desc: "Notre discipline de cœur. La salle, les barres, les kilos." },
+                { icon: "", title: "Street Workout", desc: "Les barres de parc, l'air libre, la liberté du mouvement." },
+                { icon: "", title: "HIIT", desc: "Repousser ses limites, ensemble. Toujours plus loin." },
               ].map((tag, i) => (
                 <motion.div
                   key={tag.title}
