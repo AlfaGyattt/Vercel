@@ -6,7 +6,7 @@ import { motion, useMotionValue, animate, AnimatePresence } from "framer-motion"
 const BASE_SLIDES = [
   {
     id: "mood",
-    num: "01",
+    num: "",
     title: "Ton humeur,\nta séance.",
     desc: "Chaud, motivé ou dans ta bulle — l'app s'adapte à ton énergie du moment.",
     bg: "#fff", text: "#000", accent: "#f72585",
@@ -16,7 +16,7 @@ const BASE_SLIDES = [
   },
   {
     id: "matching",
-    num: "02",
+    num: "",
     title: "Le bon\npartenaire.",
     desc: "Niveau, zone, dispo, mood — l'algorithme trouve qui te correspond.",
     bg: "#000", text: "#fff", accent: "#f72585",
@@ -26,7 +26,7 @@ const BASE_SLIDES = [
   },
   {
     id: "challenges",
-    num: "03",
+    num: "",
     title: "Dépasse-toi\nensemble.",
     desc: "Des défis hebdomadaires solo ou en équipe pour ne jamais lâcher.",
     bg: "#f72585", text: "#fff", accent: "#fff",

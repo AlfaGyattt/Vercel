@@ -23,7 +23,7 @@ export const navContent: NavContent = {
   links: [
     { label: "Fonctionnalités", href: "/fonctionnalites" },
     { label: "Communauté", href: "/communaute" },
-    { label: "Newsletter", href: "/newletter" },
+    { label: "Actualité", href: "/actualite" },
     { label: "Contact", href: "/contact" },
     { label: "A propos", href: "/apropos" },
 
