@@ -131,29 +131,39 @@ export default function CommunautePage() {
       <Navbar />
       <main>
 
-        {/* HERO */}
-        <section className="min-h-screen flex items-center pt-20" style={{ background: "#000" }}>
-          <div className="w-full max-w-7xl mx-auto px-6 md:px-16 py-24">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-6 max-w-3xl"
-            >
-              <span className="font-roboto font-700 text-xs tracking-[0.2em] uppercase text-[#f72585]">
-                Communauté
-              </span>
-              <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
-                style={{ fontSize: "clamp(56px, 9vw, 120px)" }}>
-                Seul on va<br />plus vite.<br />
-                <span style={{ color: "#f72585" }}>Ensemble<br />on va plus loin.</span>
-              </h1>
-              <p className="font-roboto font-400 text-white/55 leading-relaxed max-w-lg"
-                style={{ fontSize: "clamp(15px, 1.5vw, 18px)" }}>
-                Mood2Fit c'est avant tout une communauté de gens qui se soutiennent. Le sport, c'est le prétexte.
-              </p>
-            </motion.div>
+        {/* HERO — plein écran avec fond fonds.png */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
+            <div className="absolute inset-0"
+              style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%)" }} />
           </div>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
+          >
+            <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
+              Communauté
+            </span>
+            <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
+              style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
+              Seul on va plus vite.<br />
+              <span style={{ color: "#f72585" }}>Ensemble on va plus loin.</span>
+            </h1>
+            <p className="font-roboto font-400 max-w-lg text-center"
+              style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
+              Mood2Fit c'est avant tout une communauté de gens qui se soutiennent. Le sport, c'est le prétexte.
+            </p>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
+              className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
+              <motion.div className="w-px h-12 mx-auto"
+                style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)" }}
+                animate={{ scaleY: [0, 1, 0], originY: 0 }}
+                transition={{ duration: 1.6, repeat: Infinity }} />
+            </motion.div>
+          </motion.div>
         </section>
 
         {/* STATS — fond rose */}

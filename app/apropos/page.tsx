@@ -74,62 +74,38 @@ export default function AProposPage() {
       <main>
 
         {/* ── HERO — fond noir, titre massif ── */}
-        <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden pt-20" style={{ background: "#000" }}>
-          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(247,37,133,0.08), transparent 70%)" }} />
-
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-16 py-24">
-            <motion.div style={{ y: heroY, opacity: heroOpacity }} className="flex flex-col gap-8 max-w-4xl">
-              <motion.span
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7 }}
-                className="font-roboto font-700 text-xs tracking-[0.2em] uppercase text-[#f72585]"
-              >
-                À propos
-              </motion.span>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="font-roboto font-900 uppercase leading-[0.85] tracking-[-0.04em] text-white"
-                style={{ fontSize: "clamp(56px, 10vw, 140px)" }}
-              >
-                Nés d'une<br />séance<br />
-                <span style={{ color: "#f72585" }}>ratée.</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                className="font-roboto font-400 text-white/55 leading-relaxed max-w-lg"
-                style={{ fontSize: "clamp(15px, 1.5vw, 18px)" }}
-              >
-                Mood2Fit est née d'une conviction simple — le sport est meilleur quand il se partage. Mais trouver le bon partenaire, c'est souvent compliqué.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.45 }}
-                className="flex gap-4 flex-wrap"
-              >
-                <Link href="/"
-                  className="flex items-center gap-2.5 px-7 py-3.5 rounded-full font-roboto font-700 text-sm text-black bg-white hover:bg-white/90 active:scale-[0.97] transition-all duration-150">
-                  <Apple size={16} /> App Store
-                </Link>
-                <Link href="/"
-                  className="flex items-center gap-2.5 px-7 py-3.5 rounded-full font-roboto font-700 text-sm text-white border border-white/25 hover:border-white/50 active:scale-[0.97] transition-all duration-150">
-                  <Play size={14} /> Google Play
-                </Link>
-              </motion.div>
-            </motion.div>
+        {/* HERO — plein écran avec fond fonds.png */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
+            <div className="absolute inset-0"
+              style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%)" }} />
           </div>
-
-          {/* Scroll line */}
-          <motion.div style={{ opacity: heroOpacity }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
-            <motion.div className="w-px h-14 mx-auto"
-              style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)" }}
-              animate={{ scaleY: [0, 1, 0], originY: 0 }}
-              transition={{ duration: 1.6, repeat: Infinity }} />
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
+          >
+            <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
+              À propos
+            </span>
+            <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
+              style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
+              Nés d'une séance<br />
+              <span style={{ color: "#f72585" }}>ratée.</span>
+            </h1>
+            <p className="font-roboto font-400 max-w-lg text-center"
+              style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
+              Mood2Fit est née d'une conviction simple — le sport est meilleur quand il se partage.
+            </p>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
+              className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
+              <motion.div className="w-px h-12 mx-auto"
+                style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)" }}
+                animate={{ scaleY: [0, 1, 0], originY: 0 }}
+                transition={{ duration: 1.6, repeat: Infinity }} />
+            </motion.div>
           </motion.div>
         </section>
 
