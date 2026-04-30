@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
-
+ 
 const BASE = [
   {
     id: "t1",
