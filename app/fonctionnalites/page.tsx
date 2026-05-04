@@ -10,7 +10,7 @@ const features = [
   {
     id: "mood", num: "01",
     title: "Ton humeur,\nta séance.",
-    desc: "Chaud, motivé ou dans ta bulle — l'app s'adapte à ton énergie du moment et te propose des entraînements qui correspondent vraiment à ton état du jour.",
+    desc: "Que tu sois chaud bouillant ou dans ta bulle, l'app s'adapte à ton énergie du moment et te propose des entraînements qui correspondent à ton état du jour.",
     bg: "#fff", text: "#000", accent: "#f72585", mutedText: "rgba(0,0,0,0.5)",
     phoneBorder: "#f72585", phoneGlow: "rgba(247,37,133,0.35)", screen: "mood",
     phoneLeft: false,
@@ -18,7 +18,7 @@ const features = [
   {
     id: "matching", num: "02",
     title: "Le bon\npartenaire.",
-    desc: "Notre algorithme analyse niveau, dispo, activités et objectifs pour te connecter avec des profils vraiment compatibles près de chez toi.",
+    desc: "Notre algorithme analyse ton niveau, tes disponibilités, tes activités et tes objectifs pour te connecter avec les profils les plus compatibles près de chez toi.",
     bg: "#000", text: "#fff", accent: "#f72585", mutedText: "rgba(255,255,255,0.5)",
     phoneBorder: "#b5179e", phoneGlow: "rgba(181,23,158,0.35)", screen: "matching",
     phoneLeft: true,
@@ -26,7 +26,7 @@ const features = [
   {
     id: "challenges", num: "03",
     title: "Dépasse-toi\nensemble.",
-    desc: "Points, rangs, défis solo ou en duo — Mood2Fit gamifie ta progression pour que chaque séance compte.",
+    desc: "Points, classements, défis solo ou en duo. Mood2Fit transforme ta progression en jeu pour que chaque séance compte vraiment.",
     bg: "#f72585", text: "#fff", accent: "#fff", mutedText: "rgba(255,255,255,0.75)",
     phoneBorder: "rgba(255,255,255,0.6)", phoneGlow: "rgba(255,255,255,0.2)", screen: "challenges",
     phoneLeft: false,
@@ -35,9 +35,9 @@ const features = [
 
 const activities = [
   { name: "Musculation", desc: "Force & hypertrophie" },
-  { name: "Street Workout", desc: "Calisténie urbaine" },
+  { name: "Street Workout", desc: "Callisthénie urbaine" },
   { name: "Powerlifting", desc: "Force maximale" },
-  { name: "Callisténie", desc: "Poids du corps" },
+  { name: "Callisthénie", desc: "Poids du corps" },
   { name: "HIIT", desc: "Cardio intensif" },
   { name: "CrossFit", desc: "Fonctionnel" },
   { name: "Running", desc: "Endurance" },
@@ -176,9 +176,6 @@ export default function FonctionnalitesPage() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
           >
-            <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
-              Fonctionnalités
-            </span>
             <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
               style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
               Conçu pour<br />
@@ -186,15 +183,9 @@ export default function FonctionnalitesPage() {
             </h1>
             <p className="font-roboto font-400 max-w-lg text-center"
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
-              Le sport est le prétexte. Ce qu'on construit vraiment, c'est la connexion entre les gens.
+              Le sport est le prétexte. Ce qu'on construit vraiment, c'est le lien entre les gens.
             </p>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
-              <motion.div className="w-px h-12 mx-auto"
-                style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)" }}
-                animate={{ scaleY: [0, 1, 0], originY: 0 }}
-                transition={{ duration: 1.6, repeat: Infinity }} />
-            </motion.div>
+
           </motion.div>
         </section>
 
@@ -260,7 +251,7 @@ export default function FonctionnalitesPage() {
               Peu importe<br /><span style={{ color: "#f72585" }}>ton sport.</span>
             </motion.h2>
             <p className="font-roboto font-400 text-black/45 mb-16 max-w-md" style={{ fontSize: "clamp(14px, 1.4vw, 17px)" }}>
-              Mood2Fit couvre toutes les disciplines. Le lien social dépasse les frontières du sport.
+              Mood2Fit s'adapte à toutes les disciplines. Peu importe ton sport, tu trouveras des gens qui pratiquent comme toi.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-px" style={{ background: "rgba(0,0,0,0.08)" }}>
               {activities.map((a, i) => (

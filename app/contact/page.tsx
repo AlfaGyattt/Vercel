@@ -23,9 +23,9 @@ const subjects = ["Question générale", "Signaler un bug", "Partenariat", "Pres
 const faqs = [
   { id: "f1", question: "Mood2Fit est-il gratuit ?", answer: "Oui, Mood2Fit est gratuit. L'accès à toutes les fonctionnalités (matching, challenges, feed) est inclus sans frais. Une offre premium avec des fonctionnalités avancées est prévue." },
   { id: "f2", question: "Comment fonctionne le matching ?", answer: "Notre algorithme prend en compte ton mood, ta discipline, ton niveau, ta localisation et tes disponibilités. Il croise ces données avec les profils autour de toi pour te proposer les partenaires les plus compatibles." },
-  { id: "f3", question: "Mes données personnelles sont-elles protégées ?", answer: "Absolument. Mood2Fit est conforme au RGPD. Ta localisation n'est jamais partagée en temps réel — seule ta zone approximative est visible. Tu peux supprimer ton compte à tout moment." },
+  { id: "f3", question: "Mes données personnelles sont-elles protégées ?", answer: "Absolument. Mood2Fit est conforme au RGPD. Ta localisation n'est jamais partagée en temps réel. Seule ta zone approximative est visible. Tu peux supprimer ton compte à tout moment." },
   { id: "f4", question: "Quand l'application sera-t-elle disponible ?", answer: "Mood2Fit est en phase beta fermée. Inscris-toi sur la liste d'attente depuis la homepage pour être parmi les premiers à y accéder. Le lancement public est prévu dans les prochains mois." },
-  { id: "f5", question: "Puis-je utiliser Mood2Fit pour trouver un coach ?", answer: "Pour l'instant, Mood2Fit est centré sur le co-sport entre pairs — trouver des partenaires d'entraînement, pas des coachs professionnels. Cette fonctionnalité est dans notre roadmap." },
+  { id: "f5", question: "Puis-je utiliser Mood2Fit pour trouver un coach ?", answer: "Pour l'instant, Mood2Fit est centré sur le co-sport entre pairs. Pas de coachs professionnels. Cette fonctionnalité est dans notre roadmap." },
   { id: "f6", question: "L'app fonctionne-t-elle en dehors des grandes villes ?", answer: "Oui. L'algorithme s'adapte à la densité de ta zone. En zone moins dense, le rayon s'élargit automatiquement pour maximiser tes chances de trouver un partenaire." },
 ];
 
@@ -167,9 +167,6 @@ export default function ContactPage() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
           >
-            <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
-              Contact
-            </span>
             <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
               style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
               On est<br />
@@ -179,13 +176,7 @@ export default function ContactPage() {
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
               Une question, une idée, un partenariat ? On lit chaque message personnellement.
             </p>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
-              <motion.div className="w-px h-12 mx-auto"
-                style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)" }}
-                animate={{ scaleY: [0, 1, 0], originY: 0 }}
-                transition={{ duration: 1.6, repeat: Infinity }} />
-            </motion.div>
+
           </motion.div>
         </section>
 
@@ -250,7 +241,7 @@ export default function ContactPage() {
 
                 <div className="p-5 rounded-2xl" style={{ background: "rgba(247,37,133,0.05)", border: "1px solid rgba(247,37,133,0.15)" }}>
                   <p className="font-roboto font-400 text-sm text-black/55 leading-relaxed">
-                    Pour un support urgent, envoie-nous un DM sur Instagram — c'est là qu'on répond le plus vite.
+                    Pour un support urgent, envoie-nous un DM sur Instagram. C'est là qu'on répond le plus vite.
                   </p>
                 </div>
               </motion.div>

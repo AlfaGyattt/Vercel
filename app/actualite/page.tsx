@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,14 +10,13 @@ import { CheckCircle, Loader2, Bell, ChevronRight, ChevronLeft, ArrowRight } fro
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-// ─── DONNÉES ─────────────────────────────────────────────────
 const categories = [
-  { id: "humeur",     label: "Par humeur",             color: "#f72585" },
-  { id: "partenaire", label: "Trouve ton partenaire",  color: "#f72585" },
-  { id: "tendances",  label: "Tendances sport",        color: "#f72585" },
-  { id: "conseils",   label: "Conseils & bien-être",   color: "#f72585" },
-  { id: "evenements", label: "Événements",             color: "#f72585" },
-  { id: "stories",    label: "Success stories",        color: "#f72585" },
+  { id: "humeur",     label: "Par humeur" },
+  { id: "partenaire", label: "Trouve ton partenaire" },
+  { id: "tendances",  label: "Tendances sport" },
+  { id: "conseils",   label: "Conseils & bien-être" },
+  { id: "evenements", label: "Événements" },
+  { id: "stories",    label: "Success stories" },
 ];
 
 const rows: Record<string, { id: string; title: string; tag: string; desc: string; read: string }[]> = {
@@ -25,7 +24,7 @@ const rows: Record<string, { id: string; title: string; tag: string; desc: strin
     { id: "h1", title: "S'entraîner quand t'es motivé", tag: "Full Power", desc: "Les meilleures séances pour exploiter ton énergie au max.", read: "4 min" },
     { id: "h2", title: "Se défouler après une journée stressante", tag: "Défouloir", desc: "Comment transformer le stress en carburant d'entraînement.", read: "5 min" },
     { id: "h3", title: "Sport chill & détente", tag: "Mode Zen", desc: "Yoga, stretching, marche active. Le sport peut aussi être doux.", read: "3 min" },
-    { id: "h4", title: "Boost d'énergie express", tag: "5 min chrono", desc: "Quand t'as 10 minutes et zéro motivation — le plan B.", read: "3 min" },
+    { id: "h4", title: "Boost d'énergie express", tag: "5 min chrono", desc: "Quand t'as 10 minutes et zéro motivation, le plan B.", read: "3 min" },
     { id: "h5", title: "Séance de récup active", tag: "Récupération", desc: "Après une semaine intense, comment s'entraîner sans s'épuiser.", read: "4 min" },
     { id: "h6", title: "Motivation à zéro ? Ce que font les pros", tag: "Mental", desc: "Discipline, rituels, environnement. Les vraies clés de la régularité.", read: "6 min" },
   ],
@@ -46,11 +45,11 @@ const rows: Record<string, { id: string; title: string; tag: string; desc: strin
     { id: "t6", title: "Le sleep training, nouvelle obsession des sportifs", tag: "Tendance", desc: "Optimiser son sommeil pour performer. La science et les pratiques.", read: "5 min" },
   ],
   conseils: [
-    { id: "c1", title: "Manger avant la séance : ce que dit la science", tag: "Nutrition", desc: "Timing, quantité, type d'aliments. Le guide factuel sans bullshit.", read: "5 min" },
-    { id: "c2", title: "Récupération : les 3 erreurs que tout le monde fait", tag: "Récup", desc: "Sommeil, hydratation, étirements — ce qu'on fait tous mal.", read: "6 min" },
+    { id: "c1", title: "Manger avant la séance : ce que dit la science", tag: "Nutrition", desc: "Timing, quantité, type d'aliments. Le guide factuel.", read: "5 min" },
+    { id: "c2", title: "Récupération : les 3 erreurs que tout le monde fait", tag: "Récup", desc: "Sommeil, hydratation, étirements. Ce qu'on fait tous mal.", read: "6 min" },
     { id: "c3", title: "Rester motivé même les jours sans", tag: "Mental", desc: "Discipline vs motivation. Ce que les athlètes font différemment.", read: "5 min" },
     { id: "c4", title: "Le sommeil, premier facteur de performance", tag: "Santé", desc: "7h vs 9h. Ce que les données disent sur le sport et le repos.", read: "4 min" },
-    { id: "c5", title: "Créatine, whey, caféine — ce qui marche vraiment", tag: "Supps", desc: "Sans marketing. Sans influenceurs. Juste les études.", read: "7 min" },
+    { id: "c5", title: "Créatine, whey, caféine : ce qui marche vraiment", tag: "Supps", desc: "Sans marketing. Sans influenceurs. Juste les études.", read: "7 min" },
     { id: "c6", title: "Pourquoi tu stagnes et comment en sortir", tag: "Progression", desc: "Plateau de progression : causes, solutions, méthodes prouvées.", read: "6 min" },
   ],
   evenements: [
@@ -71,7 +70,6 @@ const rows: Record<string, { id: string; title: string; tag: string; desc: strin
   ],
 };
 
-// ─── NEWSLETTER ───────────────────────────────────────────────
 const schema = z.object({ email: z.string().email("Email invalide") });
 type FormData = z.infer<typeof schema>;
 
@@ -79,30 +77,23 @@ function NewsletterBanner() {
   const [submitted, setSubmitted] = useState(false);
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) });
   const onSubmit = async (_: FormData) => { await new Promise(r => setTimeout(r, 800)); setSubmitted(true); };
-
   return (
-    <div className="mt-20 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row md:items-center gap-8"
-      style={{ background: "#f72585" }}>
+    <div className="mt-20 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row md:items-center gap-8" style={{ background: "#f72585" }}>
       <div className="flex flex-col gap-3 flex-1">
-        <h2 className="font-roboto font-900 uppercase text-white leading-[0.9] tracking-[-0.03em]"
-          style={{ fontSize: "clamp(28px, 4vw, 52px)" }}>
+        <h2 className="font-roboto font-900 uppercase text-white leading-[0.9] tracking-[-0.03em]" style={{ fontSize: "clamp(28px, 4vw, 52px)" }}>
           Dans la boucle avant tout le monde.
         </h2>
-        <p className="font-roboto font-400 text-white/70 text-sm max-w-md">
-          Chaque semaine, l'essentiel de la communauté Mood2Fit. Zéro bruit.
-        </p>
+        <p className="font-roboto font-400 text-white/70 text-sm max-w-md">Chaque semaine, l'essentiel de la communauté Mood2Fit. Zéro bruit.</p>
       </div>
       <div className="flex-shrink-0 w-full md:w-[380px]">
         <AnimatePresence mode="wait">
           {submitted ? (
-            <motion.div key="ok" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="flex items-center gap-3 text-white">
+            <motion.div key="ok" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 text-white">
               <CheckCircle size={22} />
               <span className="font-roboto font-700 text-sm">Tu es dans la boucle !</span>
             </motion.div>
           ) : (
-            <motion.form key="form" onSubmit={handleSubmit(onSubmit)}
-              className="flex gap-3" noValidate>
+            <motion.form key="form" onSubmit={handleSubmit(onSubmit)} className="flex gap-3" noValidate>
               <input type="email" placeholder="ton@email.com"
                 className="flex-1 px-5 py-3.5 rounded-full font-roboto font-400 text-black placeholder-black/35 focus:outline-none text-sm bg-white"
                 {...register("email")} />
@@ -120,56 +111,40 @@ function NewsletterBanner() {
   );
 }
 
-// ─── CARD ─────────────────────────────────────────────────────
 function Card({ item, index }: { item: typeof rows["humeur"][0]; index: number }) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.45, delay: index * 0.04 }}
-      className="flex-shrink-0 w-[220px] md:w-[240px] flex flex-col gap-3 p-5 rounded-xl cursor-pointer group/card transition-all duration-200"
-      style={{ background: "#f7f4fb", border: "1px solid rgba(0,0,0,0.07)" }}
-      whileHover={{ backgroundColor: "#f0edf8", y: -4, borderColor: "rgba(247,37,133,0.4)" }}
+    <article
+      className="flex-shrink-0 w-[300px] md:w-[320px] flex flex-col cursor-pointer group/card overflow-hidden rounded-2xl"
+      style={{ background: "#f7f4fb", border: "1px solid rgba(0,0,0,0.06)", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}
     >
-      {/* Numéro discret */}
-      <span className="font-roboto font-900 text-[10px] tracking-[0.2em] text-black/15">
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      {/* Tag */}
-      <span className="font-roboto font-700 text-[10px] tracking-[0.15em] uppercase text-[#f72585]">
-        {item.tag}
-      </span>
-
-      {/* Titre */}
-      <h3 className="font-roboto font-700 text-black leading-snug group-hover/card:text-[#f72585] transition-colors duration-200"
-        style={{ fontSize: "13px" }}>
-        {item.title}
-      </h3>
-
-      {/* Desc */}
-      <p className="font-roboto font-400 text-black/45 text-[11px] leading-relaxed flex-1">
-        {item.desc}
-      </p>
-
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-3"
-        style={{ borderTop: "1px solid rgba(0,0,0,0.07)" }}>
-        <span className="font-roboto text-[10px] text-black/30 uppercase tracking-[0.1em]">{item.read}</span>
-        <ArrowRight size={12} className="text-black/25 group-hover/card:text-[#f72585] group-hover/card:translate-x-1 transition-all duration-200" />
+      <div className="flex items-center justify-between px-5 pt-5 pb-3">
+        <span className="font-roboto font-700 text-[11px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-full"
+          style={{ background: "rgba(247,37,133,0.08)", color: "#f72585" }}>
+          {item.tag}
+        </span>
+        <span className="font-roboto text-[11px] text-black/30 font-500">{item.read}</span>
       </div>
-    </motion.article>
+      <div className="px-5 pb-3">
+        <h3 className="font-roboto font-700 text-black leading-tight group-hover/card:text-[#f72585] transition-colors duration-200" style={{ fontSize: "16px" }}>
+          {item.title}
+        </h3>
+      </div>
+      <div className="px-5 pb-5 flex-1">
+        <p className="font-roboto font-400 text-black/55 leading-relaxed" style={{ fontSize: "13px" }}>{item.desc}</p>
+      </div>
+      <div className="flex items-center gap-2 px-5 py-3 group-hover/card:bg-[#f72585] transition-colors duration-200" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+        <span className="font-roboto font-700 text-[11px] uppercase tracking-[0.1em] text-black/40 group-hover/card:text-white transition-colors duration-200">Lire</span>
+        <ArrowRight size={13} className="text-black/30 group-hover/card:text-white group-hover/card:translate-x-1 transition-all duration-200" />
+      </div>
+    </article>
   );
 }
 
-// ─── ROW ──────────────────────────────────────────────────────
 function ContentRow({ catId }: { catId: string }) {
   const items = rows[catId] || [];
   const scrollRef = useRef<HTMLDivElement>(null);
   const scroll = (dir: "left" | "right") =>
-    scrollRef.current?.scrollBy({ left: dir === "right" ? 280 : -280, behavior: "smooth" });
-
+    scrollRef.current?.scrollBy({ left: dir === "right" ? 340 : -340, behavior: "smooth" });
   return (
     <div className="relative group/row">
       <button onClick={() => scroll("left")} aria-label="Gauche"
@@ -177,11 +152,9 @@ function ContentRow({ catId }: { catId: string }) {
         style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.12)", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
         <ChevronLeft size={16} className="text-black" />
       </button>
-
       <div ref={scrollRef} className="flex gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
         {items.map((item, i) => <Card key={item.id} item={item} index={i} />)}
       </div>
-
       <button onClick={() => scroll("right")} aria-label="Droite"
         className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all duration-200 hover:scale-110"
         style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.12)", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
@@ -191,71 +164,55 @@ function ContentRow({ catId }: { catId: string }) {
   );
 }
 
-// ─── PAGE ─────────────────────────────────────────────────────
+// ─── HERO avec scroll darkness ────────────────────────────────
+function HeroSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const darkness = useTransform(scrollYProgress, [0, 1], ["rgba(0,0,0,0)", "rgba(0,0,0,0.8)"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0px", "-80px"]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
+
+  return (
+    <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.9) 100%)" }} />
+        {/* Overlay qui s'assombrit au scroll */}
+        <motion.div className="absolute inset-0" style={{ background: darkness }} />
+      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        style={{ y: textY, opacity: textOpacity }}
+        className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
+      >
+        <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
+          style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
+          Tout ce qui<br />
+          <span style={{ color: "#f72585" }}>se passe.</span>
+        </h1>
+        <p className="font-roboto font-400 max-w-lg" style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
+          Tips, témoignages, tendances et événements. Le fil de la communauté.
+        </p>
+      </motion.div>
+    </section>
+  );
+}
+
 export default function ActualitePage() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-
-  const visibleCategories = activeFilter
-    ? categories.filter(c => c.id === activeFilter)
-    : categories;
+  const visibleCategories = activeFilter ? categories.filter(c => c.id === activeFilter) : categories;
 
   return (
     <>
       <Navbar />
       <main style={{ background: "#fff", minHeight: "100vh" }}>
 
-        {/* HERO — plein écran avec fond fonds.png */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          {/* Image de fond */}
-          <div className="absolute inset-0 z-0">
-            <img src="/fonds.png" alt="" aria-hidden="true"
-              className="w-full h-full object-cover" />
-            <div className="absolute inset-0"
-              style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, rgba(255,255,255,1) 100%)" }} />
-          </div>
+        <HeroSection />
 
-          {/* Contenu centré */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
-          >
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase"
-              style={{ color: "rgba(255,255,255,0.75)" }}
-            >
-              Actualité
-            </motion.span>
-            <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
-              style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
-              Tout ce qui<br />
-              <span style={{ color: "#f72585" }}>se passe.</span>
-            </h1>
-            <p className="font-roboto font-400 max-w-lg"
-              style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)", textShadow: "0 1px 8px rgba(0,0,0,0.2)" }}>
-              Tips, témoignages, tendances et événements — le fil de la communauté.
-            </p>
-
-            {/* Scroll hint */}
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-              aria-hidden="true"
-            >
-              <motion.div className="w-px h-12"
-                style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)" }}
-                animate={{ scaleY: [0, 1, 0], originY: 0 }}
-                transition={{ duration: 1.6, repeat: Infinity }} />
-            </motion.div>
-          </motion.div>
-        </section>
-
-        {/* FILTRES STICKY — style Spotify exact */}
-        <div className="sticky top-16 z-30 px-6 md:px-16 py-3"
+        {/* FILTRES STICKY */}
+        <div className="relative px-6 md:px-16 py-3"
           style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(24px)", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
           <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
             <button onClick={() => setActiveFilter(null)}
@@ -267,17 +224,14 @@ export default function ActualitePage() {
               <button key={cat.id}
                 onClick={() => setActiveFilter(activeFilter === cat.id ? null : cat.id)}
                 className="flex-shrink-0 px-4 py-1.5 rounded-full font-roboto font-700 text-xs transition-all duration-200 whitespace-nowrap"
-                style={{
-                  background: activeFilter === cat.id ? "#f72585" : "rgba(0,0,0,0.07)",
-                  color: activeFilter === cat.id ? "#fff" : "rgba(0,0,0,0.6)",
-                }}>
+                style={{ background: activeFilter === cat.id ? "#f72585" : "rgba(0,0,0,0.07)", color: activeFilter === cat.id ? "#fff" : "rgba(0,0,0,0.6)" }}>
                 {cat.label}
               </button>
             ))}
           </div>
         </div>
 
-        {/* CONTENU — toutes les rows sur le même fond sombre, titres petits comme Spotify */}
+        {/* CONTENU */}
         <div className="px-6 md:px-16 max-w-7xl mx-auto py-10 flex flex-col gap-12">
           {visibleCategories.map((cat, i) => (
             <motion.section key={cat.id}
@@ -285,28 +239,20 @@ export default function ActualitePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.04 }}>
-
-              {/* Header Spotify — titre petit + "Tout afficher" */}
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-roboto font-700 text-black hover:underline cursor-pointer"
-                  style={{ fontSize: "16px" }}>
+                <h2 className="font-roboto font-700 text-black hover:underline cursor-pointer" style={{ fontSize: "16px" }}>
                   {cat.label}
                 </h2>
-                <Link href="#"
-                  className="font-roboto font-700 text-[10px] tracking-[0.12em] uppercase text-black/30 hover:text-black transition-colors duration-200">
+                <Link href="#" className="font-roboto font-700 text-[10px] tracking-[0.12em] uppercase text-black/30 hover:text-black transition-colors duration-200">
                   Tout afficher
                 </Link>
               </div>
-
               <ContentRow catId={cat.id} />
             </motion.section>
           ))}
-
-          {/* NEWSLETTER intégrée en bas — comme une row Spotify */}
           <NewsletterBanner />
         </div>
 
-        {/* Espace footer */}
         <div className="h-16" />
       </main>
       <Footer />

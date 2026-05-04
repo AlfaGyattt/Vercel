@@ -12,7 +12,7 @@ const feedPosts = [
     id: "p1",
     user: { name: "Karim B.", city: "Paris 19e", initials: "KB", color: "#f72585" },
     time: "il y a 2h", sport: "Street Workout",
-    content: "Séance de dips + tractions au parc des Buttes-Chaumont. On était 4 ce matin grâce à Mood2Fit — ambiance de folie.",
+    content: "Séance de dips + tractions au parc des Buttes-Chaumont. On était 4 ce matin grâce à Mood2Fit. Ambiance de folie.",
     likes: 47, comments: 12,
   },
   {
@@ -33,7 +33,7 @@ const feedPosts = [
     id: "p4",
     user: { name: "Sofia R.", city: "Paris 15e", initials: "SR", color: "#06d6a0" },
     time: "il y a 2j", sport: "HIIT",
-    content: "Premier cours HIIT en groupe trouvé sur Mood2Fit. J'avais peur de pas être au niveau — tout le monde était bienveillant. Je reviens vendredi.",
+    content: "Premier cours HIIT en groupe trouvé sur Mood2Fit. J'avais peur de ne pas être au niveau. Tout le monde était bienveillant. Je reviens vendredi.",
     likes: 62, comments: 18,
   },
 ];
@@ -83,8 +83,8 @@ function PostCard({ post }: { post: typeof feedPosts[0] }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="flex flex-col gap-4 p-6 bg-white"
-      style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}
+      className="flex flex-col gap-4 p-6 rounded-2xl bg-white"
+      style={{ border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}
     >
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-roboto font-700 text-white flex-shrink-0"
@@ -144,9 +144,6 @@ export default function CommunautePage() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
           >
-            <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
-              Communauté
-            </span>
             <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
               style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
               Seul on va plus vite.<br />
@@ -154,15 +151,9 @@ export default function CommunautePage() {
             </h1>
             <p className="font-roboto font-400 max-w-lg text-center"
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
-              Mood2Fit c'est avant tout une communauté de gens qui se soutiennent. Le sport, c'est le prétexte.
+              Mood2Fit est avant tout une communauté de gens qui se soutiennent. Le sport en est le prétexte.
             </p>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
-              <motion.div className="w-px h-12 mx-auto"
-                style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)" }}
-                animate={{ scaleY: [0, 1, 0], originY: 0 }}
-                transition={{ duration: 1.6, repeat: Infinity }} />
-            </motion.div>
+
           </motion.div>
         </section>
 
@@ -200,13 +191,10 @@ export default function CommunautePage() {
                 Ce qui se passe<br />
                 <span style={{ color: "#f72585" }}>dans la commu.</span>
               </motion.h2>
-              <span className="font-roboto font-700 text-xs tracking-[0.15em] uppercase text-black/30 hidden md:block">
-                4 posts récents
-              </span>
             </div>
 
-            {/* Posts en liste */}
-            <div style={{ border: "1px solid rgba(0,0,0,0.08)", borderRadius: "20px", overflow: "hidden" }}>
+            {/* Posts en grille 2 colonnes */}
+            <div className="grid md:grid-cols-2 gap-5">
               {feedPosts.map((post) => (
                 <PostCard key={post.id} post={post} />
               ))}
@@ -240,8 +228,8 @@ export default function CommunautePage() {
                   <span className="font-roboto font-900 text-2xl flex-shrink-0 md:w-14" style={{ color: t.color }}>
                     0{i + 1}
                   </span>
-                  <p className="font-roboto font-700 leading-tight tracking-[-0.02em] text-white flex-1"
-                    style={{ fontSize: "clamp(20px, 3vw, 38px)" }}>
+                  <p className="font-roboto font-400 leading-relaxed text-white/85 flex-1 italic"
+                    style={{ fontSize: "clamp(16px, 2vw, 22px)" }}>
                     &ldquo;{t.quote}&rdquo;
                   </p>
                   <div className="flex-shrink-0 md:text-right flex md:flex-col gap-4 md:gap-1 items-center md:items-end">

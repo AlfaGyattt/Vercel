@@ -23,9 +23,9 @@ export const navContent: NavContent = {
   links: [
     { label: "Fonctionnalités", href: "/fonctionnalites" },
     { label: "Communauté", href: "/communaute" },
-    { label: "Actualité", href: "/actualite" },
+    { label: "Actualités", href: "/actualite" },
     { label: "Contact", href: "/contact" },
-    { label: "A propos", href: "/apropos" },
+    { label: "À propos", href: "/apropos" },
 
   ],
   ctaLabel: "Télécharger",

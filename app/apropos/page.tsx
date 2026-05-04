@@ -50,9 +50,9 @@ const values = [
 ];
 
 const team = [
-  { name: "Heitor Lavorata", role: "Fondateur", tag: "Chef de Projet", initials: "HL" },
-  { name: "Jade", role: "Marketing & Design", tag: "Équipe", initials: "JD" },
-  { name: "Alfayed", role: "Developer Web", tag: "Équipe", initials: "AF" },
+  { name: "Heitor Lavorata", role: "Fondateur de l'application, passionné de street workout et de musculation depuis 8 ans.", tag: "Fondateur", initials: "HL" },
+  { name: "Jade", role: "En charge du design et du marketing. Elle transforme des idées brutes en expériences visuelles qui parlent.", tag: "Design & Marketing", initials: "JD" },
+  { name: "Alfayed", role: "Il construit et maintient le site et l'application. Le code, c'est son terrain d'entraînement.", tag: "Développement", initials: "AF" },
 ];
 
 const stats = [
@@ -87,9 +87,6 @@ export default function AProposPage() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
           >
-            <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
-              À propos
-            </span>
             <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
               style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
               Nés d'une séance<br />
@@ -97,7 +94,7 @@ export default function AProposPage() {
             </h1>
             <p className="font-roboto font-400 max-w-lg text-center"
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
-              Mood2Fit est née d'une conviction simple — le sport est meilleur quand il se partage.
+              Mood2Fit est née d'une conviction simple, le sport est meilleur quand il se partage.
             </p>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
               className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
@@ -160,7 +157,7 @@ export default function AProposPage() {
               >
                 <p className="font-roboto font-400 text-black/65 leading-relaxed"
                   style={{ fontSize: "clamp(15px, 1.5vw, 18px)" }}>
-                  Mood2Fit, c'est une équipe de 3 personnes basée à Paris. On pratique la musculation, le street workout, la callisthénie — et on a tous vécu la même frustration.
+                  Mood2Fit, c'est une équipe de 3 personnes basée à Paris. On pratique la musculation, le street workout, la callisthénie. Et on a tous vécu la même frustration.
                 </p>
                 <p className="font-roboto font-400 text-black/65 leading-relaxed"
                   style={{ fontSize: "clamp(15px, 1.5vw, 18px)" }}>
@@ -240,17 +237,17 @@ export default function AProposPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.7, delay: i * 0.1 }}
-                  className="flex flex-col md:flex-row md:items-center gap-6 md:gap-16 py-10 md:py-14"
+                  className="grid grid-cols-[60px_1fr_1fr] md:grid-cols-[80px_240px_1fr] gap-6 md:gap-12 py-10 md:py-14 items-start"
                   style={{ borderBottom: "1px solid rgba(255,255,255,0.25)" }}>
-                  <span className="font-roboto font-900 text-white/30 flex-shrink-0 md:w-20"
-                    style={{ fontSize: "clamp(32px, 4vw, 52px)" }}>
+                  <span className="font-roboto font-900 text-white/30"
+                    style={{ fontSize: "clamp(24px, 3vw, 40px)" }}>
                     {val.num}
                   </span>
-                  <h3 className="font-roboto font-900 uppercase text-white flex-shrink-0 md:w-48"
-                    style={{ fontSize: "clamp(24px, 3vw, 40px)", letterSpacing: "-0.03em" }}>
+                  <h3 className="font-roboto font-900 uppercase text-white"
+                    style={{ fontSize: "clamp(20px, 2.5vw, 34px)", letterSpacing: "-0.03em" }}>
                     {val.title}
                   </h3>
-                  <p className="font-roboto font-400 text-white/75 leading-relaxed flex-1 max-w-lg"
+                  <p className="font-roboto font-400 text-white/75 leading-relaxed"
                     style={{ fontSize: "clamp(14px, 1.4vw, 17px)" }}>
                     {val.desc}
                   </p>
@@ -274,34 +271,28 @@ export default function AProposPage() {
               <span style={{ color: "#f72585" }}>font Mood2Fit.</span>
             </motion.h2>
 
-            <div className="grid md:grid-cols-3 gap-px" style={{ background: "rgba(0,0,0,0.08)" }}>
+            <div className="grid md:grid-cols-3 gap-8">
               {team.map((member, i) => (
                 <motion.div key={member.name}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  className="group flex flex-col bg-white"
-                  whileHover={{ backgroundColor: "#faf7ff" }}>
-                  {/* Avatar */}
-                  <div className="h-56 flex items-center justify-center relative overflow-hidden"
+                  className="flex flex-col gap-4 group">
+                  {/* Photo placeholder sobre */}
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center font-roboto font-700 text-white text-xl flex-shrink-0"
                     style={{ background: "linear-gradient(135deg, #f72585, #7209b7)" }}>
-                    <span className="font-roboto font-900 text-white/20"
-                      style={{ fontSize: "100px", lineHeight: 1 }}>
-                      {member.initials}
-                    </span>
-                    <div className="absolute bottom-0 left-0 right-0 h-1/2"
-                      style={{ background: "linear-gradient(to top, rgba(0,0,0,0.3), transparent)" }} />
+                    {member.initials}
                   </div>
                   {/* Infos */}
-                  <div className="p-8 flex flex-col gap-2">
+                  <div className="flex flex-col gap-1">
                     <span className="font-roboto font-700 text-[10px] tracking-[0.2em] uppercase text-[#f72585]">
                       {member.tag}
                     </span>
-                    <h3 className="font-roboto font-900 text-black text-xl">{member.name}</h3>
+                    <h3 className="font-roboto font-900 text-black" style={{ fontSize: "22px" }}>{member.name}</h3>
                     <p className="font-roboto font-400 text-black/45 text-sm">{member.role}</p>
-                    <div className="h-px w-0 group-hover:w-8 transition-all duration-300 mt-2" style={{ background: "#f72585" }} />
                   </div>
+                  <div className="h-px w-8 group-hover:w-16 transition-all duration-300" style={{ background: "#f72585" }} />
                 </motion.div>
               ))}
             </div>
