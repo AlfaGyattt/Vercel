@@ -187,8 +187,7 @@ function HeroSection() {
         style={{ y: textY, opacity: textOpacity }}
         className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
       >
-        <h1 className="font-roboto font-900 uppercase leading-[0.9] text-white" style={{ letterSpacing: "-0.02em" }}
-          style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
+        <h1 className="font-roboto font-900 uppercase leading-[0.9] text-white" style={{ letterSpacing: "-0.02em", fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
           Tout ce qui<br />
           <span style={{ color: "#f72585" }}>se passe.</span>
         </h1>
