@@ -176,7 +176,7 @@ function HeroSection() {
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.9) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%)" }} />
         {/* Overlay qui s'assombrit au scroll */}
         <motion.div className="absolute inset-0" style={{ background: darkness }} />
       </div>
@@ -187,7 +187,7 @@ function HeroSection() {
         style={{ y: textY, opacity: textOpacity }}
         className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
       >
-        <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
+        <h1 className="font-roboto font-900 uppercase leading-[0.9] text-white" style={{ letterSpacing: "-0.02em" }}
           style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
           Tout ce qui<br />
           <span style={{ color: "#f72585" }}>se passe.</span>

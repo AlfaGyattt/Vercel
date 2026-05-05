@@ -176,8 +176,8 @@ export default function FonctionnalitesPage() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
           >
-            <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
-              style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
+            <h1 className="font-roboto font-900 uppercase leading-[0.92] text-white"
+              style={{ fontSize: "clamp(52px, 9vw, 120px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)", letterSpacing: "-0.02em" }}>
               Conçu pour<br />
               <span style={{ color: "#f72585" }}>créer du lien.</span>
             </h1>

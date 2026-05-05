@@ -87,14 +87,14 @@ export default function AProposPage() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
           >
-            <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
-              style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
+            <h1 className="font-roboto font-900 uppercase leading-[0.9] text-white"
+              style={{ letterSpacing: "0.06em", lineHeight: "0.95", fontSize: "clamp(64px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
               Nés d'une séance<br />
               <span style={{ color: "#f72585" }}>ratée.</span>
             </h1>
             <p className="font-roboto font-400 max-w-lg text-center"
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
-              Mood2Fit est née d'une conviction simple, le sport est meilleur quand il se partage.
+              Mood2Fit est née d'une conviction simple — le sport est meilleur quand il se partage.
             </p>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
               className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
