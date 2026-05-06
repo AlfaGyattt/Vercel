@@ -40,11 +40,11 @@ const activities = [
   { name: "Callisthénie", desc: "Poids du corps" },
   { name: "HIIT", desc: "Cardio intensif" },
   { name: "CrossFit", desc: "Fonctionnel" },
-  { name: "Running", desc: "Endurance" },
-  { name: "Cyclisme", desc: "Route & piste" },
+  { name: "Course sur tapis", desc: "Endurance" },
+  { name: "Cyclisme sur tapis", desc: "Route & piste" },
   { name: "Yoga", desc: "Corps & esprit" },
   { name: "Boxe", desc: "Combat & cardio" },
-  { name: "Natation", desc: "Eau & endurance" },
+  { name: "Méditation", desc: "Esprit & spiritualité" },
   { name: "Et plus encore...", desc: "Toutes disciplines" },
 ];
 

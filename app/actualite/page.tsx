@@ -76,7 +76,16 @@ type FormData = z.infer<typeof schema>;
 function NewsletterBanner() {
   const [submitted, setSubmitted] = useState(false);
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const onSubmit = async (_: FormData) => { await new Promise(r => setTimeout(r, 800)); setSubmitted(true); };
+  const onSubmit = async (data: FormData) => {
+    try {
+      await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email }),
+      });
+    } catch {}
+    setSubmitted(true);
+  };
   return (
     <div className="mt-20 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row md:items-center gap-8" style={{ background: "#f72585" }}>
       <div className="flex flex-col gap-3 flex-1">
@@ -187,7 +196,8 @@ function HeroSection() {
         style={{ y: textY, opacity: textOpacity }}
         className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
       >
-        <h1 className="font-roboto font-900 uppercase leading-[0.9] text-white" style={{ letterSpacing: "-0.02em", fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
+        <h1 className="font-roboto font-900 uppercase leading-[0.9] text-white"
+          style={{ letterSpacing: "-0.02em", fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
           Tout ce qui<br />
           <span style={{ color: "#f72585" }}>se passe.</span>
         </h1>

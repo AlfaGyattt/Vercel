@@ -6,9 +6,9 @@ import { motion, useMotionValue, animate, AnimatePresence } from "framer-motion"
 const BASE_SLIDES = [
   {
     id: "mood",
-    num: "",
+    num: "01",
     title: "Ton humeur,\nta séance.",
-    desc: "Chaud, motivé ou dans ta bulle — l'app s'adapte à ton énergie du moment.",
+    desc: "Que tu sois au top ou dans ta bulle, l'app s'adapte à ton énergie et te propose la séance qu'il te faut.",
     bg: "#fff", text: "#000", accent: "#f72585",
     mutedText: "rgba(0,0,0,0.5)",
     phoneBorder: "#f72585", phoneGlow: "rgba(247,37,133,0.35)",
@@ -16,9 +16,9 @@ const BASE_SLIDES = [
   },
   {
     id: "matching",
-    num: "",
+    num: "02",
     title: "Le bon\npartenaire.",
-    desc: "Niveau, zone, dispo, mood — l'algorithme trouve qui te correspond.",
+    desc: "Niveau, disponibilités, mood. L'algorithme trouve les profils qui te correspondent vraiment.",
     bg: "#000", text: "#fff", accent: "#f72585",
     mutedText: "rgba(255,255,255,0.5)",
     phoneBorder: "#b5179e", phoneGlow: "rgba(181,23,158,0.35)",
@@ -26,12 +26,12 @@ const BASE_SLIDES = [
   },
   {
     id: "challenges",
-    num: "",
+    num: "03",
     title: "Dépasse-toi\nensemble.",
-    desc: "Des défis hebdomadaires solo ou en équipe pour ne jamais lâcher.",
-    bg: "#f72585", text: "#fff", accent: "#fff",
+    desc: "Des défis hebdomadaires solo ou en équipe. Pour progresser et ne jamais lâcher.",
+    bg: "#9650CD", text: "#fff", accent: "#fff",
     mutedText: "rgba(255,255,255,0.7)",
-    phoneBorder: "rgba(255,255,255,0.6)", phoneGlow: "rgba(255,255,255,0.2)",
+    phoneBorder: "rgba(255,255,255,0.5)", phoneGlow: "rgba(114,9,183,0.4)",
     screen: "challenges",
   },
 ];
@@ -80,12 +80,12 @@ function MatchingScreen() {
       {[
         { name: "Léa M.", city: "Paris 11e", sport: "Muscu", score: 97, color: "#f72585" },
         { name: "Thomas K.", city: "Paris 3e", sport: "Street WO", score: 88, color: "#b5179e" },
-        { name: "Sara B.", city: "Boulogne", sport: "Cardio", score: 81, color: "#7209b7" },
+        { name: "Sara B.", city: "Boulogne", sport: "Cardio", score: 81, color: "#9650CD" },
       ].map((u) => (
         <div key={u.name} className="flex items-center gap-2.5 p-2.5 rounded-xl"
           style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}>
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-roboto font-700 text-white flex-shrink-0"
-            style={{ background: `linear-gradient(135deg,${u.color},#7209b7)` }}>{u.name[0]}</div>
+            style={{ background: `linear-gradient(135deg,${u.color},#9650CD)` }}>{u.name[0]}</div>
           <div className="flex-1">
             <div className="font-roboto font-600 text-[9px] text-white">{u.name} · {u.city}</div>
             <div className="font-roboto text-[8px] text-white/40">{u.sport}</div>
@@ -129,26 +129,17 @@ const phoneScreens: Record<string, React.ReactNode> = {
 };
 
 // ─── MOCKUP 3D ───────────────────────────────────────────────
-function Phone3D({ screen, border, glow, dragProgress, isFlipping }: {
-  screen: string; border: string; glow: string; dragProgress: number; isFlipping: boolean;
+function Phone3D({ screen, border, glow }: {
+  screen: string; border: string; glow: string;
 }) {
-  const rotateY = isFlipping ? 180 : dragProgress * -28;
-  const rotateX = isFlipping ? 0 : Math.abs(dragProgress) * 5;
-  const scale = isFlipping ? 0.85 : 1;
-
   return (
-    <div style={{ perspective: "1200px" }} className="flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <div className="relative">
-        <div className="absolute rounded-[60px] pointer-events-none transition-all duration-500"
+        <div className="absolute rounded-[60px] pointer-events-none"
           style={{ inset: "-20px", background: `radial-gradient(circle, ${glow}, transparent 70%)`, filter: "blur(40px)", opacity: 0.8 }} />
-        <motion.div
+        <div
           className="relative overflow-hidden"
           style={{ width: "220px", aspectRatio: "9/19.5", borderRadius: "36px", background: "#09000f", border: `1.5px solid ${border}`, boxShadow: `0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)` }}
-          animate={{ rotateY, rotateX, scale }}
-          transition={isFlipping
-            ? { duration: 0.6, ease: [0.4, 0, 0.2, 1] }
-            : { type: "spring", stiffness: 160, damping: 22 }
-          }
         >
           <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
             style={{ width: "100px", height: "26px", background: "#000", borderRadius: "0 0 18px 18px" }}>
@@ -156,9 +147,6 @@ function Phone3D({ screen, border, glow, dragProgress, isFlipping }: {
             <div className="w-10 h-1 rounded-full bg-white/10" />
             <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
           </div>
-          <motion.div className="absolute inset-0 z-10 pointer-events-none rounded-[36px]"
-            animate={{ background: `linear-gradient(${110 + rotateY * 1.5}deg, rgba(255,255,255,${0.05 + Math.abs(dragProgress) * 0.1}) 0%, transparent 55%)` }}
-            transition={{ type: "spring", stiffness: 160, damping: 22 }} />
           <div className="absolute inset-0 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div key={screen} className="absolute inset-0"
@@ -169,7 +157,7 @@ function Phone3D({ screen, border, glow, dragProgress, isFlipping }: {
             </AnimatePresence>
           </div>
           <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-14 h-1 rounded-full bg-white/15 z-10" />
-        </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -178,7 +166,6 @@ function Phone3D({ screen, border, glow, dragProgress, isFlipping }: {
 // ─── COMPOSANT PRINCIPAL ─────────────────────────────────────
 export default function HomeFeatures() {
   const [current, setCurrent] = useState(OFFSET);
-  const [dragProgress, setDragProgress] = useState(0);
   const x = useMotionValue(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const inactivityTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -210,7 +197,6 @@ export default function HomeFeatures() {
           }
         },
       });
-      setDragProgress(0);
     }, 300);
   };
 
@@ -277,7 +263,6 @@ export default function HomeFeatures() {
         dragConstraints={{ left: -99999, right: 0 }}
         dragElastic={0.05}
         onDragStart={stopAutoScroll}
-        onDrag={(_, info) => setDragProgress(Math.max(-1, Math.min(1, info.offset.x / SLIDE_WIDTH)))}
         onDragEnd={handleDragEnd}
       >
         {slides.map((s, i) => (
@@ -302,7 +287,7 @@ export default function HomeFeatures() {
                   <div className="h-px w-16" style={{ background: s.accent }} />
                 </div>
                 <div className="flex justify-center pointer-events-none">
-                  <Phone3D screen={s.screen} border={s.phoneBorder} glow={s.phoneGlow} dragProgress={dragProgress} isFlipping={isFlipping} />
+                  <Phone3D screen={s.screen} border={s.phoneBorder} glow={s.phoneGlow} />
                 </div>
               </div>
             </div>
@@ -320,8 +305,8 @@ export default function HomeFeatures() {
             style={{
               width: i === realIndex ? 32 : 8, height: 8,
               background: i === realIndex
-                ? (currentSlide.id === "challenges" ? "#fff" : "#f72585")
-                : (currentSlide.id === "challenges" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.2)"),
+                ? ("#fff")
+                : (currentSlide.bg === "#000" || currentSlide.bg === "#9650CD" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.2)"),
             }}
           />
         ))}
@@ -333,14 +318,14 @@ export default function HomeFeatures() {
           onClick={() => { goTo(current + delta); resetInactivity(); }}
           className={`absolute ${delta === -1 ? "left-6" : "right-6"} top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110`}
           style={{
-            background: currentSlide.id === "challenges" ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.08)",
-            border: `1px solid ${currentSlide.id === "challenges" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.15)"}`,
+            background: currentSlide.bg === "#000" || currentSlide.bg === "#9650CD" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
+            border: `1px solid ${currentSlide.bg === "#000" || currentSlide.bg === "#9650CD" ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.15)"}`,
           }}
           aria-label={delta === -1 ? "Slide précédent" : "Slide suivant"}
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
             <path d={delta === -1 ? "M11 4L6 9L11 14" : "M7 4L12 9L7 14"}
-              stroke={currentSlide.id === "challenges" ? "#fff" : "#000"}
+              stroke={currentSlide.bg === "#000" || currentSlide.bg === "#9650CD" ? "#fff" : "#000"}
               strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>

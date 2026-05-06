@@ -11,7 +11,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Mood2Fit — Trouve ton partenaire d'entraînement",
+  title: "Mood2Fit",
   description:
     "L'app qui matche ton énergie du jour avec le bon partenaire de sport. Musculation, street workout, cardio — entraîne-toi avec des gens qui te ressemblent.",
   keywords: [
