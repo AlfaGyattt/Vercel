@@ -94,15 +94,8 @@ export default function AProposPage() {
             </h1>
             <p className="font-roboto font-400 max-w-lg text-center"
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
-              Mood2Fit est née d'une conviction simple — le sport est meilleur quand il se partage.
+              Mood2Fit est née d'une conviction simple : le sport est meilleur quand il se partage.
             </p>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
-              <motion.div className="w-px h-12 mx-auto"
-                style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)" }}
-                animate={{ scaleY: [0, 1, 0], originY: 0 }}
-                transition={{ duration: 1.6, repeat: Infinity }} />
-            </motion.div>
           </motion.div>
         </section>
 
@@ -218,7 +211,7 @@ export default function AProposPage() {
         </section>
 
         {/* ── VALEURS — fond rose ── */}
-        <section style={{ background: "#f72585" }} className="py-32">
+        <section style={{ background: "#9650CD" }} className="py-32">
           <div className="max-w-7xl mx-auto px-6 md:px-16">
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
@@ -279,12 +272,10 @@ export default function AProposPage() {
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                   className="flex flex-col gap-4 group">
-                  {/* Photo placeholder sobre */}
                   <div className="w-20 h-20 rounded-full flex items-center justify-center font-roboto font-700 text-white text-xl flex-shrink-0"
                     style={{ background: "linear-gradient(135deg, #f72585, #7209b7)" }}>
                     {member.initials}
                   </div>
-                  {/* Infos */}
                   <div className="flex flex-col gap-1">
                     <span className="font-roboto font-700 text-[10px] tracking-[0.2em] uppercase text-[#f72585]">
                       {member.tag}
@@ -299,8 +290,8 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* ── CTA FINAL — fond noir ── */}
-        <section style={{ background: "#000" }} className="min-h-screen flex items-center justify-center py-40">
+        {/* ── CTA FINAL — fond rose ── */}
+        <section style={{ background: "#f72585" }} className="min-h-screen flex items-center justify-center py-40">
           <div className="text-center px-6 max-w-5xl mx-auto">
             <motion.span
               initial={{ opacity: 0 }}

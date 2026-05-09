@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useMotionValue, animate, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const BASE_SLIDES = [
   {
@@ -9,9 +9,7 @@ const BASE_SLIDES = [
     num: "01",
     title: "Ton humeur,\nta séance.",
     desc: "Que tu sois au top ou dans ta bulle, l'app s'adapte à ton énergie et te propose la séance qu'il te faut.",
-    bg: "#fff", text: "#000", accent: "#f72585",
-    mutedText: "rgba(0,0,0,0.5)",
-    phoneBorder: "#f72585", phoneGlow: "rgba(247,37,133,0.35)",
+    color: "#f72585",
     screen: "mood",
   },
   {
@@ -19,9 +17,7 @@ const BASE_SLIDES = [
     num: "02",
     title: "Le bon\npartenaire.",
     desc: "Niveau, disponibilités, mood. L'algorithme trouve les profils qui te correspondent vraiment.",
-    bg: "#000", text: "#fff", accent: "#f72585",
-    mutedText: "rgba(255,255,255,0.5)",
-    phoneBorder: "#b5179e", phoneGlow: "rgba(181,23,158,0.35)",
+    color: "#000000",
     screen: "matching",
   },
   {
@@ -29,18 +25,13 @@ const BASE_SLIDES = [
     num: "03",
     title: "Dépasse-toi\nensemble.",
     desc: "Des défis hebdomadaires solo ou en équipe. Pour progresser et ne jamais lâcher.",
-    bg: "#9650CD", text: "#fff", accent: "#fff",
-    mutedText: "rgba(255,255,255,0.7)",
-    phoneBorder: "rgba(255,255,255,0.5)", phoneGlow: "rgba(114,9,183,0.4)",
+    color: "#9650CD",
     screen: "challenges",
   },
 ];
 
-// Tripler pour scroll infini
-const slides = [...BASE_SLIDES, ...BASE_SLIDES, ...BASE_SLIDES];
-const OFFSET = BASE_SLIDES.length;
+const N = BASE_SLIDES.length;
 
-// ─── ÉCRANS ──────────────────────────────────────────────────
 function MoodScreen() {
   return (
     <div className="flex flex-col gap-2 p-4 pt-10 h-full overflow-hidden" style={{ background: "#0d001a" }}>
@@ -80,12 +71,12 @@ function MatchingScreen() {
       {[
         { name: "Léa M.", city: "Paris 11e", sport: "Muscu", score: 97, color: "#f72585" },
         { name: "Thomas K.", city: "Paris 3e", sport: "Street WO", score: 88, color: "#b5179e" },
-        { name: "Sara B.", city: "Boulogne", sport: "Cardio", score: 81, color: "#9650CD" },
+        { name: "Sara B.", city: "Boulogne", sport: "Cardio", score: 81, color: "#7209b7" },
       ].map((u) => (
         <div key={u.name} className="flex items-center gap-2.5 p-2.5 rounded-xl"
           style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}>
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-roboto font-700 text-white flex-shrink-0"
-            style={{ background: `linear-gradient(135deg,${u.color},#9650CD)` }}>{u.name[0]}</div>
+            style={{ background: `linear-gradient(135deg,${u.color},#7209b7)` }}>{u.name[0]}</div>
           <div className="flex-1">
             <div className="font-roboto font-600 text-[9px] text-white">{u.name} · {u.city}</div>
             <div className="font-roboto text-[8px] text-white/40">{u.sport}</div>
@@ -128,222 +119,136 @@ const phoneScreens: Record<string, React.ReactNode> = {
   challenges: <ChallengesScreen />,
 };
 
-// ─── MOCKUP 3D ───────────────────────────────────────────────
-function Phone3D({ screen, border, glow }: {
-  screen: string; border: string; glow: string;
-}) {
+function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolean }) {
   return (
-    <div className="flex items-center justify-center">
-      <div className="relative">
-        <div className="absolute rounded-[60px] pointer-events-none"
-          style={{ inset: "-20px", background: `radial-gradient(circle, ${glow}, transparent 70%)`, filter: "blur(40px)", opacity: 0.8 }} />
-        <div
-          className="relative overflow-hidden"
-          style={{ width: "220px", aspectRatio: "9/19.5", borderRadius: "36px", background: "#09000f", border: `1.5px solid ${border}`, boxShadow: `0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)` }}
-        >
+    <div className="relative rounded-3xl flex items-center px-14"
+      style={{
+        width: "100%", height: "78vh",
+        background: s.color,
+        boxShadow: `0 40px 100px ${s.color}55, 0 0 0 1px ${s.color}`,
+      }}>
+      {/* Texte gauche */}
+      <div className="flex flex-col gap-5 max-w-md z-10 relative">
+        <span className="font-roboto font-700 text-xs tracking-[0.25em] uppercase text-white/50">{s.num}</span>
+        <h2 className="font-roboto font-900 uppercase text-white whitespace-pre-line"
+          style={{ fontSize: "clamp(40px, 5vw, 74px)", letterSpacing: "-0.02em", lineHeight: "0.9" }}>
+          {s.title}
+        </h2>
+        <p className="font-roboto font-400 text-white/65 leading-relaxed"
+          style={{ fontSize: "clamp(13px, 1.2vw, 15px)", maxWidth: "320px" }}>
+          {s.desc}
+        </p>
+        <div className="h-px w-12" style={{ background: "rgba(255,255,255,0.4)" }} />
+      </div>
+
+      {/* Téléphone — bas droite */}
+      <div className="absolute pointer-events-none z-20" style={{ bottom: "-75px", right: "60px" }}>
+        <div style={{ width: "210px", aspectRatio: "9/19.5", borderRadius: "34px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
           <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
-            style={{ width: "100px", height: "26px", background: "#000", borderRadius: "0 0 18px 18px" }}>
-            <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
-            <div className="w-10 h-1 rounded-full bg-white/10" />
-            <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
+            style={{ width: "90px", height: "22px", background: "#000", borderRadius: "0 0 14px 14px" }}>
+            <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
+            <div className="w-8 h-0.5 rounded-full bg-white/10" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
           </div>
           <div className="absolute inset-0 overflow-hidden">
             <AnimatePresence mode="wait">
-              <motion.div key={screen} className="absolute inset-0"
-                initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}>
-                {phoneScreens[screen]}
+              <motion.div key={s.screen} className="absolute inset-0"
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}>
+                {phoneScreens[s.screen]}
               </motion.div>
             </AnimatePresence>
           </div>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-14 h-1 rounded-full bg-white/15 z-10" />
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-white/15 z-10" />
         </div>
       </div>
     </div>
   );
 }
 
-// ─── COMPOSANT PRINCIPAL ─────────────────────────────────────
 export default function HomeFeatures() {
-  const [current, setCurrent] = useState(OFFSET);
-  const x = useMotionValue(0);
-  const [isFlipping, setIsFlipping] = useState(false);
-  const inactivityTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [current, setCurrent] = useState(0);
+  const [dir, setDir] = useState(1);
   const autoTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const SLIDE_WIDTH = typeof window !== "undefined" ? window.innerWidth : 1440;
-
-  // Initialiser la position au centre
-  useEffect(() => {
-    x.set(-OFFSET * SLIDE_WIDTH);
-  }, []);
-
-  const goTo = (index: number) => {
-    setIsFlipping(true);
-    setTimeout(() => {
-      setCurrent(index);
-      animate(x, -index * SLIDE_WIDTH, {
-        type: "spring", stiffness: 300, damping: 35,
-        onComplete: () => {
-          setIsFlipping(false);
-          if (index <= OFFSET - 1) {
-            const adjusted = index + BASE_SLIDES.length;
-            setCurrent(adjusted);
-            x.set(-adjusted * SLIDE_WIDTH);
-          } else if (index >= OFFSET + BASE_SLIDES.length * 2) {
-            const adjusted = index - BASE_SLIDES.length;
-            setCurrent(adjusted);
-            x.set(-adjusted * SLIDE_WIDTH);
-          }
-        },
-      });
-    }, 300);
+  const goTo = (idx: number, direction: number) => {
+    setDir(direction);
+    setCurrent(((idx % N) + N) % N);
   };
 
-  const startAutoScroll = () => {
-    stopAutoScroll();
+  const handleNav = (delta: number) => {
+    stopAuto();
+    goTo(current + delta, delta);
+    setTimeout(startAuto, 5000);
+  };
+
+  const startAuto = () => {
+    stopAuto();
     autoTimer.current = setInterval(() => {
-      setCurrent((prev) => {
-        const next = prev + 1;
-        animate(x, -next * SLIDE_WIDTH, {
-          type: "spring", stiffness: 300, damping: 35,
-          onComplete: () => {
-            if (next >= OFFSET + BASE_SLIDES.length * 2) {
-              const adjusted = next - BASE_SLIDES.length;
-              setCurrent(adjusted);
-              x.set(-adjusted * SLIDE_WIDTH);
-            }
-          },
-        });
-        return next;
-      });
+      setCurrent(prev => { setDir(1); return (prev + 1) % N; });
     }, 5000);
   };
 
-  const stopAutoScroll = () => {
-    if (autoTimer.current) clearInterval(autoTimer.current);
+  const stopAuto = () => { if (autoTimer.current) clearInterval(autoTimer.current); };
+
+  useEffect(() => { startAuto(); return stopAuto; }, []);
+
+  const variants = {
+    enter: (d: number) => ({ opacity: 0, x: d > 0 ? 120 : -120, scale: 0.95 }),
+    center: { opacity: 1, x: 0, scale: 1 },
+    exit: (d: number) => ({ opacity: 0, x: d > 0 ? -120 : 120, scale: 0.95 }),
   };
 
-  const resetInactivity = () => {
-    stopAutoScroll();
-    if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-    inactivityTimer.current = setTimeout(startAutoScroll, 5000);
-  };
-
-  useEffect(() => {
-    startAutoScroll();
-    return () => {
-      stopAutoScroll();
-      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-    };
-  }, []);
-
-  const handleDragEnd = (_: never, info: { offset: { x: number }; velocity: { x: number } }) => {
-    const threshold = SLIDE_WIDTH * 0.2;
-    if (info.offset.x < -threshold || info.velocity.x < -500) goTo(current + 1);
-    else if (info.offset.x > threshold || info.velocity.x > 500) goTo(current - 1);
-    else goTo(current);
-    resetInactivity();
-  };
-
-  // Index réel pour bg et dots (modulo BASE)
-  const realIndex = ((current - OFFSET) % BASE_SLIDES.length + BASE_SLIDES.length) % BASE_SLIDES.length;
-  const currentSlide = BASE_SLIDES[realIndex];
+  const prevIdx = ((current - 1) + N) % N;
+  const nextIdx = (current + 1) % N;
 
   return (
-    <section
-      className="relative h-screen overflow-hidden"
-      style={{ background: currentSlide.bg, transition: "background 0.6s ease" }}
-      aria-label="Fonctionnalités Mood2Fit"
-    >
-      <motion.div
-        className="flex h-full cursor-grab active:cursor-grabbing"
-        style={{ x, width: `${slides.length * 100}vw` }}
-        drag="x"
-        dragConstraints={{ left: -99999, right: 0 }}
-        dragElastic={0.05}
-        onDragStart={stopAutoScroll}
-        onDragEnd={handleDragEnd}
-      >
-        {slides.map((s, i) => (
-          <div key={`${s.id}-${i}`}
-            className="flex-shrink-0 w-screen h-full flex items-center select-none"
-            style={{ background: s.bg }}>
-            <div className="w-full max-w-7xl mx-auto px-6 md:px-16">
-              <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
-                <div className="flex flex-col gap-6">
-                  <span className="font-roboto font-700 text-xs tracking-[0.2em] uppercase"
-                    style={{ color: s.id === "challenges" ? "rgba(255,255,255,0.6)" : "#f72585" }}>
-                    {s.num}
-                  </span>
-                  <h2 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.03em] whitespace-pre-line"
-                    style={{ fontSize: "clamp(44px, 6vw, 84px)", color: s.text }}>
-                    {s.title}
-                  </h2>
-                  <p className="font-roboto font-400 leading-relaxed max-w-sm"
-                    style={{ fontSize: "clamp(14px, 1.4vw, 17px)", color: s.mutedText }}>
-                    {s.desc}
-                  </p>
-                  <div className="h-px w-16" style={{ background: s.accent }} />
-                </div>
-                <div className="flex justify-center pointer-events-none">
-                  <Phone3D screen={s.screen} border={s.phoneBorder} glow={s.phoneGlow} />
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </motion.div>
+    <section className="relative h-screen bg-white overflow-hidden flex flex-col items-center justify-center" aria-label="Fonctionnalités Mood2Fit">
 
-      {/* Dots */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
-        {BASE_SLIDES.map((_, i) => (
-          <button key={i}
-            onClick={() => { goTo(OFFSET + i); resetInactivity(); }}
-            aria-label={`Slide ${i + 1}`}
-            className="rounded-full transition-all duration-300"
-            style={{
-              width: i === realIndex ? 32 : 8, height: 8,
-              background: i === realIndex
-                ? ("#fff")
-                : (currentSlide.bg === "#000" || currentSlide.bg === "#9650CD" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.2)"),
-            }}
-          />
+      {/* Carousel centré */}
+      <div className="relative flex items-center justify-center w-full" style={{ height: "78vh" }}>
+
+        {/* Carte active — centre */}
+        <div className="relative z-10" style={{ width: "76vw" }}>
+          <AnimatePresence custom={dir} mode="wait">
+            <motion.div
+              key={current}
+              custom={dir}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <SlideCard s={BASE_SLIDES[current]} isActive={true} />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Flèches */}
+        {[-1, 1].map((delta) => (
+          <button key={delta}
+            onClick={() => handleNav(delta)}
+            className={`absolute ${delta === -1 ? "left-8" : "right-8"} top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110`}
+            style={{ background: "rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.1)" }}
+            aria-label={delta === -1 ? "Précédent" : "Suivant"}>
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+              <path d={delta === -1 ? "M11 4L6 9L11 14" : "M7 4L12 9L7 14"} stroke="#000" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
         ))}
       </div>
 
-      {/* Flèches — toujours visibles */}
-      {[-1, 1].map((delta) => (
-        <button key={delta}
-          onClick={() => { goTo(current + delta); resetInactivity(); }}
-          className={`absolute ${delta === -1 ? "left-6" : "right-6"} top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110`}
-          style={{
-            background: currentSlide.bg === "#000" || currentSlide.bg === "#9650CD" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
-            border: `1px solid ${currentSlide.bg === "#000" || currentSlide.bg === "#9650CD" ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.15)"}`,
-          }}
-          aria-label={delta === -1 ? "Slide précédent" : "Slide suivant"}
-        >
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d={delta === -1 ? "M11 4L6 9L11 14" : "M7 4L12 9L7 14"}
-              stroke={currentSlide.bg === "#000" || currentSlide.bg === "#9650CD" ? "#fff" : "#000"}
-              strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      ))}
+      {/* Dots */}
+      <div className="flex items-center gap-3 mt-8 z-20">
+        {BASE_SLIDES.map((s, i) => (
+          <button key={i} onClick={() => { stopAuto(); goTo(i, i > current ? 1 : -1); setTimeout(startAuto, 5000); }}
+            aria-label={`Slide ${i + 1}`}
+            className="rounded-full transition-all duration-300"
+            style={{ width: i === current ? 28 : 8, height: 8, background: i === current ? BASE_SLIDES[current].color : "rgba(0,0,0,0.15)" }} />
+        ))}
+      </div>
 
-      {/* Hint glisser */}
-      {realIndex === 0 && (
-        <motion.div className="absolute bottom-10 right-16 flex items-center gap-2 z-20 pointer-events-none"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} aria-hidden="true">
-          <span className="font-roboto text-[10px] tracking-[0.15em] uppercase"
-            style={{ color: "rgba(0,0,0,0.35)" }}>Glisser</span>
-          <motion.div animate={{ x: [0, 8, 0] }} transition={{ duration: 1.4, repeat: Infinity }}>
-            <svg width="20" height="12" viewBox="0 0 20 12" fill="none">
-              <path d="M0 6h18M13 1l5 5-5 5" stroke="rgba(0,0,0,0.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </motion.div>
-        </motion.div>
-      )}
     </section>
   );
 }

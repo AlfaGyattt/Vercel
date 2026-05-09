@@ -347,7 +347,7 @@ export default function CommunautePage() {
         </section>
 
         {/* CTA */}
-        <section className="relative flex items-center justify-center overflow-hidden py-40" style={{ background: "#f72585" }}>
+        <section className="relative flex items-center justify-center overflow-hidden py-40" style={{ background: "#9650CD" }}>
           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
             <motion.h2
               initial={{ opacity: 0, y: 40 }}
@@ -359,7 +359,7 @@ export default function CommunautePage() {
               Rejoins la<br />communauté.
             </motion.h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-[#f72585] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all"
+              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-[#9650CD] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all"
                 style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.2)" }}>
                 <Apple size={18} /> App Store
               </Link>

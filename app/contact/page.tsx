@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Mail, MessageSquare, Send, CheckCircle, Loader2, ChevronDown, Instagram, Twitter, Youtube, MapPin, Clock, Zap } from "lucide-react";
+import { Mail, MessageSquare, Send, CheckCircle, Loader2, ChevronDown, Instagram, Youtube, MapPin, Clock, Zap } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -38,7 +38,9 @@ const contactInfo = [
 
 const socials = [
   { platform: "Instagram", handle: "@mood2fit", desc: "Coulisses, stories et commu", color: "#f72585", icon: Instagram, href: "/" },
-  { platform: "Twitter / X", handle: "@mood2fit", desc: "Actus & réflexions sport", color: "#b5179e", icon: Twitter, href: "/" },
+  { platform: "LinkedIn", handle: "Mood2Fit", desc: "Actus et vie de l'équipe", color: "#0077B5", icon: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+  ), href: "https://www.linkedin.com/company/mood2fit/" },
   { platform: "YouTube", handle: "Mood2Fit", desc: "Tutos et documentaires", color: "#7209b7", icon: Youtube, href: "/" },
 ];
 
@@ -167,8 +169,8 @@ export default function ContactPage() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
           >
-            <h1 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.04em] text-white"
-              style={{ fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
+            <h1 className="font-roboto font-900 uppercase leading-[0.9] text-white"
+              style={{ letterSpacing: "-0.02em", fontSize: "clamp(56px, 10vw, 130px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)" }}>
               On est<br />
               <span style={{ color: "#f72585" }}>à l'écoute.</span>
             </h1>

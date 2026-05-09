@@ -1,37 +1,59 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Apple, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const features = [
+const SLIDES = [
   {
-    id: "mood", num: "01",
-    title: "Ton humeur,\nta séance.",
-    desc: "Que tu sois chaud bouillant ou dans ta bulle, l'app s'adapte à ton énergie du moment et te propose des entraînements qui correspondent à ton état du jour.",
-    bg: "#fff", text: "#000", accent: "#f72585", mutedText: "rgba(0,0,0,0.5)",
-    phoneBorder: "#f72585", phoneGlow: "rgba(247,37,133,0.35)", screen: "mood",
-    phoneLeft: false,
+    id: "home", bg: "#f72585", img: "/home.png", label: "HOME · ACCUEIL", num: "01 / 03",
+    left: [
+      { id:"l1", num:"01 — MOOD",        title:"Choisis ton humeur",    desc:"4 moods pour démarrer : chaud, calme, focus ou dépassement de soi.",      tx:0.18, ty:0.18 },
+      { id:"l2", num:"02 — COMMUNAUTÉ",  title:"La commu partage",      desc:"Vois ce que les autres terminent. Ici, hzziohf vient de finir sa séance.", tx:0.32, ty:0.73 },
+      { id:"l3", num:"03 — TEMPORALITÉ", title:"En direct, maintenant", desc:"Le badge En direct indique l'activité de la commu à l'instant t.",          tx:0.82, ty:0.67 },
+    ],
+    right: [
+      { id:"r1", num:"04 — CARTE",        title:"Salles & street workout", desc:"L'onglet Carte recense les salles et spots de street workout en France.", tx:0.28, ty:0.95 },
+      { id:"r2", num:"05 — SURPREND-MOI", title:"Exos selon ton mood",     desc:"M2F choisit pour toi un exercice qui colle à ton humeur du jour.",        tx:0.44, ty:0.57 },
+      { id:"r3", num:"06 — SIGNALEMENT",  title:"Un bug ? Le drapeau",     desc:"Le drapeau en bas à droite permet de signaler un bug ou problème.",       tx:0.93, ty:0.87 },
+    ],
   },
   {
-    id: "matching", num: "02",
-    title: "Le bon\npartenaire.",
-    desc: "Notre algorithme analyse ton niveau, tes disponibilités, tes activités et tes objectifs pour te connecter avec les profils les plus compatibles près de chez toi.",
-    bg: "#000", text: "#fff", accent: "#f72585", mutedText: "rgba(255,255,255,0.5)",
-    phoneBorder: "#b5179e", phoneGlow: "rgba(181,23,158,0.35)", screen: "matching",
-    phoneLeft: true,
+    id: "seance", bg: "#0A0A0F", img: "/sceance.png", label: "SÉANCES · TRAIN", num: "02 / 03",
+    left: [
+      { id:"l1", num:"01 — CONNEXION", title:"Se connecter",              desc:"Connecte-toi pour suivre ta progression et débloquer les défis.",   tx:0.5,  ty:0.37 },
+      { id:"l2", num:"02 — DÉMARRER",  title:"Mode libre, tout de suite", desc:"Un bouton, et l'entraînement commence. Aucun programme imposé.",    tx:0.5,  ty:0.61 },
+      { id:"l3", num:"03 — DÉFI XP",   title:"+80 XP à gagner",           desc:"Chaque défi rapporte de l'expérience pour progresser de niveau.",   tx:0.15, ty:0.26 },
+    ],
+    right: [
+      { id:"r1", num:"04 — FILTRES",     title:"Filtre par niveau ou muscle", desc:"Choisis tes séances par niveau, durée ou groupe musculaire ciblé.", tx:0.88, ty:0.70 },
+      { id:"r2", num:"05 — MÉTADONNÉES", title:"Tout en un coup d'œil",       desc:"Type, durée, niveau et XP : la séance s'auto-décrit.",              tx:0.5,  ty:0.82 },
+      { id:"r3", num:"06 — MOTIVATION",  title:"1 en cours, tu rejoins ?",    desc:"Vois qui s'entraîne en même temps que toi pour rester motivé.",     tx:0.97,  ty:0.86 },
+    ],
   },
   {
-    id: "challenges", num: "03",
-    title: "Dépasse-toi\nensemble.",
-    desc: "Points, classements, défis solo ou en duo. Mood2Fit transforme ta progression en jeu pour que chaque séance compte vraiment.",
-    bg: "#f72585", text: "#fff", accent: "#fff", mutedText: "rgba(255,255,255,0.75)",
-    phoneBorder: "rgba(255,255,255,0.6)", phoneGlow: "rgba(255,255,255,0.2)", screen: "challenges",
-    phoneLeft: false,
+    id: "profil", bg: "#9650CD", img: "/profil.jpeg", label: "PROFIL · YOU", num: "03 / 03",
+    left: [
+      { id:"l1", num:"01 — XP & NIVEAU", title:"20 XP, Niveau 1",         desc:"La barre d'XP visualise ta progression vers le prochain niveau.",   tx:0.06,  ty:0.147 },
+      { id:"l2", num:"02 — SÉANCES",     title:"Compte tes séances",       desc:"Le compteur SÉANCES totalise tous les entraînements terminés.",      tx:0.15,  ty:0.22 },
+      { id:"l3", num:"03 — ÉDITER",      title:"Stylo → tu personnalises", desc:"Modifie pseudo et photo de profil en un tap sur le stylo.",          tx:0.85, ty:0.09 },
+    ],
+    right: [
+      { id:"r1", num:"04 — POSTS",     title:"Tes posts publiés",           desc:"Le total des publications partagées avec la communauté.",            tx:0.52, ty:0.22 },
+      { id:"r2", num:"05 — RÉACTIONS", title:"Tes interactions communauté", desc:"Le compteur de réactions laissées sur les posts des autres.",        tx:0.85, ty:0.22 },
+      { id:"r3", num:"06 — BADGES",    title:"Défis relevés",               desc:"Chaque badge récompense un défi ou un palier franchi.",              tx:0.20, ty:0.45 },
+    ],
   },
 ];
+
+const COLORS_LIGHT = ["#fff","#fff","#fff","#fff","#fff","#fff"];
+const COLORS_DARK  = ["#f72585","#9650CD","#f72585","#9650CD","#f72585","#9650CD"];
+const NUM_COLORS_LIGHT  = ["#ffb3d1","#ffb3d1","#ffb3d1","#ffb3d1","#ffb3d1","#ffb3d1"];
+const NUM_COLORS_DARK   = ["#ff6eb4","#ff6eb4","#ff6eb4","#ff6eb4","#ff6eb4","#ff6eb4"];
+const NUM_COLORS_VIOLET = ["#d4aaff","#d4aaff","#d4aaff","#d4aaff","#d4aaff","#d4aaff"];
 
 const activities = [
   { name: "Musculation", desc: "Force & hypertrophie" },
@@ -40,117 +62,270 @@ const activities = [
   { name: "Callisthénie", desc: "Poids du corps" },
   { name: "HIIT", desc: "Cardio intensif" },
   { name: "CrossFit", desc: "Fonctionnel" },
-  { name: "Course sur tapis", desc: "Endurance" },
-  { name: "Cyclisme sur tapis", desc: "Route & piste" },
+  { name: "Running", desc: "Endurance" },
+  { name: "Cyclisme", desc: "Route & piste" },
   { name: "Yoga", desc: "Corps & esprit" },
   { name: "Boxe", desc: "Combat & cardio" },
-  { name: "Méditation", desc: "Esprit & spiritualité" },
+  { name: "Natation", desc: "Eau & endurance" },
   { name: "Et plus encore...", desc: "Toutes disciplines" },
 ];
 
-function MoodScreen() {
+function Slide({ s }: { s: typeof SLIDES[0] }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const phoneRef     = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [arrow, setArrow] = useState<{ x1:number; y1:number; x2:number; y2:number } | null>(null);
+
+  const isDark      = s.bg === "#0A0A0F";
+  const arrowColor  = isDark ? "#f72585" : "rgba(255,210,0,0.95)";
+  const titleColors = isDark ? COLORS_DARK : COLORS_LIGHT;
+  const numColors = s.bg === "#0A0A0F" ? NUM_COLORS_DARK : s.bg === "#9650CD" ? NUM_COLORS_VIOLET : NUM_COLORS_LIGHT;
+
+  useEffect(() => {
+    setActiveIdx(null);
+    setArrow(null);
+  }, [s.id]);
+
+  useEffect(() => {
+    if (activeIdx === null) { setArrow(null); return; }
+    const c = containerRef.current;
+    const p = phoneRef.current;
+    if (!c || !p) return;
+    const cR = c.getBoundingClientRect();
+    const pR = p.getBoundingClientRect();
+    const isLeft   = activeIdx < 3;
+    const row      = activeIdx % 3;
+    const colW     = cR.width * 0.22;
+    const colLeft  = cR.width * 0.02;
+    const cardH    = (cR.height - 64) / 3;
+    const cardMidY = cR.top + 32 + row * cardH + cardH / 2;
+    const startX = isLeft ? cR.left + colLeft + colW : cR.left + cR.width - colLeft - colW;
+    const startY = cardMidY;
+    const allBubbles = [...s.left, ...s.right];
+    const b = allBubbles[activeIdx];
+    const endX = pR.left + pR.width  * b.tx;
+    const endY = pR.top  + pR.height * b.ty;
+    setArrow({ x1: startX - cR.left, y1: startY - cR.top, x2: endX - cR.left, y2: endY - cR.top });
+  }, [activeIdx, s.id]);
+
+  const handleClick = (idx: number) => { setActiveIdx(prev => prev === idx ? null : idx); };
+
+  const renderCard = (b: typeof s.left[0], idx: number) => (
+    <motion.div
+      key={b.id}
+      onClick={() => handleClick(idx)}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 30 }}
+      transition={{ duration: 0.45, delay: 0.1 + idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        background: activeIdx === idx ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0.18)",
+        border: `1px solid ${activeIdx === idx ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.13)"}`,
+        borderRadius: "6px",
+        padding: "13px 15px",
+        cursor: "pointer",
+        userSelect: "none",
+        transition: "background 0.2s, border 0.2s",
+      }}>
+      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:600, fontSize:"8.5px", letterSpacing:"0.2em", textTransform:"uppercase", color:numColors[idx], marginBottom:"6px" }}>
+        — {b.num}
+      </p>
+      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(13px,1.1vw,16px)", color:titleColors[idx], lineHeight:1.1, letterSpacing:"-0.01em", marginBottom:"6px", textTransform:"uppercase" }}>
+        {b.title}
+      </p>
+      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"clamp(9px,0.75vw,11px)", color:"#fff", lineHeight:1.5 }}>
+        {b.desc}
+      </p>
+    </motion.div>
+  );
+
   return (
-    <div className="flex flex-col gap-2 p-4 pt-10 h-full overflow-hidden" style={{ background: "#0d001a" }}>
-      <div>
-        <div className="text-[8px] text-white/40">Bonjour,</div>
-        <div className="font-roboto font-700 text-[15px] text-white">Alex</div>
-      </div>
-      <div className="rounded-xl p-2.5" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(114,9,183,.32)" }}>
-        <div className="font-roboto font-700 text-[11px] text-white mb-2">Mood du jour</div>
-        <div className="flex flex-col gap-1.5">
-          {[
-            { label: "J'ai de l'énergie", active: true },
-            { label: "Motivation moyenne", active: false },
-            { label: "Dans ma bulle", active: false },
-          ].map((m) => (
-            <div key={m.label} className="flex items-center gap-2 p-2 rounded-lg"
-              style={{ background: m.active ? "rgba(247,37,133,0.18)" : "rgba(255,255,255,0.03)", border: `1px solid ${m.active ? "rgba(247,37,133,0.6)" : "rgba(255,255,255,0.06)"}` }}>
-              <span className="font-roboto text-[9px] text-white">{m.label}</span>
-              {m.active && <div className="ml-auto w-2.5 h-2.5 rounded-full bg-[#f72585]" />}
+    <div ref={containerRef} className="relative w-full h-full">
+
+      {/* SVG flèche — desktop uniquement */}
+      <svg className="absolute inset-0 w-full h-full hidden md:block" style={{ zIndex: 30, pointerEvents: "none" }}>
+        <defs>
+          <marker id={`arr-${s.id}`} markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <polygon points="0 0,8 4,0 8" fill={arrowColor} />
+          </marker>
+        </defs>
+        <AnimatePresence mode="wait">
+          {arrow && (
+            <motion.g key={`arrow-group-${activeIdx}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+              {(() => {
+                const d = `M ${arrow.x1} ${arrow.y1} C ${arrow.x1 + (arrow.x2 - arrow.x1) * 0.45} ${arrow.y1} ${arrow.x2 - (arrow.x2 - arrow.x1) * 0.15} ${arrow.y2} ${arrow.x2} ${arrow.y2}`;
+                return (
+                  <>
+                    <motion.path d={d} fill="none" stroke={arrowColor} strokeWidth="2" markerEnd={`url(#arr-${s.id})`} initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.9 }} transition={{ duration: 0.7, ease: "linear" }} />
+                    <motion.circle cx={arrow.x1} cy={arrow.y1} r="4" fill={arrowColor} initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.2 }} />
+                    <motion.circle cx={arrow.x2} cy={arrow.y2} r="18" fill={arrowColor} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: [0, 0.15, 0, 0.1, 0], scale: [0.5, 1.2, 0.8, 1.1, 1] }} transition={{ duration: 1.2, delay: 0.65, repeat: Infinity, repeatDelay: 0.4 }} />
+                    <motion.circle cx={arrow.x2} cy={arrow.y2} r="12" fill="none" stroke={arrowColor} strokeWidth="1.5" initial={{ scale: 0, opacity: 0 }} animate={{ scale: [1, 1.3, 1], opacity: [0.8, 0.3, 0.8] }} transition={{ duration: 1, delay: 0.65, repeat: Infinity, ease: "easeInOut" }} />
+                    <motion.circle cx={arrow.x2} cy={arrow.y2} r="5" fill={arrowColor} initial={{ scale: 0, opacity: 0 }} animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }} transition={{ duration: 0.8, delay: 0.65, repeat: Infinity, ease: "easeInOut" }} />
+                  </>
+                );
+              })()}
+            </motion.g>
+          )}
+        </AnimatePresence>
+      </svg>
+
+      {/* ── DESKTOP ── */}
+      <AnimatePresence mode="wait">
+        <motion.div key={`left-${s.id}`} className="absolute top-0 bottom-0 flex-col justify-around py-8 hidden md:flex" style={{ left: "2%", width: "22%", zIndex: 25 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+          {s.left.map((b, i) => renderCard(b, i))}
+        </motion.div>
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        <motion.div key={`phone-${s.id}`} className="absolute inset-0 items-end justify-center hidden md:flex" style={{ zIndex: 10, pointerEvents: "none", transform: "translateY(30px)" }} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 30 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+          <div ref={phoneRef} style={{ height: "95%", position: "relative" }}>
+            <div style={{ height: "100%", aspectRatio: "9/19.5", borderRadius: "46px", overflow: "hidden", border: `3.5px solid ${s.bg === "#f72585" ? "#c4006a" : s.bg === "#0A0A0F" ? "#f72585" : "#5b1fa8"}`, boxShadow: `0 40px 80px rgba(0,0,0,0.4)`, background: "#000", position: "relative" }}>
+              <div style={{ position:"absolute", top:"10px", left:"50%", transform:"translateX(-50%)", width:"34%", height:"26px", background:"#000", borderRadius:"20px", zIndex:20 }} />
+              <AnimatePresence mode="wait">
+                <motion.img key={`img-${s.id}`} src={s.img} alt={s.label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"top" }} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.3 }} />
+              </AnimatePresence>
+              <div style={{ position:"absolute", bottom:"8px", left:"50%", transform:"translateX(-50%)", width:"28%", height:"4px", background:"rgba(0,0,0,0.35)", borderRadius:"4px", zIndex:20 }} />
             </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        <motion.div key={`right-${s.id}`} className="absolute top-0 bottom-0 flex-col justify-around py-8 hidden md:flex" style={{ right: "2%", width: "22%", zIndex: 25 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+          {s.right.map((b, i) => renderCard(b, i + 3))}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ── MOBILE ── */}
+      <div className="md:hidden flex flex-col items-center w-full h-full pt-2 pb-2 px-2" style={{ gap: "8px" }}>
+        {/* Téléphone mobile */}
+        <div style={{ flex: "0 0 auto", height: "42vh", position: "relative" }}>
+          <div style={{ height: "100%", aspectRatio: "9/19.5", borderRadius: "32px", overflow: "hidden", border: `2.5px solid ${s.bg === "#f72585" ? "#c4006a" : s.bg === "#0A0A0F" ? "#f72585" : "#5b1fa8"}`, boxShadow: "0 20px 50px rgba(0,0,0,0.4)", background: "#000", position: "relative" }}>
+            <div style={{ position:"absolute", top:"6px", left:"50%", transform:"translateX(-50%)", width:"30%", height:"18px", background:"#000", borderRadius:"20px", zIndex:20 }} />
+            <AnimatePresence mode="wait">
+              <motion.img key={`mob-img-${s.id}`} src={s.img} alt={s.label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"top" }} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.3 }} />
+            </AnimatePresence>
+            <div style={{ position:"absolute", bottom:"6px", left:"50%", transform:"translateX(-50%)", width:"28%", height:"3px", background:"rgba(0,0,0,0.35)", borderRadius:"4px", zIndex:20 }} />
+          </div>
+        </div>
+
+        {/* Blocs mobile : 2 colonnes */}
+        <div style={{ flex: "1 1 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", overflowY: "auto" }}>
+          {[...s.left, ...s.right].map((b, i) => (
+            <motion.div key={b.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.05 + i * 0.07 }}
+              style={{ background: "rgba(0,0,0,0.18)", border: "1px solid rgba(255,255,255,0.13)", borderRadius: "6px", padding: "8px 10px" }}>
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:600, fontSize:"7px", letterSpacing:"0.15em", textTransform:"uppercase", color:numColors[i], marginBottom:"3px" }}>
+                — {b.num}
+              </p>
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"10px", color:titleColors[i], lineHeight:1.1, marginBottom:"3px", textTransform:"uppercase" }}>
+                {b.title}
+              </p>
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"8px", color:"rgba(255,255,255,0.7)", lineHeight:1.4 }}>
+                {b.desc}
+              </p>
+            </motion.div>
           ))}
         </div>
       </div>
-      <div className="rounded-xl p-2.5 mt-1" style={{ background: "rgba(247,37,133,0.08)", border: "1px solid rgba(247,37,133,0.2)" }}>
-        <div className="font-roboto text-[8px] text-white/50 mb-1">3 partenaires disponibles</div>
-        <div className="font-roboto font-700 text-[9px] text-white">Voir les matchs</div>
-      </div>
     </div>
   );
 }
 
-function MatchingScreen() {
+function FullpageFeatures() {
+  const [current, setCurrent] = useState(0);
+  
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const currentRef = useRef(0);
+  const isAnimatingRef = useRef(false);
+
+  const goTo = (idx: number) => {
+    const el = wrapperRef.current;
+    if (!el || isAnimatingRef.current) return;
+    isAnimatingRef.current = true;
+    currentRef.current = idx;
+    setCurrent(idx);
+    
+    const top = el.getBoundingClientRect().top + window.scrollY + idx * window.innerHeight;
+    window.scrollTo({ top, behavior: "smooth" });
+    setTimeout(() => { isAnimatingRef.current = false; }, 900);
+  };
+
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top > 10 || rect.bottom < window.innerHeight - 10) return;
+      if (e.deltaY > 0 && currentRef.current === SLIDES.length - 1) return;
+      if (e.deltaY < 0 && currentRef.current === 0) return;
+      e.preventDefault();
+      if (isAnimatingRef.current) return;
+      // Si les blocs ne sont pas encore révélés, les révéler d'abord
+      
+      if (e.deltaY > 0) goTo(currentRef.current + 1);
+      else if (e.deltaY < 0) goTo(currentRef.current - 1);
+    };
+    const onScroll = () => {
+      const el = wrapperRef.current;
+      if (!el || isAnimatingRef.current) return;
+      const scrolled = window.scrollY - (el.getBoundingClientRect().top + window.scrollY);
+      if (scrolled < 0) return;
+      const idx = Math.round(scrolled / window.innerHeight);
+      const clamped = Math.max(0, Math.min(SLIDES.length - 1, idx));
+      if (clamped !== currentRef.current) { currentRef.current = clamped; setCurrent(clamped); }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("wheel", onWheel); window.removeEventListener("scroll", onScroll); };
+  }, []);
+
+  const s = SLIDES[current];
+
   return (
-    <div className="flex flex-col gap-2 p-4 pt-10 h-full overflow-hidden" style={{ background: "#0d001a" }}>
-      <div className="font-roboto font-700 text-[13px] text-white mb-1">Tes matchs</div>
-      {[
-        { name: "Léa M.", city: "Paris 11e", sport: "Muscu", score: 97, color: "#f72585" },
-        { name: "Thomas K.", city: "Paris 3e", sport: "Street WO", score: 88, color: "#b5179e" },
-        { name: "Sara B.", city: "Boulogne", sport: "Cardio", score: 81, color: "#7209b7" },
-      ].map((u) => (
-        <div key={u.name} className="flex items-center gap-2.5 p-2.5 rounded-xl"
-          style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}>
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-roboto font-700 text-white flex-shrink-0"
-            style={{ background: `linear-gradient(135deg,${u.color},#7209b7)` }}>{u.name[0]}</div>
-          <div className="flex-1">
-            <div className="font-roboto font-600 text-[9px] text-white">{u.name} · {u.city}</div>
-            <div className="font-roboto text-[8px] text-white/40">{u.sport}</div>
+    <div ref={wrapperRef} style={{ height: `${SLIDES.length * 100}vh` }}>
+      <div style={{ position:"sticky", top:0, height:"100vh" }}>
+        <AnimatePresence mode="wait">
+          <motion.div key={s.id} className="absolute inset-0" style={{ background: s.bg }} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.45 }} />
+        </AnimatePresence>
+
+        {s.bg === "#0A0A0F" && (
+          <div className="absolute inset-0 pointer-events-none">
+            <div style={{ position:"absolute", top:0, left:0, width:"600px", height:"600px", background:"radial-gradient(circle, rgba(114,9,183,0.1) 0%, transparent 70%)" }} />
+            <div style={{ position:"absolute", bottom:0, right:0, width:"500px", height:"500px", background:"radial-gradient(circle, rgba(181,23,158,0.07) 0%, transparent 70%)" }} />
           </div>
-          <div className="font-roboto font-900 text-[11px]" style={{ color: u.color }}>{u.score}%</div>
+        )}
+
+        <div className="absolute top-0 right-0 z-30 px-6 pt-5 text-right hidden md:block">
+          <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"10px", letterSpacing:"0.22em", textTransform:"uppercase", color:"rgba(255,255,255,0.35)" }}>
+            {s.num} · {s.label}
+          </p>
         </div>
-      ))}
-    </div>
-  );
-}
 
-function ChallengesScreen() {
-  return (
-    <div className="flex flex-col gap-2 p-4 pt-10 h-full overflow-hidden" style={{ background: "#0d001a" }}>
-      <div className="font-roboto font-700 text-[13px] text-white mb-1">Challenges actifs</div>
-      {[
-        { label: "100 tractions", progress: 73, color: "#06d6a0" },
-        { label: "50km ce mois", progress: 40, color: "#4cc9f0" },
-        { label: "7 séances/sem", progress: 86, color: "#f72585" },
-      ].map((c) => (
-        <div key={c.label} className="p-2.5 rounded-xl"
-          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <span className="font-roboto font-500 text-[9px] text-white flex-1">{c.label}</span>
-            <span className="font-roboto font-700 text-[9px]" style={{ color: c.color }}>{c.progress}%</span>
-          </div>
-          <div className="h-1 rounded-full bg-white/10">
-            <div className="h-full rounded-full" style={{ width: `${c.progress}%`, background: c.color }} />
-          </div>
+        <AnimatePresence mode="wait">
+          <motion.div key={`title-${s.id}`} className="absolute top-0 left-0 right-0 z-30 flex-col items-center pt-24 hidden md:flex" initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-10 }} transition={{ duration:0.4 }}>
+            <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"4px" }}>
+              {s.id === "home" ? "ÉCRAN 01 — ACCUEIL" : s.id === "seance" ? "ÉCRAN 02 — SÉANCE" : "ÉCRAN 03 — PROFIL"}
+            </p>
+            <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(16px,2vw,26px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1, color:"#fff" }}>
+              {s.id === "home" ? <><span style={{color:"#c2185b"}}>L'accueil,</span> ton point de départ</> :
+               s.id === "seance" ? <><span style={{color: NUM_COLORS_DARK[0]}}>La séance,</span> ton terrain de jeu</> :
+               <><span style={{color:"#4a148c"}}>Le profil,</span> ton miroir de progrès</>}
+            </h2>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="absolute inset-0 z-10" style={{ padding:"48px 0", paddingTop:"170px" }} id="slide-wrapper">
+          <style>{`@media (max-width: 767px) { #slide-wrapper { padding-top: 80px !important; padding-bottom: 0 !important; } }`}</style>
+          <Slide s={s} />
         </div>
-      ))}
-    </div>
-  );
-}
 
-const phoneScreens: Record<string, React.ReactNode> = {
-  mood: <MoodScreen />,
-  matching: <MatchingScreen />,
-  challenges: <ChallengesScreen />,
-};
-
-function Phone({ screen, border, glow, rotateY = 0 }: {
-  screen: string; border: string; glow: string; rotateY?: number;
-}) {
-  return (
-    <div style={{ perspective: "1200px" }}>
-      <div className="relative">
-        <div className="absolute rounded-[60px] pointer-events-none"
-          style={{ inset: "-20px", background: `radial-gradient(circle, ${glow}, transparent 70%)`, filter: "blur(40px)", opacity: 0.8 }} />
-        <div className="relative overflow-hidden"
-          style={{ width: "220px", aspectRatio: "9/19.5", borderRadius: "36px", background: "#09000f", border: `1.5px solid ${border}`, boxShadow: `0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)`, transform: `rotateY(${rotateY}deg) rotateX(2deg)` }}>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
-            style={{ width: "100px", height: "26px", background: "#000", borderRadius: "0 0 18px 18px" }}>
-            <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
-            <div className="w-10 h-1 rounded-full bg-white/10" />
-            <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
-          </div>
-          <div className="absolute inset-0 overflow-hidden">{phoneScreens[screen]}</div>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-14 h-1 rounded-full bg-white/15 z-10" />
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-30">
+          {SLIDES.map((_, i) => (
+            <div key={i} onClick={() => goTo(i)} className="rounded-full transition-all duration-300 cursor-pointer" style={{ width:5, height: i===current ? 28:5, background: i===current ? "#fff":"rgba(255,255,255,0.3)" }} />
+          ))}
         </div>
       </div>
     </div>
@@ -162,143 +337,62 @@ export default function FonctionnalitesPage() {
     <>
       <Navbar />
       <main>
-
-        {/* HERO — plein écran avec fond fonds.png */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
-            <div className="absolute inset-0"
-              style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%)" }} />
+            <div className="absolute inset-0" style={{ background:"linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%)" }} />
           </div>
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20"
-          >
-            <h1 className="font-roboto font-900 uppercase leading-[0.92] text-white"
-              style={{ fontSize: "clamp(52px, 9vw, 120px)", textShadow: "0 2px 20px rgba(0,0,0,0.25)", letterSpacing: "-0.02em" }}>
-              Conçu pour<br />
-              <span style={{ color: "#f72585" }}>créer du lien.</span>
+          <motion.div initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.9, ease:[0.16,1,0.3,1] }} className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20">
+            <h1 className="font-roboto font-900 uppercase leading-[0.92] text-white" style={{ fontSize:"clamp(52px,9vw,120px)", letterSpacing:"0.06em", textShadow:"0 2px 20px rgba(0,0,0,0.25)", lineHeight:"0.95" }}>
+              Conçu pour<br /><span style={{ color:"#f72585" }}>créer du lien.</span>
             </h1>
-            <p className="font-roboto font-400 max-w-lg text-center"
-              style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
+            <p className="font-roboto font-400 max-w-lg text-center" style={{ fontSize:"clamp(15px,1.5vw,18px)", color:"rgba(255,255,255,0.7)" }}>
               Le sport est le prétexte. Ce qu'on construit vraiment, c'est le lien entre les gens.
             </p>
-
           </motion.div>
         </section>
 
-        {/* 3 SECTIONS FEATURES */}
-        {features.map((f) => (
-          <section key={f.id} className="min-h-screen flex items-center" style={{ background: f.bg }}>
-            <div className="w-full max-w-7xl mx-auto px-6 md:px-16 py-24">
-              <div className={`grid md:grid-cols-2 gap-16 md:gap-24 items-center ${f.phoneLeft ? "" : ""}`}>
+        <FullpageFeatures />
 
-                {/* Texte */}
-                <motion.div
-                  className={`flex flex-col gap-6 ${f.phoneLeft ? "md:order-2" : "md:order-1"}`}
-                  initial={{ opacity: 0, x: f.phoneLeft ? 40 : -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <span className="font-roboto font-700 text-xs tracking-[0.2em] uppercase"
-                    style={{ color: f.id === "challenges" ? "rgba(255,255,255,0.6)" : "#f72585" }}>
-                    {f.num}
-                  </span>
-                  <h2 className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.03em] whitespace-pre-line"
-                    style={{ fontSize: "clamp(44px, 6vw, 84px)", color: f.text }}>
-                    {f.title}
-                  </h2>
-                  <p className="font-roboto font-400 leading-relaxed max-w-sm"
-                    style={{ fontSize: "clamp(15px, 1.5vw, 17px)", color: f.mutedText }}>
-                    {f.desc}
-                  </p>
-                  <div className="h-px w-16" style={{ background: f.accent }} />
-                </motion.div>
-
-                {/* Téléphone */}
-                <motion.div
-                  className={`flex justify-center ${f.phoneLeft ? "md:order-1" : "md:order-2"}`}
-                  initial={{ opacity: 0, x: f.phoneLeft ? -40 : 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Phone
-                    screen={f.screen}
-                    border={f.phoneBorder}
-                    glow={f.phoneGlow}
-                    rotateY={f.phoneLeft ? 8 : -8}
-                  />
-                </motion.div>
-              </div>
-            </div>
-          </section>
-        ))}
-
-        {/* ACTIVITÉS */}
-        <section style={{ background: "#fff" }} className="py-32">
-          <div className="max-w-7xl mx-auto px-6 md:px-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.03em] text-black mb-4"
-              style={{ fontSize: "clamp(40px, 5.5vw, 72px)" }}>
-              Peu importe<br /><span style={{ color: "#f72585" }}>ton sport.</span>
+        <section style={{ background:"#fff" }} className="py-32 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-[600px] h-[400px] pointer-events-none" style={{ background:"radial-gradient(ellipse, rgba(114,9,183,0.06) 0%, transparent 70%)" }} />
+          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16">
+            <motion.h2 initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:"-100px" }} transition={{ duration:0.8, ease:[0.16,1,0.3,1] }} className="font-roboto font-900 uppercase leading-[0.88] tracking-[-0.03em] text-black mb-4" style={{ fontSize:"clamp(40px,5.5vw,72px)" }}>
+              Peu importe<br /><span style={{ color:"#f72585" }}>ton sport.</span>
             </motion.h2>
-            <p className="font-roboto font-400 text-black/45 mb-16 max-w-md" style={{ fontSize: "clamp(14px, 1.4vw, 17px)" }}>
+            <p className="font-roboto font-400 text-black/45 mb-16 max-w-md" style={{ fontSize:"clamp(14px,1.4vw,17px)" }}>
               Mood2Fit s'adapte à toutes les disciplines. Peu importe ton sport, tu trouveras des gens qui pratiquent comme toi.
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-px" style={{ background: "rgba(0,0,0,0.08)" }}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-px" style={{ background:"rgba(0,0,0,0.08)" }}>
               {activities.map((a, i) => (
-                <motion.div key={a.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: i * 0.04 }}
-                  className="flex flex-col gap-1.5 p-6 md:p-8 group cursor-default bg-white"
-                  whileHover={{ backgroundColor: "#faf7ff" }}>
-                  <span className="font-roboto font-900 text-black group-hover:text-[#f72585] transition-colors duration-200"
-                    style={{ fontSize: "clamp(15px, 1.6vw, 18px)" }}>{a.name}</span>
+                <motion.div key={a.name} initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:"-50px" }} transition={{ duration:0.5, delay:i*0.04 }} className="flex flex-col gap-1.5 p-6 md:p-8 group cursor-default bg-white" whileHover={{ backgroundColor:"#faf7ff" }}>
+                  <span className="font-roboto font-900 text-black group-hover:text-[#f72585] transition-colors duration-200" style={{ fontSize:"clamp(15px,1.6vw,18px)" }}>{a.name}</span>
                   <span className="font-roboto font-400 text-black/35 text-sm">{a.desc}</span>
-                  <div className="h-px w-0 group-hover:w-8 transition-all duration-300 mt-1" style={{ background: "#f72585" }} />
+                  <div className="h-px w-0 group-hover:w-8 transition-all duration-300 mt-1" style={{ background:"#f72585" }} />
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="relative flex items-center justify-center overflow-hidden py-40" style={{ background: "#f72585" }}>
+        <section className="relative flex items-center justify-center overflow-hidden py-40" style={{ background:"#f72585" }}>
+          <div className="absolute bottom-0 left-0 w-[500px] h-[400px] pointer-events-none" style={{ background:"radial-gradient(ellipse, rgba(114,9,183,0.25) 0%, transparent 65%)" }} />
+          <div className="absolute top-0 right-0 w-[300px] h-[300px] pointer-events-none" style={{ background:"radial-gradient(circle, rgba(181,23,158,0.2) 0%, transparent 70%)" }} />
           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="font-roboto font-900 text-white uppercase leading-[0.85] tracking-[-0.04em] mb-10"
-              style={{ fontSize: "clamp(56px, 9vw, 120px)" }}>
+            <motion.h2 initial={{ opacity:0, y:40 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.9, ease:[0.16,1,0.3,1] }} className="font-roboto font-900 text-white uppercase leading-[0.85] tracking-[-0.04em] mb-10" style={{ fontSize:"clamp(56px,9vw,120px)" }}>
               Commence<br />maintenant.
             </motion.h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-[#f72585] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all"
-                style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.2)" }}>
+              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-[#f72585] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all" style={{ boxShadow:"0 8px 40px rgba(0,0,0,0.2)" }}>
                 <Apple size={18} /> App Store
               </Link>
               <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-white border-2 border-white/50 hover:border-white hover:bg-white/10 active:scale-[0.97] transition-all">
                 <Play size={16} /> Google Play
               </Link>
             </div>
-            <p className="font-roboto text-xs text-white/40 mt-8 tracking-widest uppercase">
-              Bientôt disponible sur les stores
-            </p>
+            <p className="font-roboto text-xs text-white/40 mt-8 tracking-widest uppercase">Bientôt disponible sur les stores</p>
           </div>
         </section>
-
       </main>
       <Footer />
     </>

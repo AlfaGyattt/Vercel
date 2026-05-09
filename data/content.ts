@@ -410,9 +410,10 @@ export const footerContent: FooterContent = {
     tagline: "Entraîne-toi avec les bons, au bon moment.",
   },
   socials: [
-    { platform: "instagram", href: "/", ariaLabel: "Mood2Fit sur Instagram" },
+    { platform: "instagram", href: "https://www.instagram.com/mood2fitapp?igsh=d3E2bmc1YnRjbnl0&utm_source=qr", ariaLabel: "Mood2Fit sur Instagram" },
     { platform: "tiktok", href: "/", ariaLabel: "Mood2Fit sur TikTok" },
-    { platform: "twitter", href: "/", ariaLabel: "Mood2Fit sur X (Twitter)" },
+    { platform: "linkedin", href: "https://www.linkedin.com/company/mood2fit/", ariaLabel: "Mood2Fit sur LinkedIn" },
+
   ],
   columns: [
     {
