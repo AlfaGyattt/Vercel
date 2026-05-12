@@ -183,7 +183,7 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
             <AnimatePresence mode="wait">
               <motion.img
                 key={`mokup-${s.id}`}
-                src={s.id === "home" ? "/Mokup_1.png" : s.id === "seance" ? "/Mokup_2.png" : "/Mokup_3.png"}
+                src={s.id === "home" ? "/mokup_1.png" : s.id === "seance" ? "/mokup_2.png" : "/mokup_3.png"}
                 alt={`Mockup ${s.label}`}
                 style={{ height: "100%", width: "auto", objectFit: "contain", objectPosition: "bottom", display: "block" }}
                 initial={{ opacity: 0 }}
