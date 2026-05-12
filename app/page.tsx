@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main style={{ position: "relative", zIndex: 1, backgroundColor: "#080010" }}>
         <HomeHero />
         <HomeFeatures />
         <HomeArticles />

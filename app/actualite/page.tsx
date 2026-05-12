@@ -173,7 +173,6 @@ function ContentRow({ catId }: { catId: string }) {
   );
 }
 
-// ─── HERO avec scroll darkness ────────────────────────────────
 function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -186,7 +185,6 @@ function HeroSection() {
       <div className="absolute inset-0 z-0">
         <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
         <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%)" }} />
-        {/* Overlay qui s'assombrit au scroll */}
         <motion.div className="absolute inset-0" style={{ background: darkness }} />
       </div>
       <motion.div
@@ -216,23 +214,23 @@ export default function ActualitePage() {
   return (
     <>
       <Navbar />
-      <main style={{ background: "#fff", minHeight: "100vh" }}>
+      <main style={{ background: "#fff", minHeight: "100vh", position: "relative", zIndex: 1 }}>
 
         <HeroSection />
 
         {/* FILTRES STICKY */}
-        <div className="relative px-6 md:px-16 py-3"
+        <div className="relative px-6 md:px-16 py-5"
           style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(24px)", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
           <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
             <button onClick={() => setActiveFilter(null)}
-              className="flex-shrink-0 px-4 py-1.5 rounded-full font-roboto font-700 text-xs transition-all duration-200"
+              className="flex-shrink-0 px-5 py-2 rounded-full font-roboto font-700 text-sm transition-all duration-200"
               style={{ background: activeFilter === null ? "#000" : "rgba(0,0,0,0.07)", color: activeFilter === null ? "#fff" : "rgba(0,0,0,0.6)" }}>
               Tout
             </button>
             {categories.map((cat) => (
               <button key={cat.id}
                 onClick={() => setActiveFilter(activeFilter === cat.id ? null : cat.id)}
-                className="flex-shrink-0 px-4 py-1.5 rounded-full font-roboto font-700 text-xs transition-all duration-200 whitespace-nowrap"
+                className="flex-shrink-0 px-5 py-2 rounded-full font-roboto font-700 text-sm transition-all duration-200 whitespace-nowrap"
                 style={{ background: activeFilter === cat.id ? "#f72585" : "rgba(0,0,0,0.07)", color: activeFilter === cat.id ? "#fff" : "rgba(0,0,0,0.6)" }}>
                 {cat.label}
               </button>

@@ -29,13 +29,6 @@ const faqs = [
   { id: "f6", question: "L'app fonctionne-t-elle en dehors des grandes villes ?", answer: "Oui. L'algorithme s'adapte à la densité de ta zone. En zone moins dense, le rayon s'élargit automatiquement pour maximiser tes chances de trouver un partenaire." },
 ];
 
-const contactInfo = [
-  { label: "Email", value: "hello@mood2fit.app", color: "#f72585", icon: Mail },
-  { label: "Basé à", value: "Paris, France 🇫🇷", color: "#f72585", icon: MapPin },
-  { label: "Réponse sous", value: "48h", color: "#f72585", icon: Clock },
-  { label: "Support principal", value: "Instagram", color: "#f72585", icon: Zap },
-];
-
 const socials = [
   { platform: "Instagram", handle: "@mood2fit", desc: "Coulisses, stories et commu", color: "#f72585", icon: Instagram, href: "/" },
   { platform: "LinkedIn", handle: "Mood2Fit", desc: "Actus et vie de l'équipe", color: "#0077B5", icon: () => (
@@ -81,10 +74,24 @@ function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = async (_data: FormData) => {
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitted(true);
-    reset();
+  const onSubmit = async (data: FormData) => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          subject: data.subject,
+          message: data.message,
+        }),
+      });
+      if (!res.ok) throw new Error("Erreur serveur");
+      setSubmitted(true);
+      reset();
+    } catch (err) {
+      console.error("Erreur envoi:", err);
+    }
   };
 
   const inputClass = (hasError: boolean) =>
@@ -153,10 +160,8 @@ export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main style={{ position: "relative", zIndex: 1, backgroundColor: "#080010" }}>
 
-        {/* PAGE 1 — Hero + infos contact (pattern communauté) */}
-        {/* HERO — plein écran avec fond fonds.png */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
@@ -178,16 +183,12 @@ export default function ContactPage() {
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
               Une question, une idée, un partenariat ? On lit chaque message personnellement.
             </p>
-
           </motion.div>
         </section>
 
-        {/* PAGE 2 — Formulaire + réseaux, couleurs changées */}
-        <section style={{ background: "#fff" }} className="py-32">
+        <section id="formulaire" style={{ background: "#fff" }} className="py-32">
           <div className="max-w-7xl mx-auto px-6 md:px-16">
             <div className="grid lg:grid-cols-5 gap-16 lg:gap-24">
-
-              {/* Formulaire — 3 colonnes */}
               <motion.div className="lg:col-span-3"
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -201,7 +202,6 @@ export default function ContactPage() {
                 <ContactForm />
               </motion.div>
 
-              {/* Réseaux — 2 colonnes */}
               <motion.div className="lg:col-span-2 flex flex-col gap-8"
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -214,7 +214,6 @@ export default function ContactPage() {
                   </h2>
                   <p className="font-roboto font-400 text-black/45 text-sm">La communauté est aussi là-bas.</p>
                 </div>
-
                 <div className="flex flex-col" style={{ borderTop: "1px solid rgba(0,0,0,0.08)" }}>
                   {socials.map((s, i) => (
                     <motion.div key={s.platform}
@@ -240,7 +239,6 @@ export default function ContactPage() {
                     </motion.div>
                   ))}
                 </div>
-
                 <div className="p-5 rounded-2xl" style={{ background: "rgba(247,37,133,0.05)", border: "1px solid rgba(247,37,133,0.15)" }}>
                   <p className="font-roboto font-400 text-sm text-black/55 leading-relaxed">
                     Pour un support urgent, envoie-nous un DM sur Instagram. C'est là qu'on répond le plus vite.
@@ -251,8 +249,7 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* PAGE 3 — FAQ fond noir */}
-        <section style={{ background: "#000" }} className="py-32">
+        <section id="faq" style={{ background: "#000" }} className="py-32">
           <div className="max-w-4xl mx-auto px-6 md:px-16">
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
@@ -264,7 +261,6 @@ export default function ContactPage() {
               Les questions<br />
               <span style={{ color: "#f72585" }}>qu'on nous pose.</span>
             </motion.h2>
-
             <div className="rounded-2xl overflow-hidden bg-white">
               <div className="px-6 md:px-10">
                 {faqs.map((faq, i) => (
@@ -272,7 +268,6 @@ export default function ContactPage() {
                 ))}
               </div>
             </div>
-
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -289,7 +284,6 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* PAGE 4 — CTA fond rose */}
         <section className="relative flex items-center justify-center overflow-hidden py-40" style={{ background: "#f72585" }}>
           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
             <motion.h2
@@ -305,8 +299,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
+              transition={{ duration: 0.7, delay: 0.3 }}>
               <Link href="mailto:hello@mood2fit.app"
                 className="inline-flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-[#f72585] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all"
                 style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.2)" }}>

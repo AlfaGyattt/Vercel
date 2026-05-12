@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Download } from "lucide-react";
@@ -8,12 +8,44 @@ import { navContent } from "@/data/content";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const lastScrollY = useRef(0);
+  const slidesActive = useRef(false); // true quand on est dans les slides fonctionnalités
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY.current;
+
+      // Si on est dans les slides → navbar toujours cachée
+      if (slidesActive.current) {
+        setHidden(true);
+      } else if (delta > 0 && currentY > 80) {
+        // Scrolle vers le bas → cacher (seulement après 80px du top)
+        setHidden(true);
+      } else if (delta < 0) {
+        // Scrolle vers le haut → montrer
+        setHidden(false);
+      }
+
+      setScrolled(currentY > 20);
+      lastScrollY.current = currentY;
+    };
+
+    // Événement émis par la page fonctionnalités
+    const handleSlidesEnter = () => { slidesActive.current = true; setHidden(true); };
+    const handleSlidesLeave = () => { slidesActive.current = false; };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("slides-enter", handleSlidesEnter);
+    window.addEventListener("slides-leave", handleSlidesLeave);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("slides-enter", handleSlidesEnter);
+      window.removeEventListener("slides-leave", handleSlidesLeave);
+    };
   }, []);
 
   // Fermer le menu quand on navigue
@@ -27,6 +59,10 @@ export default function Navbar() {
             ? "bg-[#080010]/80 backdrop-blur-xl border-b border-[rgba(247,37,133,0.1)] shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
             : "bg-transparent"
         }`}
+        style={{
+          transform: hidden ? "translateY(-100%)" : "translateY(0)",
+          transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s ease, border-color 0.5s ease",
+        }}
       >
         <nav
           className="max-w-7xl mx-auto px-5 md:px-8 h-16 md:h-20 flex items-center justify-between"
@@ -53,10 +89,10 @@ export default function Navbar() {
 
             {/* Texte MOOD2FIT */}
             <div className="flex items-baseline gap-0">
-              <span className="font-syne font-800 text-xl md:text-2xl text-[#faf4ff] tracking-tight ">
+              <span className="font-syne font-800 text-xl md:text-2xl text-[#faf4ff] tracking-tight">
                 {navContent.logoText}
               </span>
-              <span className="font-syne font-800 text-xl md:text-2xl tracking-tight " style={{ color: "#f72585" }}>
+              <span className="font-syne font-800 text-xl md:text-2xl tracking-tight" style={{ color: "#f72585" }}>
                 {navContent.logoAccent}
               </span>
             </div>

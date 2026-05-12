@@ -129,7 +129,8 @@ export default function CommunautePage() {
   return (
     <>
       <Navbar />
-      <main>
+      {/* ── position relative + z-index 1 pour l'effet reveal footer ── */}
+      <main style={{ position: "relative", zIndex: 1, backgroundColor: "#080010" }}>
 
         {/* HERO — plein écran avec fond fonds.png */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -153,7 +154,6 @@ export default function CommunautePage() {
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "rgba(255,255,255,0.7)" }}>
               Mood2Fit est avant tout une communauté de gens qui se soutiennent. Le sport en est le prétexte.
             </p>
-
           </motion.div>
         </section>
 
@@ -192,8 +192,6 @@ export default function CommunautePage() {
                 <span style={{ color: "#f72585" }}>dans la commu.</span>
               </motion.h2>
             </div>
-
-            {/* Posts en grille 2 colonnes */}
             <div className="grid md:grid-cols-2 gap-5">
               {feedPosts.map((post) => (
                 <PostCard key={post.id} post={post} />
@@ -215,7 +213,6 @@ export default function CommunautePage() {
               Pas des avis.<br />
               <span style={{ color: "#f72585" }}>Des vraies histoires.</span>
             </motion.h2>
-
             <div className="flex flex-col" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
               {testimonials.map((t, i) => (
                 <motion.div key={t.id}
@@ -252,8 +249,6 @@ export default function CommunautePage() {
         <section style={{ background: "#fff" }} className="py-32">
           <div className="max-w-7xl mx-auto px-6 md:px-16">
             <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
-
-              {/* Texte */}
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -286,7 +281,6 @@ export default function CommunautePage() {
                 </div>
               </motion.div>
 
-              {/* Carte stylisée */}
               <motion.div
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -295,22 +289,18 @@ export default function CommunautePage() {
               >
                 <div className="relative rounded-3xl overflow-hidden aspect-square max-w-[440px] mx-auto"
                   style={{ background: "#f7f4fb", border: "1px solid rgba(0,0,0,0.08)" }}>
-                  {/* Grille */}
                   <div className="absolute inset-0 opacity-20"
                     style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
-                  {/* Cercles */}
                   {[1, 2, 3].map((i) => (
                     <div key={i} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
                       style={{ width: `${i * 28}%`, height: `${i * 28}%`, border: "1px solid rgba(247,37,133,0.15)" }} />
                   ))}
-                  {/* Point central */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <motion.div className="w-5 h-5 rounded-full bg-[#f72585] border-2 border-white"
                       style={{ boxShadow: "0 0 20px rgba(247,37,133,0.5)" }}
                       animate={{ scale: [1, 1.3, 1] }}
                       transition={{ duration: 2, repeat: Infinity }} />
                   </div>
-                  {/* Utilisateurs */}
                   {mapUsers.map((user, i) => (
                     <motion.div key={user.id} className="absolute z-10 cursor-pointer"
                       style={{ left: `${user.x}%`, top: `${user.y}%` }}
@@ -333,7 +323,6 @@ export default function CommunautePage() {
                       )}
                     </motion.div>
                   ))}
-                  {/* Label bas */}
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                     <span className="font-roboto text-[10px] text-black/35">
                       <MapPin size={10} className="inline mr-1" />Paris, France

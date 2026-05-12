@@ -71,10 +71,8 @@ export default function AProposPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main style={{ position: "relative", zIndex: 1, backgroundColor: "#080010" }}>
 
-        {/* ── HERO — fond noir, titre massif ── */}
-        {/* HERO — plein écran avec fond fonds.png */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
@@ -99,7 +97,6 @@ export default function AProposPage() {
           </motion.div>
         </section>
 
-        {/* ── STATS — bande rose ── */}
         <section style={{ background: "#f72585" }} className="py-1">
           <div className="max-w-7xl mx-auto px-6 md:px-16">
             <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/20">
@@ -119,17 +116,14 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* ── QUI SOMMES-NOUS — fond blanc ── */}
         <section style={{ background: "#fff" }} className="py-32">
           <div className="max-w-7xl mx-auto px-6 md:px-16">
             <div className="grid md:grid-cols-2 gap-16 md:gap-32 items-start">
-
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              >
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}>
                 <span className="font-roboto font-700 text-xs tracking-[0.2em] uppercase text-[#f72585] mb-6 block">
                   Qui sommes-nous
                 </span>
@@ -140,14 +134,12 @@ export default function AProposPage() {
                 </h2>
                 <div className="h-px w-16 bg-[#f72585] mb-8" />
               </motion.div>
-
               <motion.div
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col gap-6 pt-4"
-              >
+                className="flex flex-col gap-6 pt-4">
                 <p className="font-roboto font-400 text-black/65 leading-relaxed"
                   style={{ fontSize: "clamp(15px, 1.5vw, 18px)" }}>
                   Mood2Fit, c'est une équipe de 3 personnes basée à Paris. On pratique la musculation, le street workout, la callisthénie. Et on a tous vécu la même frustration.
@@ -167,7 +159,6 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* ── TIMELINE — fond noir ── */}
         <section style={{ background: "#000" }} className="py-32">
           <div className="max-w-7xl mx-auto px-6 md:px-16">
             <motion.h2
@@ -180,7 +171,6 @@ export default function AProposPage() {
               Notre<br />
               <span style={{ color: "#f72585" }}>parcours.</span>
             </motion.h2>
-
             <div className="flex flex-col" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
               {timeline.map((item, i) => (
                 <motion.div key={item.year}
@@ -210,7 +200,6 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* ── VALEURS — fond rose ── */}
         <section style={{ background: "#9650CD" }} className="py-32">
           <div className="max-w-7xl mx-auto px-6 md:px-16">
             <motion.h2
@@ -222,7 +211,6 @@ export default function AProposPage() {
               style={{ fontSize: "clamp(40px, 5.5vw, 72px)" }}>
               Ce qu'on<br />croit vraiment.
             </motion.h2>
-
             <div className="flex flex-col" style={{ borderTop: "1px solid rgba(255,255,255,0.25)" }}>
               {values.map((val, i) => (
                 <motion.div key={val.num}
@@ -250,7 +238,6 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* ── ÉQUIPE — fond blanc ── */}
         <section style={{ background: "#fff" }} className="py-32">
           <div className="max-w-7xl mx-auto px-6 md:px-16">
             <motion.h2
@@ -263,7 +250,6 @@ export default function AProposPage() {
               Celles et ceux qui<br />
               <span style={{ color: "#f72585" }}>font Mood2Fit.</span>
             </motion.h2>
-
             <div className="grid md:grid-cols-3 gap-8">
               {team.map((member, i) => (
                 <motion.div key={member.name}
@@ -290,18 +276,8 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* ── CTA FINAL — fond rose ── */}
         <section style={{ background: "#f72585" }} className="min-h-screen flex items-center justify-center py-40">
           <div className="text-center px-6 max-w-5xl mx-auto">
-            <motion.span
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="font-roboto font-700 text-xs tracking-[0.2em] uppercase text-[#f72585] block mb-8"
-            >
-              Rejoins l'aventure
-            </motion.span>
-
             <motion.h2
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -311,7 +287,6 @@ export default function AProposPage() {
               style={{ fontSize: "clamp(60px, 11vw, 150px)" }}>
               Tu n'as plus<br />d'excuse.
             </motion.h2>
-
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -321,14 +296,12 @@ export default function AProposPage() {
               style={{ fontSize: "clamp(15px, 1.5vw, 18px)" }}>
               2 400 sportifs t'attendent déjà.
             </motion.p>
-
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="flex gap-4 justify-center flex-wrap"
-            >
+              className="flex gap-4 justify-center flex-wrap">
               <Link href="/"
                 className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-black bg-white hover:scale-[1.03] active:scale-[0.97] transition-all"
                 style={{ boxShadow: "0 8px 40px rgba(255,255,255,0.1)" }}>
@@ -339,14 +312,12 @@ export default function AProposPage() {
                 <Play size={16} /> Google Play
               </Link>
             </motion.div>
-
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.6 }}
-              className="font-roboto text-xs text-white/25 mt-8 tracking-widest uppercase"
-            >
+              className="font-roboto text-xs text-white/25 mt-8 tracking-widest uppercase">
               Bientôt disponible sur les stores
             </motion.p>
           </div>

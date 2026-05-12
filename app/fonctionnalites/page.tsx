@@ -177,15 +177,21 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
       </AnimatePresence>
 
       <AnimatePresence mode="wait">
-        <motion.div key={`phone-${s.id}`} className="absolute inset-0 items-end justify-center hidden md:flex" style={{ zIndex: 10, pointerEvents: "none", transform: "translateY(30px)" }} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 30 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-          <div ref={phoneRef} style={{ height: "95%", position: "relative" }}>
-            <div style={{ height: "100%", aspectRatio: "9/19.5", borderRadius: "46px", overflow: "hidden", border: `3.5px solid ${s.bg === "#f72585" ? "#c4006a" : s.bg === "#0A0A0F" ? "#f72585" : "#5b1fa8"}`, boxShadow: `0 40px 80px rgba(0,0,0,0.4)`, background: "#000", position: "relative" }}>
-              <div style={{ position:"absolute", top:"10px", left:"50%", transform:"translateX(-50%)", width:"34%", height:"26px", background:"#000", borderRadius:"20px", zIndex:20 }} />
-              <AnimatePresence mode="wait">
-                <motion.img key={`img-${s.id}`} src={s.img} alt={s.label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"top" }} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.3 }} />
-              </AnimatePresence>
-              <div style={{ position:"absolute", bottom:"8px", left:"50%", transform:"translateX(-50%)", width:"28%", height:"4px", background:"rgba(0,0,0,0.35)", borderRadius:"4px", zIndex:20 }} />
-            </div>
+        <motion.div key={`phone-${s.id}`} className="absolute inset-0 items-end justify-center hidden md:flex" style={{ zIndex: 10, pointerEvents: "none", transform: "translateY(10px)" }} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 10 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+          <div ref={phoneRef} style={{ height: "100%", position: "relative" }}>
+            {/* Mockup PNG selon la slide */}
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={`mokup-${s.id}`}
+                src={s.id === "home" ? "/Mokup_1.png" : s.id === "seance" ? "/Mokup_2.png" : "/Mokup_3.png"}
+                alt={`Mockup ${s.label}`}
+                style={{ height: "100%", width: "auto", objectFit: "contain", objectPosition: "bottom", display: "block" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </AnimatePresence>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -198,7 +204,6 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
 
       {/* ── MOBILE ── */}
       <div className="md:hidden flex flex-col items-center w-full h-full pt-2 pb-2 px-2" style={{ gap: "8px" }}>
-        {/* Téléphone mobile */}
         <div style={{ flex: "0 0 auto", height: "42vh", position: "relative" }}>
           <div style={{ height: "100%", aspectRatio: "9/19.5", borderRadius: "32px", overflow: "hidden", border: `2.5px solid ${s.bg === "#f72585" ? "#c4006a" : s.bg === "#0A0A0F" ? "#f72585" : "#5b1fa8"}`, boxShadow: "0 20px 50px rgba(0,0,0,0.4)", background: "#000", position: "relative" }}>
             <div style={{ position:"absolute", top:"6px", left:"50%", transform:"translateX(-50%)", width:"30%", height:"18px", background:"#000", borderRadius:"20px", zIndex:20 }} />
@@ -209,7 +214,6 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
           </div>
         </div>
 
-        {/* Blocs mobile : 2 colonnes */}
         <div style={{ flex: "1 1 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", overflowY: "auto" }}>
           {[...s.left, ...s.right].map((b, i) => (
             <motion.div key={b.id}
@@ -236,7 +240,6 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
 
 function FullpageFeatures() {
   const [current, setCurrent] = useState(0);
-  
   const wrapperRef = useRef<HTMLDivElement>(null);
   const currentRef = useRef(0);
   const isAnimatingRef = useRef(false);
@@ -247,7 +250,6 @@ function FullpageFeatures() {
     isAnimatingRef.current = true;
     currentRef.current = idx;
     setCurrent(idx);
-    
     const top = el.getBoundingClientRect().top + window.scrollY + idx * window.innerHeight;
     window.scrollTo({ top, behavior: "smooth" });
     setTimeout(() => { isAnimatingRef.current = false; }, 900);
@@ -263,23 +265,45 @@ function FullpageFeatures() {
       if (e.deltaY < 0 && currentRef.current === 0) return;
       e.preventDefault();
       if (isAnimatingRef.current) return;
-      // Si les blocs ne sont pas encore révélés, les révéler d'abord
-      
       if (e.deltaY > 0) goTo(currentRef.current + 1);
       else if (e.deltaY < 0) goTo(currentRef.current - 1);
     };
+
     const onScroll = () => {
       const el = wrapperRef.current;
-      if (!el || isAnimatingRef.current) return;
-      const scrolled = window.scrollY - (el.getBoundingClientRect().top + window.scrollY);
+      if (!el) return;
+
+      const elTop = el.getBoundingClientRect().top + window.scrollY;
+      const elBottom = elTop + el.offsetHeight;
+      // Marge genereusse : reste "dans les slides" tout le long du wrapper
+      const isInSlides = window.scrollY >= elTop - window.innerHeight * 0.5
+                      && window.scrollY < elBottom - window.innerHeight * 0.5;
+
+      // Dispatch uniquement hors animation pour eviter les faux slides-leave
+      if (!isAnimatingRef.current) {
+        if (isInSlides) {
+          window.dispatchEvent(new Event("slides-enter"));
+        } else {
+          window.dispatchEvent(new Event("slides-leave"));
+        }
+      }
+
+      if (isAnimatingRef.current) return;
+      const scrolled = window.scrollY - elTop;
       if (scrolled < 0) return;
       const idx = Math.round(scrolled / window.innerHeight);
       const clamped = Math.max(0, Math.min(SLIDES.length - 1, idx));
       if (clamped !== currentRef.current) { currentRef.current = clamped; setCurrent(clamped); }
     };
+
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => { window.removeEventListener("wheel", onWheel); window.removeEventListener("scroll", onScroll); };
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("scroll", onScroll);
+      // S'assurer que la navbar réapparaît en quittant la page
+      window.dispatchEvent(new Event("slides-leave"));
+    };
   }, []);
 
   const s = SLIDES[current];
@@ -298,26 +322,20 @@ function FullpageFeatures() {
           </div>
         )}
 
-        <div className="absolute top-0 right-0 z-30 px-6 pt-5 text-right hidden md:block">
-          <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"10px", letterSpacing:"0.22em", textTransform:"uppercase", color:"rgba(255,255,255,0.35)" }}>
-            {s.num} · {s.label}
-          </p>
-        </div>
-
         <AnimatePresence mode="wait">
-          <motion.div key={`title-${s.id}`} className="absolute top-0 left-0 right-0 z-30 flex-col items-center pt-24 hidden md:flex" initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-10 }} transition={{ duration:0.4 }}>
-            <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"4px" }}>
+          <motion.div key={`title-${s.id}`} className="absolute top-0 left-0 right-0 z-30 flex-col items-center pt-14 hidden md:flex" initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-10 }} transition={{ duration:0.4 }}>
+            <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"6px" }}>
               {s.id === "home" ? "ÉCRAN 01 — ACCUEIL" : s.id === "seance" ? "ÉCRAN 02 — SÉANCE" : "ÉCRAN 03 — PROFIL"}
             </p>
-            <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(16px,2vw,26px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1, color:"#fff" }}>
-              {s.id === "home" ? <><span style={{color:"#c2185b"}}>L'accueil,</span> ton point de départ</> :
+            <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(22px,2.8vw,36px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1, color:"#fff" }}>
+              {s.id === "home" ? <><span style={{color:"#fff"}}>L'accueil,</span> ton point de départ</> :
                s.id === "seance" ? <><span style={{color: NUM_COLORS_DARK[0]}}>La séance,</span> ton terrain de jeu</> :
-               <><span style={{color:"#4a148c"}}>Le profil,</span> ton miroir de progrès</>}
+               <><span style={{color:"#fff"}}>Le profil,</span> ton miroir de progrès</>}
             </h2>
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 z-10" style={{ padding:"48px 0", paddingTop:"170px" }} id="slide-wrapper">
+        <div className="absolute inset-0 z-10" style={{ padding:"48px 0", paddingTop:"130px" }} id="slide-wrapper">
           <style>{`@media (max-width: 767px) { #slide-wrapper { padding-top: 80px !important; padding-bottom: 0 !important; } }`}</style>
           <Slide s={s} />
         </div>
@@ -336,7 +354,7 @@ export default function FonctionnalitesPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main style={{ position: "relative", zIndex: 1, backgroundColor: "#080010" }}>
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
