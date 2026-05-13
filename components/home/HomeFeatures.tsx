@@ -146,7 +146,7 @@ function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolea
         </div>
 
         {/* Téléphone paysage — légèrement plus petit qu'avant (170px au lieu de 210px) */}
-        <div className="absolute pointer-events-none z-20" style={{ bottom: "-60px", right: "60px" }}>
+        <div className="absolute pointer-events-none z-20" style={{ bottom: "-20px", right: "60px" }}>
           <div style={{ width: "145px", aspectRatio: "9/19.5", borderRadius: "24px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
               style={{ width: "72px", height: "18px", background: "#000", borderRadius: "0 0 11px 11px" }}>
@@ -169,7 +169,7 @@ function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolea
       </div>
 
       {/* ── PORTRAIT (mobile) : texte en haut, carte colorée coupée à mi-téléphone ── */}
-      <div className="flex md:hidden flex-col h-full px-5 pt-6" style={{ overflow: "visible" }}>
+      <div className="flex md:hidden flex-col h-full px-5 pt-6">
         {/* Texte */}
         <div className="flex flex-col gap-3">
           <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase text-white/50">{s.num}</span>

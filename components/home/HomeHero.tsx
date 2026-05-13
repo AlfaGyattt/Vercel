@@ -52,19 +52,27 @@ function PhoneHero() {
     <div className="relative flex items-center justify-center">
       {/* Glow */}
       <div className="absolute rounded-[60px] pointer-events-none"
-        style={{ inset: "-30px", background: "radial-gradient(circle, rgba(247,37,133,0.3), transparent 70%)", filter: "blur(40px)", opacity: 0.8 }} />
-      {/* Téléphone */}
+        style={{ inset: "-20px", background: "radial-gradient(circle, rgba(247,37,133,0.25), transparent 70%)", filter: "blur(30px)", opacity: 0.8 }} />
+      {/* Téléphone — taille réduite pour tenir dans le viewport */}
       <div className="relative overflow-hidden"
-        style={{ width: "270px", aspectRatio: "9/19.5", borderRadius: "36px", background: "#09000f", border: "1.5px solid #f72585", boxShadow: "0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)" }}>
+        style={{
+          /* clamp : min 160px, préféré 22vh, max 240px — tient dans le viewport */
+          width: "clamp(160px, 22vh, 220px)",
+          aspectRatio: "9/19.5",
+          borderRadius: "28px",
+          background: "#09000f",
+          border: "1.5px solid #f72585",
+          boxShadow: "0 24px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)",
+        }}>
         {/* Encoche */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
-          style={{ width: "100px", height: "26px", background: "#000", borderRadius: "0 0 18px 18px" }}>
-          <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
-          <div className="w-10 h-1 rounded-full bg-white/10" />
-          <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
+          style={{ width: "80px", height: "20px", background: "#000", borderRadius: "0 0 14px 14px" }}>
+          <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
+          <div className="w-8 h-0.5 rounded-full bg-white/10" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
         </div>
         <div className="absolute inset-0 overflow-hidden"><MoodScreen /></div>
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-14 h-1 rounded-full bg-white/15 z-10" />
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-white/15 z-10" />
       </div>
     </div>
   );
@@ -85,7 +93,6 @@ export default function HomeHero() {
         <div className="absolute inset-0" style={{
           background: "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.7) 85%, #000 100%)"
         }} />
-        {/* Glows violet */}
         <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(114,9,183,0.15) 0%, transparent 70%)" }} />
       </div>
@@ -138,15 +145,16 @@ export default function HomeHero() {
             </motion.div>
           </motion.div>
 
-          {/* Droite — téléphone en lévitation */}
+          {/* Droite — téléphone en lévitation, taille contrôlée */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="hidden md:flex justify-center items-center"
+            style={{ maxHeight: "calc(100vh - 120px)" }}
           >
             <motion.div
-              animate={{ y: [0, -16, 0] }}
+              animate={{ y: [0, -12, 0] }}
               transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
             >
               <PhoneHero />
