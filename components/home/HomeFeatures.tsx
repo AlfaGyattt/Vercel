@@ -147,7 +147,7 @@ function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolea
 
         {/* Téléphone paysage — légèrement plus petit qu'avant (170px au lieu de 210px) */}
         <div className="absolute pointer-events-none z-20" style={{ bottom: "-60px", right: "60px" }}>
-          <div style={{ width: "170px", aspectRatio: "9/19.5", borderRadius: "28px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
+          <div style={{ width: "145px", aspectRatio: "9/19.5", borderRadius: "24px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
               style={{ width: "72px", height: "18px", background: "#000", borderRadius: "0 0 11px 11px" }}>
               <div className="w-1 h-1 rounded-full bg-[#1a1a1a]" />
@@ -182,9 +182,9 @@ function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolea
           </p>
         </div>
 
-        {/* Téléphone — centré, dépasse en bas de la carte colorée */}
-        <div className="flex justify-center mt-auto" style={{ marginBottom: "-45%" }}>
-          <div style={{ width: "54vw", maxWidth: "220px", aspectRatio: "9/19.5", borderRadius: "28px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.5)", overflow: "hidden", position: "relative" }}>
+        {/* Téléphone — centré, dans la carte (pas de débordement = pas de bug transition) */}
+        <div className="flex justify-center mt-3">
+          <div style={{ width: "50vw", maxWidth: "200px", aspectRatio: "9/19.5", borderRadius: "28px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 20px 50px rgba(0,0,0,0.5)", overflow: "hidden", position: "relative" }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
               style={{ width: "72px", height: "18px", background: "#000", borderRadius: "0 0 11px 11px" }}>
               <div className="w-1 h-1 rounded-full bg-[#1a1a1a]" />
@@ -243,12 +243,12 @@ export default function HomeFeatures() {
   };
 
   return (
-    <section className="relative bg-white overflow-hidden flex flex-col items-center justify-center"
-      style={{ minHeight: "100svh" }}
+    <section className="relative bg-white flex flex-col items-center justify-center"
+      style={{ minHeight: "100svh", overflow: "hidden" }}
       aria-label="Fonctionnalités Mood2Fit">
 
       {/* Carousel */}
-      <div className="relative flex items-center justify-center w-full" style={{ height: "78vh" }}>
+      <div className="relative flex items-center justify-center w-full overflow-hidden md:overflow-visible" style={{ height: "82vh" }}>
 
         {/* Carte active */}
         <div className="relative z-10 w-[92vw] md:w-[76vw]">
