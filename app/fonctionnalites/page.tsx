@@ -183,7 +183,7 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
             <AnimatePresence mode="wait">
               <motion.img
                 key={`mokup-${s.id}`}
-                src={s.id === "home" ? "/mokup_1.png" : s.id === "seance" ? "/mokup_2.png" : "/mokup_3.png"}
+                src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
                 alt={`Mockup ${s.label}`}
                 style={{ height: "100%", width: "auto", objectFit: "contain", objectPosition: "bottom", display: "block" }}
                 initial={{ opacity: 0 }}
@@ -202,37 +202,105 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
         </motion.div>
       </AnimatePresence>
 
-      {/* ── MOBILE ── */}
-      <div className="md:hidden flex flex-col items-center w-full h-full pt-2 pb-2 px-2" style={{ gap: "8px" }}>
-        <div style={{ flex: "0 0 auto", height: "42vh", position: "relative" }}>
-          <div style={{ height: "100%", aspectRatio: "9/19.5", borderRadius: "32px", overflow: "hidden", border: `2.5px solid ${s.bg === "#f72585" ? "#c4006a" : s.bg === "#0A0A0F" ? "#f72585" : "#5b1fa8"}`, boxShadow: "0 20px 50px rgba(0,0,0,0.4)", background: "#000", position: "relative" }}>
-            <div style={{ position:"absolute", top:"6px", left:"50%", transform:"translateX(-50%)", width:"30%", height:"18px", background:"#000", borderRadius:"20px", zIndex:20 }} />
+      {/* ── MOBILE — titre + mokup en haut grand + blocs gauche/droite en dessous ── */}
+      <div className="md:hidden w-full h-full flex flex-col" style={{ paddingTop: "52px" }}>
+
+        {/* Titre */}
+        <div className="text-center px-3 mb-1">
+          <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"7.5px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"2px" }}>
+            {s.id === "home" ? "ÉCRAN 01 — ACCUEIL" : s.id === "seance" ? "ÉCRAN 02 — SÉANCE" : "ÉCRAN 03 — PROFIL"}
+          </p>
+          <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(13px,3.5vw,18px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1.1, color:"#fff" }}>
+            {s.id === "home" ? <><span style={{color:"#fff"}}>L'accueil,</span> ton point de départ</> :
+             s.id === "seance" ? <><span style={{color: NUM_COLORS_DARK[0]}}>La séance,</span> ton terrain de jeu</> :
+             <><span style={{color:"#fff"}}>Le profil,</span> ton miroir de progrès</>}
+          </h2>
+        </div>
+
+        {/* Mokup grand en haut — blocs gauche et droite sur les côtés */}
+        <div className="flex items-end px-1" style={{ gap: "4px", height: "58vh", flexShrink: 0 }}>
+
+          {/* Blocs gauche */}
+          <div className="flex flex-col gap-1.5 pb-2" style={{ width: "27%", flexShrink: 0 }}>
+            {s.left.map((b, i) => (
+              <motion.div key={b.id}
+                onClick={() => handleClick(i)}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.05 + i * 0.07 }}
+                style={{
+                  background: activeIdx === i ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
+                  border: `1px solid ${activeIdx === i ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.13)"}`,
+                  borderRadius: "6px", padding: "6px 7px", cursor: "pointer",
+                  transition: "background 0.2s, border 0.2s",
+                }}>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.12em", textTransform:"uppercase", color:numColors[i], marginBottom:"2px" }}>
+                  {b.num.split(" — ")[1]}
+                </p>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7.5px", color:titleColors[i], lineHeight:1.1, textTransform:"uppercase" }}>
+                  {b.title}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Mokup centré — prend toute la hauteur */}
+          <div ref={phoneRef} style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "flex-end", minWidth: 0, height: "100%" }}>
             <AnimatePresence mode="wait">
-              <motion.img key={`mob-img-${s.id}`} src={s.img} alt={s.label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"top" }} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.3 }} />
+              <motion.img
+                key={`mob-mokup-${s.id}`}
+                src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
+                alt={`Mockup ${s.label}`}
+                style={{ height: "100%", width: "auto", objectFit: "contain", objectPosition: "bottom", display: "block" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              />
             </AnimatePresence>
-            <div style={{ position:"absolute", bottom:"6px", left:"50%", transform:"translateX(-50%)", width:"28%", height:"3px", background:"rgba(0,0,0,0.35)", borderRadius:"4px", zIndex:20 }} />
+          </div>
+
+          {/* Blocs droite */}
+          <div className="flex flex-col gap-1.5 pb-2" style={{ width: "27%", flexShrink: 0 }}>
+            {s.right.map((b, i) => (
+              <motion.div key={b.id}
+                onClick={() => handleClick(i + 3)}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.05 + i * 0.07 }}
+                style={{
+                  background: activeIdx === i + 3 ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
+                  border: `1px solid ${activeIdx === i + 3 ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.13)"}`,
+                  borderRadius: "6px", padding: "6px 7px", cursor: "pointer",
+                  transition: "background 0.2s, border 0.2s",
+                }}>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.12em", textTransform:"uppercase", color:numColors[i + 3], marginBottom:"2px" }}>
+                  {b.num.split(" — ")[1]}
+                </p>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7.5px", color:titleColors[i + 3], lineHeight:1.1, textTransform:"uppercase" }}>
+                  {b.title}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
 
-        <div style={{ flex: "1 1 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", overflowY: "auto" }}>
-          {[...s.left, ...s.right].map((b, i) => (
-            <motion.div key={b.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.05 + i * 0.07 }}
-              style={{ background: "rgba(0,0,0,0.18)", border: "1px solid rgba(255,255,255,0.13)", borderRadius: "6px", padding: "8px 10px" }}>
-              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:600, fontSize:"7px", letterSpacing:"0.15em", textTransform:"uppercase", color:numColors[i], marginBottom:"3px" }}>
-                — {b.num}
-              </p>
-              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"10px", color:titleColors[i], lineHeight:1.1, marginBottom:"3px", textTransform:"uppercase" }}>
-                {b.title}
-              </p>
-              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"8px", color:"rgba(255,255,255,0.7)", lineHeight:1.4 }}>
-                {b.desc}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+        {/* Description du bloc actif */}
+        {activeIdx !== null && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="mx-2 mt-1 p-3 rounded-lg flex-shrink-0"
+            style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.15)" }}>
+            <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"9px", color:"#fff", marginBottom:"2px", textTransform:"uppercase" }}>
+              {[...s.left, ...s.right][activeIdx]?.title}
+            </p>
+            <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"9px", color:"rgba(255,255,255,0.75)", lineHeight:1.5 }}>
+              {[...s.left, ...s.right][activeIdx]?.desc}
+            </p>
+          </motion.div>
+        )}
       </div>
     </div>
   );
@@ -357,7 +425,12 @@ export default function FonctionnalitesPage() {
       <main style={{ position: "relative", zIndex: 1, backgroundColor: "#080010" }}>
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
+            {/* Mobile */}
+            <img src="/fonds/fonds_mobil.png" alt="" aria-hidden="true" className="w-full h-full object-cover block md:hidden" />
+            {/* Tablette */}
+            <img src="/fonds/fonds_tablette.png" alt="" aria-hidden="true" className="w-full h-full object-cover hidden md:block lg:hidden" />
+            {/* Desktop */}
+            <img src="/fonds/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover hidden lg:block" />
             <div className="absolute inset-0" style={{ background:"linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%)" }} />
           </div>
           <motion.div initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.9, ease:[0.16,1,0.3,1] }} className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20">

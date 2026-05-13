@@ -75,7 +75,15 @@ export default function AProposPage() {
 
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <img src="/fonds.png" alt="" aria-hidden="true" className="w-full h-full object-cover" />
+            {/* Mobile */}
+            <img src="/fonds/fonds_mobil.png" alt="" aria-hidden="true"
+              className="w-full h-full object-cover block md:hidden" />
+            {/* Tablette */}
+            <img src="/fonds/fonds_tablette.png" alt="" aria-hidden="true"
+              className="w-full h-full object-cover hidden md:block lg:hidden" />
+            {/* Desktop */}
+            <img src="/fonds/fonds.png" alt="" aria-hidden="true"
+              className="w-full h-full object-cover hidden lg:block" />
             <div className="absolute inset-0"
               style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%)" }} />
           </div>

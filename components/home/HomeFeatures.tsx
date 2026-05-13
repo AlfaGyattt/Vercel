@@ -123,45 +123,88 @@ function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolea
   return (
     <div className="relative rounded-3xl flex items-center px-14"
       style={{
-        width: "100%", height: "78vh",
+        width: "100%",
+        /* PAYSAGE : hauteur normale avec téléphone débordant en bas */
+        height: "78vh",
         background: s.color,
         boxShadow: `0 40px 100px ${s.color}55, 0 0 0 1px ${s.color}`,
       }}>
-      {/* Texte gauche */}
-      <div className="flex flex-col gap-5 max-w-md z-10 relative">
-        <span className="font-roboto font-700 text-xs tracking-[0.25em] uppercase text-white/50">{s.num}</span>
-        <h2 className="font-roboto font-900 uppercase text-white whitespace-pre-line"
-          style={{ fontSize: "clamp(40px, 5vw, 74px)", letterSpacing: "-0.02em", lineHeight: "0.9" }}>
-          {s.title}
-        </h2>
-        <p className="font-roboto font-400 text-white/65 leading-relaxed"
-          style={{ fontSize: "clamp(13px, 1.2vw, 15px)", maxWidth: "320px" }}>
-          {s.desc}
-        </p>
-        <div className="h-px w-12" style={{ background: "rgba(255,255,255,0.4)" }} />
-      </div>
 
-      {/* Téléphone — bas droite */}
-      <div className="absolute pointer-events-none z-20" style={{ bottom: "-75px", right: "60px" }}>
-        <div style={{ width: "210px", aspectRatio: "9/19.5", borderRadius: "34px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
-            style={{ width: "90px", height: "22px", background: "#000", borderRadius: "0 0 14px 14px" }}>
-            <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
-            <div className="w-8 h-0.5 rounded-full bg-white/10" />
-            <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
+      {/* ── PAYSAGE (md+) : texte gauche + téléphone bas droite légèrement plus petit ── */}
+      <div className="hidden md:flex items-center w-full h-full">
+        <div className="flex flex-col gap-5 max-w-md z-10 relative">
+          <span className="font-roboto font-700 text-xs tracking-[0.25em] uppercase text-white/50">{s.num}</span>
+          <h2 className="font-roboto font-900 uppercase text-white whitespace-pre-line"
+            style={{ fontSize: "clamp(40px, 5vw, 74px)", letterSpacing: "-0.02em", lineHeight: "0.9" }}>
+            {s.title}
+          </h2>
+          <p className="font-roboto font-400 text-white/65 leading-relaxed"
+            style={{ fontSize: "clamp(13px, 1.2vw, 15px)", maxWidth: "320px" }}>
+            {s.desc}
+          </p>
+          <div className="h-px w-12" style={{ background: "rgba(255,255,255,0.4)" }} />
+        </div>
+
+        {/* Téléphone paysage — légèrement plus petit qu'avant (170px au lieu de 210px) */}
+        <div className="absolute pointer-events-none z-20" style={{ bottom: "-60px", right: "60px" }}>
+          <div style={{ width: "170px", aspectRatio: "9/19.5", borderRadius: "28px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
+              style={{ width: "72px", height: "18px", background: "#000", borderRadius: "0 0 11px 11px" }}>
+              <div className="w-1 h-1 rounded-full bg-[#1a1a1a]" />
+              <div className="w-6 h-0.5 rounded-full bg-white/10" />
+              <div className="w-1 h-1 rounded-full bg-[#1a1a1a]" />
+            </div>
+            <div className="absolute inset-0 overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div key={s.screen} className="absolute inset-0"
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}>
+                  {phoneScreens[s.screen]}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-white/15 z-10" />
           </div>
-          <div className="absolute inset-0 overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div key={s.screen} className="absolute inset-0"
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}>
-                {phoneScreens[s.screen]}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-white/15 z-10" />
         </div>
       </div>
+
+      {/* ── PORTRAIT (mobile) : texte en haut, carte colorée coupée à mi-téléphone ── */}
+      <div className="flex md:hidden flex-col h-full px-5 pt-6" style={{ overflow: "visible" }}>
+        {/* Texte */}
+        <div className="flex flex-col gap-3">
+          <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase text-white/50">{s.num}</span>
+          <h2 className="font-roboto font-900 uppercase text-white whitespace-pre-line"
+            style={{ fontSize: "clamp(30px, 9vw, 44px)", letterSpacing: "-0.02em", lineHeight: "0.92" }}>
+            {s.title}
+          </h2>
+          <p className="font-roboto font-400 text-white/65 leading-relaxed text-sm">
+            {s.desc}
+          </p>
+        </div>
+
+        {/* Téléphone — centré, dépasse en bas de la carte colorée */}
+        <div className="flex justify-center mt-auto" style={{ marginBottom: "-45%" }}>
+          <div style={{ width: "54vw", maxWidth: "220px", aspectRatio: "9/19.5", borderRadius: "28px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.5)", overflow: "hidden", position: "relative" }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
+              style={{ width: "72px", height: "18px", background: "#000", borderRadius: "0 0 11px 11px" }}>
+              <div className="w-1 h-1 rounded-full bg-[#1a1a1a]" />
+              <div className="w-6 h-0.5 rounded-full bg-white/10" />
+              <div className="w-1 h-1 rounded-full bg-[#1a1a1a]" />
+            </div>
+            <div className="absolute inset-0 overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div key={s.screen} className="absolute inset-0"
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}>
+                  {phoneScreens[s.screen]}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-white/15 z-10" />
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
@@ -199,17 +242,16 @@ export default function HomeFeatures() {
     exit: (d: number) => ({ opacity: 0, x: d > 0 ? -120 : 120, scale: 0.95 }),
   };
 
-  const prevIdx = ((current - 1) + N) % N;
-  const nextIdx = (current + 1) % N;
-
   return (
-    <section className="relative h-screen bg-white overflow-hidden flex flex-col items-center justify-center" aria-label="Fonctionnalités Mood2Fit">
+    <section className="relative bg-white overflow-hidden flex flex-col items-center justify-center"
+      style={{ minHeight: "100svh" }}
+      aria-label="Fonctionnalités Mood2Fit">
 
-      {/* Carousel centré */}
+      {/* Carousel */}
       <div className="relative flex items-center justify-center w-full" style={{ height: "78vh" }}>
 
-        {/* Carte active — centre */}
-        <div className="relative z-10" style={{ width: "76vw" }}>
+        {/* Carte active */}
+        <div className="relative z-10 w-[92vw] md:w-[76vw]">
           <AnimatePresence custom={dir} mode="wait">
             <motion.div
               key={current}
@@ -229,7 +271,7 @@ export default function HomeFeatures() {
         {[-1, 1].map((delta) => (
           <button key={delta}
             onClick={() => handleNav(delta)}
-            className={`absolute ${delta === -1 ? "left-8" : "right-8"} top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110`}
+            className={`absolute ${delta === -1 ? "left-2 md:left-8" : "right-2 md:right-8"} top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110`}
             style={{ background: "rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.1)" }}
             aria-label={delta === -1 ? "Précédent" : "Suivant"}>
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
@@ -240,7 +282,7 @@ export default function HomeFeatures() {
       </div>
 
       {/* Dots */}
-      <div className="flex items-center gap-3 mt-8 z-20">
+      <div className="flex items-center gap-3 mt-6 z-20">
         {BASE_SLIDES.map((s, i) => (
           <button key={i} onClick={() => { stopAuto(); goTo(i, i > current ? 1 : -1); setTimeout(startAuto, 5000); }}
             aria-label={`Slide ${i + 1}`}
