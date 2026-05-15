@@ -51,7 +51,7 @@ function PhoneHero() {
         style={{ inset: "-30px", background: "radial-gradient(circle, rgba(247,37,133,0.3), transparent 70%)", filter: "blur(40px)", opacity: 0.8 }} />
       {/* Téléphone — taille originale 270px */}
       <div className="relative overflow-hidden"
-        style={{ width: "270px", aspectRatio: "9/19.5", borderRadius: "36px", background: "#09000f", border: "1.5px solid #f72585", boxShadow: "0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)" }}>
+        style={{ width: "clamp(160px, 18vw, 270px)", aspectRatio: "9/19.5", borderRadius: "36px", background: "#09000f", border: "1.5px solid #f72585", boxShadow: "0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)" }}>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
           style={{ width: "100px", height: "26px", background: "#000", borderRadius: "0 0 18px 18px" }}>
           <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />

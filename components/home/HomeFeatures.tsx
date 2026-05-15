@@ -106,7 +106,7 @@ function SlideCard({ s }: { s: typeof BASE_SLIDES[0] }) {
         </div>
         {/* Téléphone desktop — taille originale, bas droite */}
         <div className="absolute pointer-events-none z-20" style={{ bottom: "-75px", right: "60px" }}>
-          <div style={{ width: "210px", aspectRatio: "9/19.5", borderRadius: "34px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
+          <div style={{ width: "clamp(140px, 15vw, 210px)", aspectRatio: "9/19.5", borderRadius: "34px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
               style={{ width: "90px", height: "22px", background: "#000", borderRadius: "0 0 14px 14px" }}>
               <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
@@ -184,7 +184,7 @@ export default function HomeFeatures() {
   return (
     <section className="relative h-screen bg-white overflow-hidden flex flex-col items-center justify-center" aria-label="Fonctionnalités Mood2Fit">
 
-      <div className="relative flex items-center justify-center w-full" style={{ height: "78vh" }}>
+      <div className="relative flex items-center justify-center w-full" style={{ height: "clamp(300px, 78vh, 78vh)" }}>
         {/* Desktop : 76vw / Mobile : 92vw */}
         <div className="relative z-10 w-[92vw] md:w-[76vw]">
           <AnimatePresence custom={dir} mode="wait">
