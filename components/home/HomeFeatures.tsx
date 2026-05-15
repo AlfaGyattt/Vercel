@@ -176,15 +176,15 @@ export default function HomeFeatures() {
   useEffect(() => { startAuto(); return stopAuto; }, []);
 
   const variants = {
-    enter: (d: number) => ({ opacity: 0, x: d > 0 ? 120 : -120, scale: 0.95 }),
+    enter: (d: number) => ({ opacity: 0, x: d > 0 ? "60%" : "-60%", scale: 0.97 }),
     center: { opacity: 1, x: 0, scale: 1 },
-    exit: (d: number) => ({ opacity: 0, x: d > 0 ? -120 : 120, scale: 0.95 }),
+    exit: (d: number) => ({ opacity: 0, x: d > 0 ? "-60%" : "60%", scale: 0.97 }),
   };
 
   return (
     <section className="relative h-screen bg-white overflow-hidden flex flex-col items-center justify-center" aria-label="Fonctionnalités Mood2Fit">
 
-      <div className="relative flex items-center justify-center w-full" style={{ height: "clamp(300px, 78vh, 78vh)" }}>
+      <div className="relative flex items-center justify-center w-full" style={{ height: "clamp(300px, 78vh, 78vh)", clipPath: "inset(0 0 -200px 0)" }}>
         {/* Desktop : 76vw / Mobile : 92vw */}
         <div className="relative z-10 w-[92vw] md:w-[76vw]">
           <AnimatePresence custom={dir} mode="wait">
