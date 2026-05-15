@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Apple, Play } from "lucide-react";
 
 function MoodScreen() {
   return (
@@ -46,21 +45,15 @@ function MoodScreen() {
 function PhoneHero() {
   return (
     <div className="relative flex items-center justify-center">
-      {/* Glow — ancien code exact */}
+      {/* Glow rose */}
       <div className="absolute rounded-[60px] pointer-events-none"
         style={{ inset: "-30px", background: "radial-gradient(circle, rgba(247,37,133,0.3), transparent 70%)", filter: "blur(40px)", opacity: 0.8 }} />
-      {/* Téléphone — taille originale 270px */}
-      <div className="relative overflow-hidden"
-        style={{ width: "clamp(160px, 18vw, 270px)", aspectRatio: "9/19.5", borderRadius: "36px", background: "#09000f", border: "1.5px solid #f72585", boxShadow: "0 40px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)" }}>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
-          style={{ width: "100px", height: "26px", background: "#000", borderRadius: "0 0 18px 18px" }}>
-          <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
-          <div className="w-10 h-1 rounded-full bg-white/10" />
-          <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
-        </div>
-        <div className="absolute inset-0 overflow-hidden"><MoodScreen /></div>
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-14 h-1 rounded-full bg-white/15 z-10" />
-      </div>
+      {/* Mokup PNG */}
+      <img
+        src="/mokup/mokup_1.png"
+        alt="Mood2Fit app"
+        style={{ width: "clamp(160px, 18vw, 270px)", height: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1 }}
+      />
     </div>
   );
 }
@@ -98,12 +91,25 @@ export default function HomeHero() {
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }}
               className="flex gap-3">
-              <Link href="/" className="flex items-center gap-2.5 px-7 py-3.5 rounded-full font-roboto font-700 text-sm text-black bg-white hover:bg-white/90 active:scale-[0.97] transition-all duration-150">
-                <Apple size={16} /> App Store
+
+              {/* App Store — logo depuis /app/apple.png */}
+              <Link href="/" className="flex items-center gap-2.5 px-6 py-3 rounded-full bg-white hover:bg-white/90 active:scale-[0.97] transition-all duration-150" style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.2)" }}>
+                <img src="/app/apple.png" alt="Apple" style={{ width: "22px", height: "22px", objectFit: "contain" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                  <span style={{ fontSize: "9px", color: "rgba(0,0,0,0.5)", lineHeight: 1 }}>Télécharger sur</span>
+                  <span style={{ fontSize: "14px", fontWeight: 700, color: "#000", lineHeight: 1.2 }}>App Store</span>
+                </div>
               </Link>
-              <Link href="/" className="flex items-center gap-2.5 px-7 py-3.5 rounded-full font-roboto font-700 text-sm text-white border border-white/30 hover:border-white/60 active:scale-[0.97] transition-all duration-150">
-                <Play size={14} /> Google Play
+
+              {/* Google Play — logo depuis /app/android.png */}
+              <Link href="/" className="flex items-center gap-2.5 px-6 py-3 rounded-full border border-black/20 active:scale-[0.97] transition-all duration-150">
+                <img src="/app/android.png" alt="Google Play" style={{ width: "22px", height: "22px", objectFit: "contain" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                  <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.6)", lineHeight: 1 }}>Disponible sur</span>
+                  <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Google Play</span>
+                </div>
               </Link>
+
             </motion.div>
           </motion.div>
 

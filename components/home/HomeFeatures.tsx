@@ -106,24 +106,29 @@ function SlideCard({ s }: { s: typeof BASE_SLIDES[0] }) {
         </div>
         {/* Téléphone desktop — taille originale, bas droite */}
         <div className="absolute pointer-events-none z-20" style={{ bottom: "-75px", right: "60px" }}>
-          <div style={{ width: "clamp(140px, 15vw, 210px)", aspectRatio: "9/19.5", borderRadius: "34px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
-              style={{ width: "90px", height: "22px", background: "#000", borderRadius: "0 0 14px 14px" }}>
-              <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
-              <div className="w-8 h-0.5 rounded-full bg-white/10" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
+          {s.id === "matching" ? (
+            <img src="/mokup/mokup_2.png" alt="Mood2Fit app"
+              style={{ width: "clamp(140px, 15vw, 210px)", height: "auto", objectFit: "contain", display: "block" }} />
+          ) : (
+            <div style={{ width: "clamp(140px, 15vw, 210px)", aspectRatio: "9/19.5", borderRadius: "34px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
+                style={{ width: "90px", height: "22px", background: "#000", borderRadius: "0 0 14px 14px" }}>
+                <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
+                <div className="w-8 h-0.5 rounded-full bg-white/10" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
+              </div>
+              <div className="absolute inset-0 overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div key={s.screen} className="absolute inset-0"
+                    initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}>
+                    {phoneScreens[s.screen]}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-white/15 z-10" />
             </div>
-            <div className="absolute inset-0 overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.div key={s.screen} className="absolute inset-0"
-                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}>
-                  {phoneScreens[s.screen]}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-white/15 z-10" />
-          </div>
+          )}
         </div>
       </div>
 

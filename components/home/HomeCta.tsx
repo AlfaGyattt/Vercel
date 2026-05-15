@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Apple, Play } from "lucide-react";
 
 export default function HomeCta() {
   return (
@@ -53,18 +52,28 @@ export default function HomeCta() {
           transition={{ duration: 0.7, delay: 0.45 }}
           className="flex flex-col sm:flex-row gap-4"
         >
+          {/* App Store */}
           <Link href="/"
-            className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-[#f72585] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all duration-150"
+            className="flex items-center gap-3 px-8 py-4 rounded-full font-roboto font-700 text-sm text-[#f72585] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all duration-150"
             style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.2)" }}
           >
-            <Apple size={18} />
-            App Store
+            <img src="/app/apple.png" alt="Apple" style={{ width: "28px", height: "28px", objectFit: "contain" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: "1px", textAlign: "left" }}>
+              <span style={{ fontSize: "9px", color: "rgba(0,0,0,0.5)", lineHeight: 1 }}>Télécharger sur</span>
+              <span style={{ fontSize: "14px", fontWeight: 700, color: "#000", lineHeight: 1.2 }}>App Store</span>
+            </div>
           </Link>
+
+          {/* Google Play */}
           <Link href="/"
-            className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-white border-2 border-white/50 hover:border-white hover:bg-white/10 active:scale-[0.97] transition-all duration-150"
+            className="flex items-center gap-3 px-8 py-4 rounded-full font-roboto font-700 text-sm text-white active:scale-[0.97] transition-all duration-150"
+            style={{ background: "#000", border: "2px solid rgba(255,255,255,0.15)" }}
           >
-            <Play size={16} />
-            Google Play
+            <img src="/app/android.png" alt="Google Play" style={{ width: "28px", height: "28px", objectFit: "contain" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: "1px", textAlign: "left" }}>
+              <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.6)", lineHeight: 1 }}>Disponible sur</span>
+              <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Google Play</span>
+            </div>
           </Link>
         </motion.div>
 

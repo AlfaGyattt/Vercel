@@ -21,7 +21,7 @@ const footerColumns = [
       { label: "Fonctionnalités", href: "/fonctionnalites" },
       { label: "Communauté", href: "/communaute" },
       { label: "Actualités", href: "/actualite" },
-      { label: "À propos", href: "/a-propos" },
+      { label: "À propos", href: "/apropos" },
     ],
   },
   {

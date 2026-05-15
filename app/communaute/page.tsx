@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Apple, Play, Heart, MessageCircle, Share2, MapPin } from "lucide-react";
+import { Heart, MessageCircle, Share2, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -356,12 +356,20 @@ export default function CommunautePage() {
               Rejoins la<br />communauté.
             </motion.h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-[#9650CD] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all"
+              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-black bg-white hover:scale-[1.03] active:scale-[0.97] transition-all"
                 style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.2)" }}>
-                <Apple size={18} /> App Store
+                <img src="/app/apple.png" alt="Apple" style={{ width: "22px", height: "22px", objectFit: "contain", filter: "brightness(0)" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                  <span style={{ fontSize: "9px", color: "rgba(0,0,0,0.5)", lineHeight: 1 }}>Télécharger sur</span>
+                  <span style={{ fontSize: "14px", fontWeight: 700, color: "#000", lineHeight: 1.2 }}>App Store</span>
+                </div>
               </Link>
-              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-white border-2 border-white/50 hover:border-white hover:bg-white/10 active:scale-[0.97] transition-all">
-                <Play size={16} /> Google Play
+              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-white border-2 border-black/20 hover:border-black/40 active:scale-[0.97] transition-all" style={{ background: "#000" }}>
+                <img src="/app/android.png" alt="Google Play" style={{ width: "22px", height: "22px", objectFit: "contain" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                  <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.6)", lineHeight: 1 }}>Disponible sur</span>
+                  <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Google Play</span>
+                </div>
               </Link>
             </div>
             <p className="font-roboto text-xs text-white/40 mt-8 tracking-widest uppercase">

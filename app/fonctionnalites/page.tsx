@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Apple, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -202,105 +201,66 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
         </motion.div>
       </AnimatePresence>
 
-      {/* ── MOBILE — titre + mokup en haut grand + blocs gauche/droite en dessous ── */}
-      <div className="md:hidden w-full h-full flex flex-col" style={{ paddingTop: "52px" }}>
+      {/* ── MOBILE — 3 zones : titre | mokup | blocs ── */}
+      <div className="md:hidden w-full h-full flex flex-col" style={{ paddingTop: "16px" }}>
 
-        {/* Titre */}
-        <div className="text-center px-3 mb-1">
-          <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"7.5px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"2px" }}>
+        {/* ZONE 1 — Titre */}
+        <div className="flex flex-col items-center justify-center text-center px-4" style={{ flex: "0 0 18%" }}>
+          <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"7px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"4px" }}>
             {s.id === "home" ? "ÉCRAN 01 — ACCUEIL" : s.id === "seance" ? "ÉCRAN 02 — SÉANCE" : "ÉCRAN 03 — PROFIL"}
           </p>
-          <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(13px,3.5vw,18px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1.1, color:"#fff" }}>
+          <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(16px,5vw,24px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1.1, color:"#fff" }}>
             {s.id === "home" ? <><span style={{color:"#fff"}}>L'accueil,</span> ton point de départ</> :
              s.id === "seance" ? <><span style={{color: NUM_COLORS_DARK[0]}}>La séance,</span> ton terrain de jeu</> :
              <><span style={{color:"#fff"}}>Le profil,</span> ton miroir de progrès</>}
           </h2>
         </div>
 
-        {/* Mokup grand en haut — blocs gauche et droite sur les côtés */}
-        <div className="flex items-end px-1" style={{ gap: "4px", height: "58vh", flexShrink: 0 }}>
-
-          {/* Blocs gauche */}
-          <div className="flex flex-col gap-1.5 pb-2" style={{ width: "27%", flexShrink: 0 }}>
-            {s.left.map((b, i) => (
-              <motion.div key={b.id}
-                onClick={() => handleClick(i)}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: 0.05 + i * 0.07 }}
-                style={{
-                  background: activeIdx === i ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
-                  border: `1px solid ${activeIdx === i ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.13)"}`,
-                  borderRadius: "6px", padding: "6px 7px", cursor: "pointer",
-                  transition: "background 0.2s, border 0.2s",
-                }}>
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.12em", textTransform:"uppercase", color:numColors[i], marginBottom:"2px" }}>
-                  {b.num.split(" — ")[1]}
-                </p>
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7.5px", color:titleColors[i], lineHeight:1.1, textTransform:"uppercase" }}>
-                  {b.title}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mokup centré — prend toute la hauteur */}
-          <div ref={phoneRef} style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "flex-end", minWidth: 0, height: "100%" }}>
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={`mob-mokup-${s.id}`}
-                src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
-                alt={`Mockup ${s.label}`}
-                style={{ height: "100%", width: "auto", objectFit: "contain", objectPosition: "bottom", display: "block" }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </AnimatePresence>
-          </div>
-
-          {/* Blocs droite */}
-          <div className="flex flex-col gap-1.5 pb-2" style={{ width: "27%", flexShrink: 0 }}>
-            {s.right.map((b, i) => (
-              <motion.div key={b.id}
-                onClick={() => handleClick(i + 3)}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: 0.05 + i * 0.07 }}
-                style={{
-                  background: activeIdx === i + 3 ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
-                  border: `1px solid ${activeIdx === i + 3 ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.13)"}`,
-                  borderRadius: "6px", padding: "6px 7px", cursor: "pointer",
-                  transition: "background 0.2s, border 0.2s",
-                }}>
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.12em", textTransform:"uppercase", color:numColors[i + 3], marginBottom:"2px" }}>
-                  {b.num.split(" — ")[1]}
-                </p>
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7.5px", color:titleColors[i + 3], lineHeight:1.1, textTransform:"uppercase" }}>
-                  {b.title}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+        {/* ZONE 2 — Mokup grand */}
+        <div ref={phoneRef} className="flex justify-center items-end overflow-hidden" style={{ flex: "0 0 50%" }}>
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={`mob-mokup-${s.id}`}
+              src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
+              alt={`Mockup ${s.label}`}
+              style={{ height: "100%", width: "auto", objectFit: "contain", objectPosition: "bottom", display: "block" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+          </AnimatePresence>
         </div>
 
-        {/* Description du bloc actif */}
-        {activeIdx !== null && (
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="mx-2 mt-1 p-3 rounded-lg flex-shrink-0"
-            style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.15)" }}>
-            <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"9px", color:"#fff", marginBottom:"2px", textTransform:"uppercase" }}>
-              {[...s.left, ...s.right][activeIdx]?.title}
-            </p>
-            <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"9px", color:"rgba(255,255,255,0.75)", lineHeight:1.5 }}>
-              {[...s.left, ...s.right][activeIdx]?.desc}
-            </p>
-          </motion.div>
-        )}
+        {/* ZONE 3 — Blocs cliquables en grille 3 colonnes */}
+        <div style={{ flex: "1 1 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "4px", padding: "4px 4px 6px", overflowY: "auto" }}>
+          {[...s.left, ...s.right].map((b, i) => (
+            <motion.div key={b.id}
+              onClick={() => handleClick(i)}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.03 + i * 0.05 }}
+              style={{
+                background: activeIdx === i ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
+                border: `1px solid ${activeIdx === i ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.13)"}`,
+                borderRadius: "6px", padding: "6px 7px", cursor: "pointer",
+                transition: "background 0.2s, border 0.2s",
+              }}>
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.1em", textTransform:"uppercase", color:numColors[i], marginBottom:"2px" }}>
+                {b.num.split(" — ")[1]}
+              </p>
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7.5px", color:titleColors[i], lineHeight:1.1, textTransform:"uppercase" }}>
+                {b.title}
+              </p>
+              {activeIdx === i && (
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"7px", color:"rgba(255,255,255,0.7)", lineHeight:1.4, marginTop:"3px" }}>
+                  {b.desc}
+                </p>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
       </div>
     </div>
   );
@@ -474,11 +434,19 @@ export default function FonctionnalitesPage() {
               Commence<br />maintenant.
             </motion.h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-[#f72585] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all" style={{ boxShadow:"0 8px 40px rgba(0,0,0,0.2)" }}>
-                <Apple size={18} /> App Store
+              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-black bg-white hover:scale-[1.03] active:scale-[0.97] transition-all" style={{ boxShadow:"0 8px 40px rgba(0,0,0,0.2)" }}>
+                <img src="/app/apple.png" alt="Apple" style={{ width: "22px", height: "22px", objectFit: "contain", filter: "brightness(0)" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                  <span style={{ fontSize: "9px", color: "rgba(0,0,0,0.5)", lineHeight: 1 }}>Télécharger sur</span>
+                  <span style={{ fontSize: "14px", fontWeight: 700, color: "#000", lineHeight: 1.2 }}>App Store</span>
+                </div>
               </Link>
-              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-white border-2 border-white/50 hover:border-white hover:bg-white/10 active:scale-[0.97] transition-all">
-                <Play size={16} /> Google Play
+              <Link href="/" className="flex items-center gap-3 px-9 py-4 rounded-full font-roboto font-700 text-sm text-white border-2 border-black/20 hover:border-black/40 active:scale-[0.97] transition-all" style={{ background: "#000" }}>
+                <img src="/app/android.png" alt="Google Play" style={{ width: "22px", height: "22px", objectFit: "contain" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                  <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.6)", lineHeight: 1 }}>Disponible sur</span>
+                  <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Google Play</span>
+                </div>
               </Link>
             </div>
             <p className="font-roboto text-xs text-white/40 mt-8 tracking-widest uppercase">Bientôt disponible sur les stores</p>
