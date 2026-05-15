@@ -4,30 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BASE_SLIDES = [
-  {
-    id: "mood",
-    num: "01",
-    title: "Ton humeur,\nta séance.",
-    desc: "Que tu sois au top ou dans ta bulle, l'app s'adapte à ton énergie et te propose la séance qu'il te faut.",
-    color: "#f72585",
-    screen: "mood",
-  },
-  {
-    id: "matching",
-    num: "02",
-    title: "Le bon\npartenaire.",
-    desc: "Niveau, disponibilités, mood. L'algorithme trouve les profils qui te correspondent vraiment.",
-    color: "#000000",
-    screen: "matching",
-  },
-  {
-    id: "challenges",
-    num: "03",
-    title: "Dépasse-toi\nensemble.",
-    desc: "Des défis hebdomadaires solo ou en équipe. Pour progresser et ne jamais lâcher.",
-    color: "#9650CD",
-    screen: "challenges",
-  },
+  { id: "mood", num: "01", title: "Ton humeur,\nta séance.", desc: "Que tu sois au top ou dans ta bulle, l'app s'adapte à ton énergie et te propose la séance qu'il te faut.", color: "#f72585", screen: "mood" },
+  { id: "matching", num: "02", title: "Le bon\npartenaire.", desc: "Niveau, disponibilités, mood. L'algorithme trouve les profils qui te correspondent vraiment.", color: "#000000", screen: "matching" },
+  { id: "challenges", num: "03", title: "Dépasse-toi\nensemble.", desc: "Des défis hebdomadaires solo ou en équipe. Pour progresser et ne jamais lâcher.", color: "#9650CD", screen: "challenges" },
 ];
 
 const N = BASE_SLIDES.length;
@@ -42,11 +21,7 @@ function MoodScreen() {
       <div className="rounded-xl p-2.5" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(114,9,183,.32)" }}>
         <div className="font-roboto font-700 text-[11px] text-white mb-2">Mood du jour</div>
         <div className="flex flex-col gap-1.5">
-          {[
-            { emoji: "⚡", label: "J'ai de l'énergie", active: true },
-            { emoji: "💜", label: "Motivation moyenne", active: false },
-            { emoji: "🌙", label: "Dans ma bulle", active: false },
-          ].map((m) => (
+          {[{ emoji: "⚡", label: "J'ai de l'énergie", active: true }, { emoji: "💜", label: "Motivation moyenne", active: false }, { emoji: "🌙", label: "Dans ma bulle", active: false }].map((m) => (
             <div key={m.label} className="flex items-center gap-2 p-2 rounded-lg"
               style={{ background: m.active ? "rgba(247,37,133,0.18)" : "rgba(255,255,255,0.03)", border: `1px solid ${m.active ? "rgba(247,37,133,0.6)" : "rgba(255,255,255,0.06)"}` }}>
               <span className="text-sm">{m.emoji}</span>
@@ -68,11 +43,7 @@ function MatchingScreen() {
   return (
     <div className="flex flex-col gap-2 p-4 pt-10 h-full overflow-hidden" style={{ background: "#0d001a" }}>
       <div className="font-roboto font-700 text-[13px] text-white mb-1">Tes matchs</div>
-      {[
-        { name: "Léa M.", city: "Paris 11e", sport: "Muscu", score: 97, color: "#f72585" },
-        { name: "Thomas K.", city: "Paris 3e", sport: "Street WO", score: 88, color: "#b5179e" },
-        { name: "Sara B.", city: "Boulogne", sport: "Cardio", score: 81, color: "#7209b7" },
-      ].map((u) => (
+      {[{ name: "Léa M.", city: "Paris 11e", sport: "Muscu", score: 97, color: "#f72585" }, { name: "Thomas K.", city: "Paris 3e", sport: "Street WO", score: 88, color: "#b5179e" }, { name: "Sara B.", city: "Boulogne", sport: "Cardio", score: 81, color: "#7209b7" }].map((u) => (
         <div key={u.name} className="flex items-center gap-2.5 p-2.5 rounded-xl"
           style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}>
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-roboto font-700 text-white flex-shrink-0"
@@ -92,13 +63,8 @@ function ChallengesScreen() {
   return (
     <div className="flex flex-col gap-2 p-4 pt-10 h-full overflow-hidden" style={{ background: "#0d001a" }}>
       <div className="font-roboto font-700 text-[13px] text-white mb-1">Challenges actifs</div>
-      {[
-        { emoji: "💪", label: "100 tractions", progress: 73, color: "#06d6a0" },
-        { emoji: "🏃", label: "50km ce mois", progress: 40, color: "#4cc9f0" },
-        { emoji: "🔥", label: "7 séances/sem", progress: 86, color: "#f72585" },
-      ].map((c) => (
-        <div key={c.label} className="p-2.5 rounded-xl"
-          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      {[{ emoji: "💪", label: "100 tractions", progress: 73, color: "#06d6a0" }, { emoji: "🏃", label: "50km ce mois", progress: 40, color: "#4cc9f0" }, { emoji: "🔥", label: "7 séances/sem", progress: 86, color: "#f72585" }].map((c) => (
+        <div key={c.label} className="p-2.5 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
           <div className="flex items-center gap-1.5 mb-1.5">
             <span className="text-sm">{c.emoji}</span>
             <span className="font-roboto font-500 text-[9px] text-white flex-1">{c.label}</span>
@@ -119,19 +85,13 @@ const phoneScreens: Record<string, React.ReactNode> = {
   challenges: <ChallengesScreen />,
 };
 
-function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolean }) {
+function SlideCard({ s }: { s: typeof BASE_SLIDES[0] }) {
   return (
-    <div className="relative rounded-3xl flex items-center px-14"
-      style={{
-        width: "100%",
-        /* PAYSAGE : hauteur normale avec téléphone débordant en bas */
-        height: "78vh",
-        background: s.color,
-        boxShadow: `0 40px 100px ${s.color}55, 0 0 0 1px ${s.color}`,
-      }}>
+    <div className="relative rounded-3xl"
+      style={{ width: "100%", height: "78vh", background: s.color, boxShadow: `0 40px 100px ${s.color}55, 0 0 0 1px ${s.color}` }}>
 
-      {/* ── PAYSAGE (md+) : texte gauche + téléphone bas droite légèrement plus petit ── */}
-      <div className="hidden md:flex items-center w-full h-full">
+      {/* ── DESKTOP (md+) — ancien code exact ── */}
+      <div className="hidden md:flex items-center px-14 h-full">
         <div className="flex flex-col gap-5 max-w-md z-10 relative">
           <span className="font-roboto font-700 text-xs tracking-[0.25em] uppercase text-white/50">{s.num}</span>
           <h2 className="font-roboto font-900 uppercase text-white whitespace-pre-line"
@@ -144,15 +104,14 @@ function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolea
           </p>
           <div className="h-px w-12" style={{ background: "rgba(255,255,255,0.4)" }} />
         </div>
-
-        {/* Téléphone paysage — légèrement plus petit qu'avant (170px au lieu de 210px) */}
-        <div className="absolute pointer-events-none z-20" style={{ bottom: "-20px", right: "60px" }}>
-          <div style={{ width: "145px", aspectRatio: "9/19.5", borderRadius: "24px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
+        {/* Téléphone desktop — taille originale, bas droite */}
+        <div className="absolute pointer-events-none z-20" style={{ bottom: "-75px", right: "60px" }}>
+          <div style={{ width: "210px", aspectRatio: "9/19.5", borderRadius: "34px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 40px 80px rgba(0,0,0,0.6)", overflow: "hidden", position: "relative" }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
-              style={{ width: "72px", height: "18px", background: "#000", borderRadius: "0 0 11px 11px" }}>
-              <div className="w-1 h-1 rounded-full bg-[#1a1a1a]" />
-              <div className="w-6 h-0.5 rounded-full bg-white/10" />
-              <div className="w-1 h-1 rounded-full bg-[#1a1a1a]" />
+              style={{ width: "90px", height: "22px", background: "#000", borderRadius: "0 0 14px 14px" }}>
+              <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
+              <div className="w-8 h-0.5 rounded-full bg-white/10" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
             </div>
             <div className="absolute inset-0 overflow-hidden">
               <AnimatePresence mode="wait">
@@ -163,26 +122,21 @@ function SlideCard({ s, isActive }: { s: typeof BASE_SLIDES[0]; isActive: boolea
                 </motion.div>
               </AnimatePresence>
             </div>
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-white/15 z-10" />
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-white/15 z-10" />
           </div>
         </div>
       </div>
 
-      {/* ── PORTRAIT (mobile) : texte en haut, carte colorée coupée à mi-téléphone ── */}
+      {/* ── MOBILE — texte haut + petit téléphone centré en bas ── */}
       <div className="flex md:hidden flex-col h-full px-5 pt-6">
-        {/* Texte */}
         <div className="flex flex-col gap-3">
           <span className="font-roboto font-700 text-[10px] tracking-[0.25em] uppercase text-white/50">{s.num}</span>
           <h2 className="font-roboto font-900 uppercase text-white whitespace-pre-line"
             style={{ fontSize: "clamp(30px, 9vw, 44px)", letterSpacing: "-0.02em", lineHeight: "0.92" }}>
             {s.title}
           </h2>
-          <p className="font-roboto font-400 text-white/65 leading-relaxed text-sm">
-            {s.desc}
-          </p>
+          <p className="font-roboto font-400 text-white/65 leading-relaxed text-sm">{s.desc}</p>
         </div>
-
-        {/* Téléphone — centré, dans la carte (pas de débordement = pas de bug transition) */}
         <div className="flex justify-center mt-3">
           <div style={{ width: "50vw", maxWidth: "200px", aspectRatio: "9/19.5", borderRadius: "28px", background: "#09000f", border: "2.5px solid rgba(255,255,255,0.9)", boxShadow: "0 20px 50px rgba(0,0,0,0.5)", overflow: "hidden", position: "relative" }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center gap-1"
@@ -214,24 +168,9 @@ export default function HomeFeatures() {
   const [dir, setDir] = useState(1);
   const autoTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const goTo = (idx: number, direction: number) => {
-    setDir(direction);
-    setCurrent(((idx % N) + N) % N);
-  };
-
-  const handleNav = (delta: number) => {
-    stopAuto();
-    goTo(current + delta, delta);
-    setTimeout(startAuto, 5000);
-  };
-
-  const startAuto = () => {
-    stopAuto();
-    autoTimer.current = setInterval(() => {
-      setCurrent(prev => { setDir(1); return (prev + 1) % N; });
-    }, 5000);
-  };
-
+  const goTo = (idx: number, direction: number) => { setDir(direction); setCurrent(((idx % N) + N) % N); };
+  const handleNav = (delta: number) => { stopAuto(); goTo(current + delta, delta); setTimeout(startAuto, 5000); };
+  const startAuto = () => { stopAuto(); autoTimer.current = setInterval(() => { setCurrent(prev => { setDir(1); return (prev + 1) % N; }); }, 5000); };
   const stopAuto = () => { if (autoTimer.current) clearInterval(autoTimer.current); };
 
   useEffect(() => { startAuto(); return stopAuto; }, []);
@@ -243,34 +182,22 @@ export default function HomeFeatures() {
   };
 
   return (
-    <section className="relative bg-white flex flex-col items-center justify-center"
-      style={{ minHeight: "100svh", overflow: "hidden" }}
-      aria-label="Fonctionnalités Mood2Fit">
+    <section className="relative h-screen bg-white overflow-hidden flex flex-col items-center justify-center" aria-label="Fonctionnalités Mood2Fit">
 
-      {/* Carousel */}
-      <div className="relative flex items-center justify-center w-full overflow-hidden md:overflow-visible" style={{ height: "82vh" }}>
-
-        {/* Carte active */}
+      <div className="relative flex items-center justify-center w-full" style={{ height: "78vh" }}>
+        {/* Desktop : 76vw / Mobile : 92vw */}
         <div className="relative z-10 w-[92vw] md:w-[76vw]">
           <AnimatePresence custom={dir} mode="wait">
-            <motion.div
-              key={current}
-              custom={dir}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <SlideCard s={BASE_SLIDES[current]} isActive={true} />
+            <motion.div key={current} custom={dir} variants={variants} initial="enter" animate="center" exit="exit"
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>
+              <SlideCard s={BASE_SLIDES[current]} />
             </motion.div>
           </AnimatePresence>
         </div>
 
         {/* Flèches */}
         {[-1, 1].map((delta) => (
-          <button key={delta}
-            onClick={() => handleNav(delta)}
+          <button key={delta} onClick={() => handleNav(delta)}
             className={`absolute ${delta === -1 ? "left-2 md:left-8" : "right-2 md:right-8"} top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110`}
             style={{ background: "rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.1)" }}
             aria-label={delta === -1 ? "Précédent" : "Suivant"}>
@@ -282,11 +209,10 @@ export default function HomeFeatures() {
       </div>
 
       {/* Dots */}
-      <div className="flex items-center gap-3 mt-6 z-20">
+      <div className="flex items-center gap-3 mt-8 z-20">
         {BASE_SLIDES.map((s, i) => (
           <button key={i} onClick={() => { stopAuto(); goTo(i, i > current ? 1 : -1); setTimeout(startAuto, 5000); }}
-            aria-label={`Slide ${i + 1}`}
-            className="rounded-full transition-all duration-300"
+            aria-label={`Slide ${i + 1}`} className="rounded-full transition-all duration-300"
             style={{ width: i === current ? 28 : 8, height: 8, background: i === current ? BASE_SLIDES[current].color : "rgba(0,0,0,0.15)" }} />
         ))}
       </div>
