@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Zap, Target, Trophy } from "lucide-react";
 
-// ─── DONNÉES EXACTES DE L'ANCIENNE HOMEPAGE ─────────────────
 const features = [
   {
     slide: 0,
@@ -54,11 +53,9 @@ const features = [
   },
 ];
 
-// ─── ÉCRANS ──────────────────────────────────────────────────
 function MoodScreen() {
   return (
     <div className="flex flex-col gap-2 p-3 pt-8 h-full overflow-hidden" style={{ background: "#0d001a" }}>
-      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <div className="text-[8px] text-[rgba(255,255,255,.4)]">Bonjour,</div>
@@ -66,7 +63,6 @@ function MoodScreen() {
         </div>
         <div className="w-7 h-7 rounded-full border border-[rgba(114,9,183,.5)] bg-[rgba(114,9,183,.14)] flex items-center justify-center text-[11px]">🔔</div>
       </div>
-      {/* Mood */}
       <div className="rounded-[14px] p-2.5" style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(114,9,183,.32)" }}>
         <div className="font-syne font-700 text-[11px] text-white mb-2">Mood du jour</div>
         <div className="grid grid-cols-3 gap-1">
@@ -84,7 +80,6 @@ function MoodScreen() {
           ))}
         </div>
       </div>
-      {/* Explorer */}
       <div className="rounded-[12px] p-[11px_13px]" style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(114,9,183,.28)" }}>
         <div className="flex justify-between items-start mb-2">
           <div>
@@ -95,7 +90,6 @@ function MoodScreen() {
         </div>
         <div className="text-center py-2 rounded-full bg-[#7c3aed] font-syne font-700 text-[10px] text-white">Explorer la carte</div>
       </div>
-      {/* Feed */}
       <div className="flex justify-between items-center">
         <div className="font-syne font-800 text-[13px] text-white">Feed</div>
         <div className="text-[9px] text-[#7c3aed] font-700">Filtres</div>
@@ -108,7 +102,6 @@ function MoodScreen() {
         </div>
         <div className="text-[9px] text-[rgba(255,255,255,.62)] leading-[1.5]">1 min consacrées aujourd'hui à mes pecs doux !</div>
       </div>
-      {/* Nav */}
       <div className="flex justify-around items-center pt-2 border-t border-[rgba(255,255,255,.06)] mt-auto">
         {[{ e: "🏠", l: "Accueil", on: true }, { e: "🗺️", l: "Carte" }, { e: "🏋️", l: "Séances" }, { e: "💬", l: "Messages" }, { e: "👤", l: "Profil" }].map((n) => (
           <div key={n.l} className="flex flex-col items-center gap-0.5">
@@ -127,7 +120,6 @@ function MatchingScreen() {
       <div className="flex items-center gap-2">
         <div><div className="text-[8px] text-[rgba(255,255,255,.4)]">3 matchs près de toi</div><div className="font-syne font-800 text-[15px] text-white">Partenaires</div></div>
       </div>
-      {/* Card 1 */}
       <div className="rounded-[13px] p-[11px] relative overflow-hidden" style={{ background: "rgba(255,255,255,.05)", border: "1px solid rgba(247,37,133,.28)" }}>
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#f72585] to-[#7209b7]" />
         <div className="flex items-center gap-2 mb-1.5">
@@ -142,7 +134,6 @@ function MatchingScreen() {
         </div>
         <div className="text-center py-1.5 rounded-full font-syne font-700 text-[9px] text-white bg-gradient-to-r from-[#f72585] to-[#7209b7]">💬 Envoyer un message</div>
       </div>
-      {/* Card 2 */}
       <div className="rounded-[13px] p-[11px] relative overflow-hidden" style={{ background: "rgba(255,255,255,.05)", border: "1px solid rgba(76,201,240,.3)" }}>
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#4cc9f0] to-[#b5179e]" />
         <div className="flex items-center gap-2 mb-1.5">
@@ -157,7 +148,6 @@ function MatchingScreen() {
         </div>
         <div className="text-center py-1.5 rounded-full font-syne font-700 text-[9px] text-white bg-gradient-to-r from-[#4cc9f0] to-[#7209b7]">💬 Envoyer un message</div>
       </div>
-      {/* Nav */}
       <div className="flex justify-around items-center pt-2 border-t border-[rgba(255,255,255,.06)] mt-auto">
         {[{ e: "🏠", l: "Accueil" }, { e: "🗺️", l: "Carte" }, { e: "🏋️", l: "Séances", on: true }, { e: "💬", l: "Messages" }, { e: "👤", l: "Profil" }].map((n) => (
           <div key={n.l} className="flex flex-col items-center gap-0.5">
@@ -174,7 +164,6 @@ function ChallengesScreen() {
   return (
     <div className="flex flex-col gap-2 p-3 pt-8 h-full overflow-hidden" style={{ background: "#0d001a" }}>
       <div><div className="text-[8px] text-[rgba(255,255,255,.4)]">Défis du jour</div><div className="font-syne font-800 text-[15px] text-white">Challenges</div></div>
-      {/* Stats */}
       <div className="grid grid-cols-3 gap-1">
         {[{ n: "340", l: "Points" }, { n: "3", l: "En cours" }, { n: "🥈", l: "Rang" }].map((s) => (
           <div key={s.l} className="rounded-[9px] p-[7px_5px] text-center" style={{ background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.07)" }}>
@@ -183,12 +172,10 @@ function ChallengesScreen() {
           </div>
         ))}
       </div>
-      {/* Mood badges */}
       <div className="flex gap-1">
         <span className="px-2 py-0.5 rounded-full font-syne font-700 text-[8px] text-[#ff6b6b]" style={{ background: "rgba(255,59,48,.13)", border: "1px solid rgba(255,59,48,.36)" }}>🔥 Je suis chaud·e</span>
         <span className="px-2 py-0.5 rounded-full font-syne font-700 text-[8px] text-[#4dabff]" style={{ background: "rgba(10,132,255,.13)", border: "1px solid rgba(10,132,255,.36)" }}>😄 Compagnie</span>
       </div>
-      {/* Challenge 1 */}
       <div className="rounded-[12px] p-[10px_11px]" style={{ background: "rgba(255,255,255,.05)", border: "1px solid rgba(114,9,183,.32)" }}>
         <div className="flex justify-between items-start mb-1.5">
           <span className="text-[20px]">💪</span>
@@ -200,7 +187,6 @@ function ChallengesScreen() {
           <div className="h-full w-[60%] rounded-full bg-gradient-to-r from-[#f72585] to-[#7209b7]" />
         </div>
       </div>
-      {/* Challenge 2 */}
       <div className="rounded-[12px] p-[10px_11px]" style={{ background: "rgba(255,255,255,.05)", border: "1px solid rgba(114,9,183,.32)" }}>
         <div className="flex justify-between items-start mb-1.5">
           <span className="text-[20px]">👥</span>
@@ -212,7 +198,6 @@ function ChallengesScreen() {
           <div className="h-full w-[75%] rounded-full bg-gradient-to-r from-[#7209b7] to-[#4cc9f0]" />
         </div>
       </div>
-      {/* Nav */}
       <div className="flex justify-around items-center pt-2 border-t border-[rgba(255,255,255,.06)] mt-auto">
         {[{ e: "🏠", l: "Accueil" }, { e: "🗺️", l: "Carte" }, { e: "🏋️", l: "Séances" }, { e: "💬", l: "Messages", on: true }, { e: "👤", l: "Profil" }].map((n) => (
           <div key={n.l} className="flex flex-col items-center gap-0.5">
@@ -231,23 +216,19 @@ const phoneScreens: Record<string, React.ReactNode> = {
   challenges: <ChallengesScreen />,
 };
 
-// ─── TÉLÉPHONE ──────────────────────────────────────────────
-function Phone({ activeSlide, glowColor, accentColor, phoneScreen }: {
+// ─── TÉLÉPHONE — accentColor supprimé (non utilisé) ─────────
+function Phone({ activeSlide, glowColor, phoneScreen }: {
   activeSlide: number;
   glowColor: string;
-  accentColor: string;
   phoneScreen: string;
 }) {
   return (
     <div className="flex justify-center relative">
-      {/* Glow */}
       <div
         className="absolute w-[240px] h-[240px] rounded-full z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700"
         style={{ background: `radial-gradient(circle,${glowColor} 0%,transparent 70%)`, filter: "blur(44px)", animation: "glPulse 5s ease-in-out infinite" }}
       />
       <style>{`@keyframes glPulse{0%,100%{opacity:.7}50%{opacity:1}}@keyframes phFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}`}</style>
-
-      {/* Corps */}
       <div
         className="relative z-[1] overflow-hidden"
         style={{
@@ -259,20 +240,15 @@ function Phone({ activeSlide, glowColor, accentColor, phoneScreen }: {
           animation: "phFloat 7s ease-in-out infinite",
         }}
       >
-        {/* Encoche */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 z-[5] flex items-center justify-center gap-1.5" style={{ width: "108px", height: "27px", background: "#000", borderRadius: "0 0 20px 20px" }}>
           <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
           <div className="w-[50px] h-1 rounded-full bg-[rgba(255,255,255,.1)]" />
           <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
         </div>
-
-        {/* Barre status */}
         <div className="flex justify-between items-center px-[18px] pt-3 pb-1 font-bold text-[12px] text-white" style={{ fontFamily: "-apple-system,sans-serif" }}>
           <span>{["19:21", "20:04", "21:37"][activeSlide]}</span>
           <span>▲▲ 🔋</span>
         </div>
-
-        {/* Écran */}
         <div className="relative" style={{ minHeight: "510px", overflow: "hidden" }}>
           <AnimatePresence mode="wait">
             <motion.div
@@ -292,7 +268,6 @@ function Phone({ activeSlide, glowColor, accentColor, phoneScreen }: {
   );
 }
 
-// ─── COMPOSANT PRINCIPAL ────────────────────────────────────
 export default function AppFeatures() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
@@ -323,8 +298,6 @@ export default function AppFeatures() {
       aria-label="Fonctionnalités Mood2Fit"
     >
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden" style={{ background: "#080010" }}>
-
-        {/* Fond radial */}
         <div
           className="absolute inset-0 pointer-events-none transition-all duration-1000"
           style={{ background: `radial-gradient(ellipse 55% 55% at 50% 50%, ${current.accentColor}10, transparent 70%)` }}
@@ -333,21 +306,14 @@ export default function AppFeatures() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(247,37,133,0.12)] to-transparent" />
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-5 md:px-8">
-
-          {/* Layout 2 colonnes */}
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-            {/* Téléphone */}
             <div className={current.textSide === "right" ? "lg:order-1" : "lg:order-2"}>
               <Phone
                 activeSlide={activeSlide}
                 glowColor={current.glowColor}
-                accentColor={current.accentColor}
                 phoneScreen={current.phoneScreen}
               />
             </div>
-
-            {/* Texte */}
             <div className={`flex flex-col gap-6 ${current.textSide === "right" ? "lg:order-2" : "lg:order-1"}`}>
               <AnimatePresence mode="wait">
                 <motion.div
@@ -358,33 +324,19 @@ export default function AppFeatures() {
                   exit={{ opacity: 0, x: current.textSide === "left" ? -25 : 25 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {/* Label */}
-                  <span
-                    className="block font-syne font-700 text-[11px] tracking-[.16em] uppercase mb-1"
-                    style={{ color: current.accentColor }}
-                  >
+                  <span className="block font-syne font-700 text-[11px] tracking-[.16em] uppercase mb-1" style={{ color: current.accentColor }}>
                     {current.label}
                   </span>
-
-                  {/* Titre */}
-                  <h2 className="font-syne font-800 text-[#faf4ff] leading-[1.08] tracking-[-0.025em]"
-                    style={{ fontSize: "clamp(26px,2.8vw,40px)" }}
-                  >
+                  <h2 className="font-syne font-800 text-[#faf4ff] leading-[1.08] tracking-[-0.025em]" style={{ fontSize: "clamp(26px,2.8vw,40px)" }}>
                     {current.title}<br />
                     <span style={{ color: current.accentColor }}>{current.titleAccent}</span>
                   </h2>
-
-                  {/* Description */}
                   <p className="font-dm font-400 text-[rgba(250,244,255,0.65)] leading-[1.8]" style={{ fontSize: "15px" }}>
                     {current.desc}
                   </p>
-
-                  {/* Body */}
                   <p className="font-dm font-300 text-[rgba(250,244,255,0.55)] leading-[1.75]" style={{ fontSize: "14px" }}>
                     {current.body}
                   </p>
-
-                  {/* CTA */}
                   <Link
                     href={current.ctaHref}
                     className="self-start px-6 py-3 rounded-pill font-dm font-500 text-sm text-white transition-all duration-200 hover:opacity-90 active:scale-[.98]"
@@ -394,8 +346,6 @@ export default function AppFeatures() {
                   </Link>
                 </motion.div>
               </AnimatePresence>
-
-              {/* Dots */}
               <div className="flex items-center gap-3 mt-2">
                 {features.map((f, i) => (
                   <div
@@ -416,7 +366,6 @@ export default function AppFeatures() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 pointer-events-none">
           <span className="font-syne text-[10px] tracking-[.14em] uppercase text-[rgba(250,244,255,.5)]">Scroll</span>
           <motion.div
