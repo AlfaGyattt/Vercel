@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -64,7 +63,6 @@ const stats = [
 ];
 
 export default function AProposPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
