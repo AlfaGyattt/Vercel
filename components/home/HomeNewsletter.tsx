@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
 
 const schema = z.object({
   email: z.string().email("Email invalide").max(100),
@@ -14,26 +15,49 @@ type FormData = z.infer<typeof schema>;
 
 export default function HomeNewsletter() {
   const [submitted, setSubmitted] = useState(false);
+  // ── LM-4 : états d'erreur serveur distincts
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [alreadySubscribed, setAlreadySubscribed] = useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
   const onSubmit = async (data: FormData) => {
+    // Reset états précédents
+    setServerError(null);
+    setAlreadySubscribed(false);
+
     try {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: data.email }),
       });
-      if (!res.ok) {
-        const err = await res.json();
-        console.error("Erreur newsletter:", err);
+
+      // ── LM-4 : email déjà inscrit
+      if (res.status === 409) {
+        setAlreadySubscribed(true);
+        return;
       }
-    } catch (e) {
-      console.error("Erreur réseau:", e);
+
+      // ── LM-3 : rate limit
+      if (res.status === 429) {
+        setServerError("Trop de tentatives. Réessaie dans une heure.");
+        return;
+      }
+
+      if (!res.ok) {
+        setServerError("Une erreur s'est produite. Réessaie dans quelques instants.");
+        return;
+      }
+
+      setSubmitted(true);
+
+    } catch (err) {
+      console.error("Newsletter error:", err);
+      setServerError("Impossible d'envoyer. Vérifie ta connexion et réessaie.");
     }
-    setSubmitted(true);
   };
 
   return (
@@ -65,7 +89,7 @@ export default function HomeNewsletter() {
             <div className="flex flex-col gap-2 mt-2">
               {[
                 "Accès beta avant tout le monde",
-                "Tips sport exclusifs chaque semaine",
+                "Tips sport exclusifs chaque mois",
                 "Événements et meetups communautaires",
               ].map((b) => (
                 <div key={b} className="flex items-center gap-3">
@@ -84,6 +108,8 @@ export default function HomeNewsletter() {
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
             <AnimatePresence mode="wait">
+
+              {/* ── Succès */}
               {submitted ? (
                 <motion.div
                   key="success"
@@ -93,20 +119,41 @@ export default function HomeNewsletter() {
                 >
                   <div className="font-roboto font-900 text-white uppercase tracking-[-0.02em]"
                     style={{ fontSize: "clamp(28px, 3vw, 40px)" }}>
-                    Tu es dans la boucle. 
+                    Tu es dans la boucle.
                   </div>
                   <p className="font-roboto font-400 text-white/40 text-sm">
                     Vérifie ton email pour confirmer ton inscription.
                   </p>
                 </motion.div>
+
+              ) : alreadySubscribed ? (
+
+                /* ── LM-4 : déjà inscrit */
+                <motion.div
+                  key="already"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-col gap-3"
+                >
+                  <div className="font-roboto font-900 text-white uppercase tracking-[-0.02em]"
+                    style={{ fontSize: "clamp(24px, 2.5vw, 36px)" }}>
+                    Déjà dans la boucle !
+                  </div>
+                  <p className="font-roboto font-400 text-white/40 text-sm">
+                    Cet email est déjà inscrit à la newsletter. Tu recevras le prochain numéro lundi matin.
+                  </p>
+
+                </motion.div>
+
               ) : (
+
+                /* ── Formulaire */
                 <motion.form
                   key="form"
                   onSubmit={handleSubmit(onSubmit)}
                   className="flex flex-col gap-4"
                   noValidate
                 >
-                  {/* Input email */}
                   <div className="flex flex-col gap-2">
                     <input
                       type="email"
@@ -127,17 +174,24 @@ export default function HomeNewsletter() {
                     )}
                   </div>
 
-                  {/* Submit */}
+                  {/* ── LM-4 : erreur serveur */}
+                  {serverError && (
+                    <div className="flex items-center gap-2 px-4 py-3 rounded-xl"
+                      style={{ background: "rgba(247,37,133,0.08)", border: "1px solid rgba(247,37,133,0.2)" }}>
+                      <p className="font-roboto text-xs text-[#f72585]">{serverError}</p>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 font-roboto font-700 text-sm tracking-[0.05em] uppercase text-white transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-50"
+                    className="w-full py-4 font-roboto font-700 text-sm tracking-[0.05em] uppercase text-white transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     style={{
                       background: "linear-gradient(135deg, #f72585, #7209b7)",
                       borderRadius: "12px",
                     }}
                   >
-                    {isSubmitting ? "Envoi…" : "Je m'abonne — c'est gratuit"}
+                    {isSubmitting ? <><Loader2 size={15} className="animate-spin" />Envoi…</> : "Je m'abonne — c'est gratuit"}
                   </button>
 
                   <p className="font-roboto text-[11px] text-white/25 text-center tracking-wide">

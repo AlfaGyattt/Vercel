@@ -1,22 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY!;
 const FROM_EMAIL = process.env.BREVO_SENDER_EMAIL || "hello@mood2fit.app";
 const FROM_NAME = "Mood2Fit";
 
-export async function POST(req: NextRequest) {
-  console.log("📧 API newsletter appelée");
-  console.log("BREVO_API_KEY définie ?", !!BREVO_API_KEY);
-  console.log("BREVO_LIST_ID:", process.env.BREVO_LIST_ID);
+// ── Rate limiter : 3 inscriptions max par IP toutes les 60 minutes
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(3, "60 m"),
+  analytics: true,
+});
 
+export async function POST(req: NextRequest) {
   try {
+
+    // ── 1. Rate limiting par IP
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
+    const { success } = await ratelimit.limit(`newsletter:${ip}`);
+    if (!success) {
+      return NextResponse.json(
+        { error: "Trop de tentatives. Réessaie dans une heure." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
-    console.log("Body reçu:", body);
     const { email, firstname } = body;
 
-    if (!email || !email.includes("@")) {
+    // ── 2. Honeypot anti-bot
+    if (body._trap) {
+      return NextResponse.json({ success: true }); // Bot → on fait semblant
+    }
+
+    // ── 3. Validation + sanitization
+    const cleanEmail = email?.trim().toLowerCase().slice(0, 100) || "";
+    if (!cleanEmail || !cleanEmail.includes("@")) {
       return NextResponse.json({ error: "Email invalide" }, { status: 400 });
     }
+    const cleanFirstname = (firstname || "").trim().slice(0, 50);
 
     // 1. Ajouter le contact à la liste Brevo
     const contactRes = await fetch("https://api.brevo.com/v3/contacts", {
@@ -26,16 +49,26 @@ export async function POST(req: NextRequest) {
         "api-key": BREVO_API_KEY,
       },
       body: JSON.stringify({
-        email,
-        attributes: { FIRSTNAME: firstname || "" },
+        email: cleanEmail,
+        attributes: { FIRSTNAME: cleanFirstname },
         listIds: [Number(process.env.BREVO_LIST_ID || 5)],
         updateEnabled: true,
       }),
     });
     const contactText = await contactRes.text();
-    console.log("Brevo contact response:", contactRes.status, contactText);
 
-    // 2. Envoyer l'email de confirmation
+    // ── 4. Gérer "email déjà inscrit"
+    if (contactRes.status === 400) {
+      const contactJson = JSON.parse(contactText);
+      if (contactJson.code === "duplicate_parameter") {
+        return NextResponse.json(
+          { error: "Cet email est déjà inscrit à la newsletter." },
+          { status: 409 }
+        );
+      }
+    }
+
+    // 2. Envoyer l'email de confirmation via template Brevo #9
     const emailRes = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
@@ -44,14 +77,12 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         sender: { name: FROM_NAME, email: FROM_EMAIL },
-        to: [{ email }],
-        subject: "Tu es dans la boucle. Bienvenue dans la commu.",
-        htmlContent: getEmailHtml(),
+        to: [{ email: cleanEmail }],
+        templateId: 9, // ← Template "Inscription Newsletter" Brevo
       }),
     });
 
     const emailText = await emailRes.text();
-    console.log("Brevo email response:", emailRes.status, emailText);
 
     if (!emailRes.ok) {
       return NextResponse.json({ error: "Erreur envoi email", detail: emailText }, { status: 500 });
@@ -114,7 +145,7 @@ function getEmailHtml(): string {
                 la boucle.
               </p>
               <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:rgba(255,255,255,0.6);line-height:1.6;margin:0;max-width:400px;">
-                Bienvenue dans la communauté Mood2Fit. Chaque semaine, le meilleur de l'actu sport, des conseils concrets et les événements près de chez toi.
+                Bienvenue dans la communauté Mood2Fit. Chaque mois, le meilleur de l'actu sport, des conseils concrets et les événements près de chez toi.
               </p>
             </td>
           </tr>
@@ -123,12 +154,10 @@ function getEmailHtml(): string {
           <tr>
             <td style="background-color:#ffffff;padding:28px 24px;">
 
-              <!-- Section titre -->
               <p style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;color:#f72585;letter-spacing:3px;text-transform:uppercase;margin:0 0 20px 0;">
                 Ce que tu vas recevoir
               </p>
 
-              <!-- Benefit 1 -->
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #eeeeee;">
                 <tr>
                   <td style="padding:16px 0;border-bottom:1px solid #eeeeee;">
@@ -138,7 +167,7 @@ function getEmailHtml(): string {
                           <div style="width:6px;height:6px;border-radius:50%;background-color:#f72585;"></div>
                         </td>
                         <td style="padding-left:12px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#555555;line-height:1.5;">
-                          <strong style="color:#000000;">Les tendances sport de la semaine.</strong> Street workout, fitness, callisthénie. Ce qui monte, ce qui marche.
+                          <strong style="color:#000000;">Les tendances sport du mois.</strong> Street workout, fitness, callisthénie. Ce qui monte, ce qui marche.
                         </td>
                       </tr>
                     </table>
@@ -210,7 +239,7 @@ function getEmailHtml(): string {
                       Rejoins<br/>la commu.
                     </p>
                     <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:rgba(255,255,255,0.8);margin:0 0 24px 0;line-height:1.5;">
-                      2 400 sportifs t'attendent sur la liste d'attente.<br/>L'app arrive bientôt.
+                      Sois parmi les premiers à rejoindre la communauté.<br/>L'app arrive bientôt.
                     </p>
                     <a href="https://mood2fit.app" style="display:inline-block;background-color:#ffffff;color:#f72585;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;padding:14px 36px;border-radius:100px;">
                       Ouvrir le site
@@ -227,12 +256,12 @@ function getEmailHtml(): string {
                 <tr>
                   <td width="25%" style="text-align:center;background-color:#f7f7f7;border-radius:10px;padding:16px 8px;font-family:Arial,Helvetica,sans-serif;">
                     <p style="font-size:10px;font-weight:700;color:#999999;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 6px 0;">Fréquence</p>
-                    <p style="font-size:13px;font-weight:700;color:#000000;margin:0;">1/semaine</p>
+                    <p style="font-size:13px;font-weight:700;color:#000000;margin:0;">1/mois</p>
                   </td>
                   <td width="2%"></td>
                   <td width="25%" style="text-align:center;background-color:#f7f7f7;border-radius:10px;padding:16px 8px;font-family:Arial,Helvetica,sans-serif;">
                     <p style="font-size:10px;font-weight:700;color:#999999;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 6px 0;">Envoi</p>
-                    <p style="font-size:13px;font-weight:700;color:#000000;margin:0;">Lundi matin</p>
+                    <p style="font-size:13px;font-weight:700;color:#000000;margin:0;">1er lundi</p>
                   </td>
                   <td width="2%"></td>
                   <td width="25%" style="text-align:center;background-color:#f7f7f7;border-radius:10px;padding:16px 8px;font-family:Arial,Helvetica,sans-serif;">
@@ -273,7 +302,6 @@ function getEmailHtml(): string {
           </tr>
 
         </table>
-        <!-- END WRAPPER -->
 
       </td>
     </tr>

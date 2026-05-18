@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
@@ -10,8 +11,15 @@ const roboto = Roboto({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Mood2Fit",
+export function generateMetadata(): Metadata {
+  return {
+  // ── Base URL — requis pour que Next.js construise les URLs absolues (og:image etc.)
+  metadataBase: new URL("https://mood2fit.app"),
+
+  title: {
+    default: "Mood2Fit",
+    template: "%s | Mood2Fit", // ex: "Communauté | Mood2Fit"
+  },
   description:
     "L'app qui matche ton énergie du jour avec le bon partenaire de sport. Musculation, street workout, cardio — entraîne-toi avec des gens qui te ressemblent.",
   keywords: [
@@ -22,8 +30,13 @@ export const metadata: Metadata = {
     "motivation sport",
     "app fitness",
     "co-sport",
+    "matching sport",
+    "trouver partenaire musculation",
+    "sport en groupe",
   ],
   authors: [{ name: "Mood2Fit" }],
+
+  // ── Open Graph — preview sur Instagram, LinkedIn, WhatsApp, Facebook
   openGraph: {
     title: "Mood2Fit — Trouve ton partenaire d'entraînement",
     description:
@@ -32,18 +45,41 @@ export const metadata: Metadata = {
     siteName: "Mood2Fit",
     locale: "fr_FR",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png", // ← à créer : 1200x630px avec logo + tagline
+        width: 1200,
+        height: 630,
+        alt: "Mood2Fit — Trouve ton partenaire d'entraînement",
+      },
+    ],
   },
+
+  // ── Twitter / X
   twitter: {
     card: "summary_large_image",
     title: "Mood2Fit — Trouve ton partenaire d'entraînement",
     description:
       "L'app qui matche ton énergie du jour avec le bon partenaire de sport.",
+    images: ["/og-image.png"],
   },
+
+  // ── Robots
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
-};
+    other: {
+      ...Sentry.getTraceData(),
+    },
+  };
+}
 
 export default function RootLayout({
   children,

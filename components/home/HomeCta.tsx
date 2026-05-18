@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function HomeCta() {
@@ -13,9 +14,15 @@ export default function HomeCta() {
       <div className="absolute inset-0 pointer-events-none opacity-10"
         style={{ backgroundImage: "radial-gradient(circle at 20% 80%, rgba(0,0,0,0.4) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.3) 0%, transparent 50%)" }} />
 
-      {/* Logo watermark */}
+      {/* Logo watermark — next/image */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" aria-hidden="true">
-        <img src="/logo.png" alt="" width={500} height={500} className="object-contain opacity-[0.07]" />
+        <Image
+          src="/logo.png"
+          alt=""
+          width={500}
+          height={500}
+          className="object-contain opacity-[0.07]"
+        />
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-6xl mx-auto">
@@ -41,7 +48,7 @@ export default function HomeCta() {
           className="font-roboto font-400 text-white/75 max-w-md mb-12 leading-relaxed"
           style={{ fontSize: "clamp(15px, 1.6vw, 19px)" }}
         >
-          Rejoins des milliers de sportifs qui s&apos;entraînent mieux, ensemble.
+          Sois parmi les premiers à rejoindre la communauté.
         </motion.p>
 
         {/* CTA */}
@@ -52,28 +59,22 @@ export default function HomeCta() {
           transition={{ duration: 0.7, delay: 0.45 }}
           className="flex flex-col sm:flex-row gap-4"
         >
-          {/* App Store */}
-          <Link href="/"
-            className="flex items-center gap-3 px-8 py-4 rounded-full font-roboto font-700 text-sm text-[#f72585] bg-white hover:scale-[1.03] active:scale-[0.97] transition-all duration-150"
+          {/* App Store — next/image */}
+          <Link href="#"
+            className="flex items-center gap-3 px-8 py-4 rounded-full font-roboto font-700 text-sm text-black bg-white hover:scale-[1.03] active:scale-[0.97] transition-all duration-150"
             style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.2)" }}
           >
-            <img src="/app/apple.png" alt="Apple" style={{ width: "28px", height: "28px", objectFit: "contain" }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: "1px", textAlign: "left" }}>
-              <span style={{ fontSize: "9px", color: "rgba(0,0,0,0.5)", lineHeight: 1 }}>Télécharger sur</span>
-              <span style={{ fontSize: "14px", fontWeight: 700, color: "#000", lineHeight: 1.2 }}>App Store</span>
-            </div>
+            <Image src="/app/apple.png" alt="Apple" width={28} height={28} style={{ objectFit: "contain" }} />
+            <span style={{ fontSize: "15px", fontWeight: 700, color: "#000", fontFamily: "Arial" }}>App Store</span>
           </Link>
 
-          {/* Google Play */}
-          <Link href="/"
+          {/* Google Play — next/image */}
+          <Link href="#"
             className="flex items-center gap-3 px-8 py-4 rounded-full font-roboto font-700 text-sm text-white active:scale-[0.97] transition-all duration-150"
             style={{ background: "#000", border: "2px solid rgba(255,255,255,0.15)" }}
           >
-            <img src="/app/android.png" alt="Google Play" style={{ width: "28px", height: "28px", objectFit: "contain" }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: "1px", textAlign: "left" }}>
-              <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.6)", lineHeight: 1 }}>Disponible sur</span>
-              <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Google Play</span>
-            </div>
+            <Image src="/app/android.png" alt="Google Play" width={28} height={28} style={{ objectFit: "contain" }} />
+            <span style={{ fontSize: "15px", fontWeight: 700, color: "#fff", fontFamily: "Arial" }}>Google Play</span>
           </Link>
         </motion.div>
 

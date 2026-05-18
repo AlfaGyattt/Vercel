@@ -1,18 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import DOMPurify from "isomorphic-dompurify";
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY!;
 const FROM_EMAIL = process.env.BREVO_SENDER_EMAIL || "alfayedmsa45@hotmail.com";
 const FROM_NAME = "Mood2Fit";
-const TO_EMAIL = "alfayedmsa45@hotmail.com"; // ← email de réception
+const TO_EMAIL = "alfayedmsa45@hotmail.com";
+
+// ── Rate limiter : 5 messages max par IP toutes les 10 minutes
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(5, "10 m"),
+  analytics: true,
+});
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, subject, message } = await req.json();
+
+    // ── 1. Rate limiting par IP
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
+    const { success } = await ratelimit.limit(`contact:${ip}`);
+    if (!success) {
+      return NextResponse.json(
+        { error: "Trop de messages envoyés. Réessaie dans quelques minutes." },
+        { status: 429 }
+      );
+    }
+
+    // ── 2. Lecture body
+    const body = await req.json();
+    const { name, email, subject, message } = body;
 
     if (!name || !email || !subject || !message) {
       return NextResponse.json({ error: "Champs manquants" }, { status: 400 });
     }
 
+    // ── 3. Honeypot anti-bot (champ _trap caché dans le formulaire)
+    if (body._trap) {
+      return NextResponse.json({ success: true }); // Bot → on fait semblant
+    }
+
+    // ── 4. Sanitization XSS
+    const cleanName    = DOMPurify.sanitize(name,    { ALLOWED_TAGS: [] }).trim().slice(0, 80);
+    const cleanEmail   = email.trim().toLowerCase().slice(0, 100);
+    const cleanSubject = DOMPurify.sanitize(subject, { ALLOWED_TAGS: [] }).trim().slice(0, 120);
+    const cleanMessage = DOMPurify.sanitize(message, { ALLOWED_TAGS: [] }).trim().slice(0, 2000);
+
+    // ── 5. Envoi Brevo (ton code exact)
     const res = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
@@ -22,14 +57,18 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         sender: { name: FROM_NAME, email: FROM_EMAIL },
         to: [{ email: TO_EMAIL }],
-        replyTo: { email, name },
-        subject: `[Contact] ${subject} — ${name}`,
-        htmlContent: getEmailHtml({ name, email, subject, message }),
+        replyTo: { email: cleanEmail, name: cleanName },
+        subject: `[Contact] ${cleanSubject} — ${cleanName}`,
+        htmlContent: getEmailHtml({
+          name: cleanName,
+          email: cleanEmail,
+          subject: cleanSubject,
+          message: cleanMessage,
+        }),
       }),
     });
 
     const text = await res.text();
-    console.log("Brevo contact response:", res.status, text);
 
     if (!res.ok) {
       return NextResponse.json({ error: "Erreur envoi email", detail: text }, { status: 500 });
