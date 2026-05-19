@@ -67,7 +67,7 @@ const activities = [
   { name: "Cyclisme", desc: "Route & piste" },
   { name: "Yoga", desc: "Corps & esprit" },
   { name: "Boxe", desc: "Combat & cardio" },
-  { name: "Natation", desc: "Eau & endurance" },
+  { name: "Marche à pied", desc: "Cardio & bien-être" },
   { name: "Et plus encore...", desc: "Toutes disciplines" },
 ];
 
@@ -207,70 +207,132 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
         </motion.div>
       </AnimatePresence>
 
-      {/* ── MOBILE — 3 zones : titre | mokup | blocs ── */}
-      <div className="md:hidden w-full h-full flex flex-col" style={{ paddingTop: "16px" }}>
+      {/* ── MOBILE portrait & paysage — layout desktop adapté ── */}
+      <div className="md:hidden w-full h-full flex flex-col" style={{ paddingTop: "8px" }}>
 
-        {/* ZONE 1 — Titre */}
-        <div className="flex flex-col items-center justify-center text-center px-4" style={{ flex: "0 0 18%" }}>
-          <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"7px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"4px" }}>
+        {/* Titre centré tout en haut */}
+        <div className="flex flex-col items-center text-center px-3" style={{ flex: "0 0 auto", paddingBottom: "6px" }}>
+          <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"7px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"3px" }}>
             {s.id === "home" ? "ÉCRAN 01 — ACCUEIL" : s.id === "seance" ? "ÉCRAN 02 — SÉANCE" : "ÉCRAN 03 — PROFIL"}
           </p>
-          <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(16px,5vw,24px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1.1, color:"#fff" }}>
+          <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(13px,4vw,20px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1.1, color:"#fff" }}>
             {s.id === "home" ? <><span style={{color:"#fff"}}>L'accueil,</span> ton point de départ</> :
              s.id === "seance" ? <><span style={{color: NUM_COLORS_DARK[0]}}>La séance,</span> ton terrain de jeu</> :
              <><span style={{color:"#fff"}}>Le profil,</span> ton miroir de progrès</>}
           </h2>
         </div>
 
-        {/* ZONE 2 — Mokup grand */}
-        <div ref={phoneRef} className="flex justify-center items-end overflow-hidden" style={{ flex: "0 0 50%" }}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`mob-mokup-${s.id}`}
-              style={{ height: "100%", width: "100%", position: "relative" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Image
-                src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
-                alt={`Mockup ${s.label}`}
-                fill
-                style={{ objectFit: "contain", objectPosition: "bottom" }}
-              />
-            </motion.div>
-          </AnimatePresence>
+        {/* Zone principale : blocs gauche | mokup | blocs droite */}
+        <div className="flex flex-1 items-center overflow-hidden" style={{ gap: "4px", padding: "0 4px", minHeight: 0 }}>
+
+          {/* Blocs gauche */}
+          <div className="flex flex-col gap-1" style={{ width: "28%", flexShrink: 0 }}>
+            {s.left.map((b, i) => (
+              <motion.div key={b.id}
+                onClick={() => handleClick(i)}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
+                style={{
+                  background: activeIdx === i ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
+                  border: `1px solid ${activeIdx === i ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.13)"}`,
+                  borderRadius: "5px", padding: "5px 6px", cursor: "pointer",
+                  transition: "background 0.2s, border 0.2s",
+                }}>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.1em", textTransform:"uppercase", color:numColors[i], marginBottom:"2px" }}>
+                  {b.num.split(" — ")[1]}
+                </p>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7px", color:titleColors[i], lineHeight:1.1, textTransform:"uppercase" }}>
+                  {b.title}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Mokup central + pastille brillante au clic */}
+          <div ref={phoneRef} className="relative flex justify-center items-end" style={{ flex: 1, height: "100%", minHeight: 0 }}>
+            <AnimatePresence mode="wait">
+              <motion.div key={`mob-mokup-${s.id}`} style={{ height: "100%", width: "100%", position: "relative" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                <Image
+                  src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
+                  alt={`Mockup ${s.label}`}
+                  fill
+                  style={{ objectFit: "contain", objectPosition: "bottom" }}
+                />
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Pastille brillante sur le téléphone au clic */}
+            <AnimatePresence>
+              {activeIdx !== null && (() => {
+                const allBubbles = [...s.left, ...s.right];
+                const b = allBubbles[activeIdx];
+                return (
+                  <motion.div
+                    key={`dot-${activeIdx}`}
+                    className="absolute z-20 pointer-events-none"
+                    style={{ left: `${b.tx * 100}%`, top: `${b.ty * 100}%`, transform: "translate(-50%, -50%)" }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0 }}
+                  >
+                    <motion.div
+                      className="rounded-full"
+                      style={{ width: 14, height: 14, background: s.bg === "#0A0A0F" ? "#f72585" : "rgba(255,210,0,0.95)", boxShadow: `0 0 12px 4px ${s.bg === "#0A0A0F" ? "rgba(247,37,133,0.6)" : "rgba(255,210,0,0.5)"}` }}
+                      animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+                      transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  </motion.div>
+                );
+              })()}
+            </AnimatePresence>
+          </div>
+
+          {/* Blocs droite */}
+          <div className="flex flex-col gap-1" style={{ width: "28%", flexShrink: 0 }}>
+            {s.right.map((b, i) => (
+              <motion.div key={b.id}
+                onClick={() => handleClick(i + 3)}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
+                style={{
+                  background: activeIdx === i + 3 ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
+                  border: `1px solid ${activeIdx === i + 3 ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.13)"}`,
+                  borderRadius: "5px", padding: "5px 6px", cursor: "pointer",
+                  transition: "background 0.2s, border 0.2s",
+                }}>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.1em", textTransform:"uppercase", color:numColors[i+3], marginBottom:"2px" }}>
+                  {b.num.split(" — ")[1]}
+                </p>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7px", color:titleColors[i+3], lineHeight:1.1, textTransform:"uppercase" }}>
+                  {b.title}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
-        {/* ZONE 3 — Blocs cliquables en grille 3 colonnes */}
-        <div style={{ flex: "1 1 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "4px", padding: "4px 4px 6px", overflowY: "auto" }}>
-          {[...s.left, ...s.right].map((b, i) => (
-            <motion.div key={b.id}
-              onClick={() => handleClick(i)}
+        {/* Description du bloc actif en bas */}
+        <AnimatePresence>
+          {activeIdx !== null && (
+            <motion.div
+              key={`desc-${activeIdx}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.03 + i * 0.05 }}
-              style={{
-                background: activeIdx === i ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
-                border: `1px solid ${activeIdx === i ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.13)"}`,
-                borderRadius: "6px", padding: "6px 7px", cursor: "pointer",
-                transition: "background 0.2s, border 0.2s",
-              }}>
-              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.1em", textTransform:"uppercase", color:numColors[i], marginBottom:"2px" }}>
-                {b.num.split(" — ")[1]}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.25 }}
+              style={{ padding: "6px 8px", background: "rgba(0,0,0,0.3)", borderTop: "1px solid rgba(255,255,255,0.1)", flexShrink: 0 }}
+            >
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"8px", color:"#fff", textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:"2px" }}>
+                {[...s.left, ...s.right][activeIdx].title}
               </p>
-              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7.5px", color:titleColors[i], lineHeight:1.1, textTransform:"uppercase" }}>
-                {b.title}
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"8px", color:"rgba(255,255,255,0.65)", lineHeight:1.4 }}>
+                {[...s.left, ...s.right][activeIdx].desc}
               </p>
-              {activeIdx === i && (
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"7px", color:"rgba(255,255,255,0.7)", lineHeight:1.4, marginTop:"3px" }}>
-                  {b.desc}
-                </p>
-              )}
             </motion.div>
-          ))}
-        </div>
+          )}
+        </AnimatePresence>
 
       </div>
     </div>
@@ -419,7 +481,7 @@ export default function FonctionnalitesPage() {
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <ResponsiveBg priority={true} />
           <motion.div initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.9, ease:[0.16,1,0.3,1] }} className="relative z-10 flex flex-col items-center text-center gap-6 px-6 max-w-4xl mx-auto pt-20">
-            <h1 className="font-roboto font-900 uppercase leading-[0.92] text-white" style={{ fontSize:"clamp(52px,9vw,120px)", letterSpacing:"0.06em", textShadow:"0 2px 20px rgba(0,0,0,0.25)", lineHeight:"0.95" }}>
+            <h1 className="font-roboto font-900 uppercase leading-[0.92] text-white" style={{ fontSize:"clamp(52px,9vw,120px)", letterSpacing:"-0.02em", textShadow:"0 2px 20px rgba(0,0,0,0.25)", lineHeight:"0.95" }}>
               Conçu pour<br /><span style={{ color:"#f72585" }}>créer du lien.</span>
             </h1>
             <p className="font-roboto font-400 max-w-lg text-center" style={{ fontSize:"clamp(15px,1.5vw,18px)", color:"rgba(255,255,255,0.7)" }}>
