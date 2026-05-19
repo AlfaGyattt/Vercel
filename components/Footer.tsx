@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Instagram } from "lucide-react";
 
-// Map icônes sociales — Instagram + LinkedIn uniquement
 const socialIcons: Record<string, React.ReactNode> = {
   instagram: <Instagram size={20} strokeWidth={1.8} />,
   linkedin: (
@@ -13,7 +12,6 @@ const socialIcons: Record<string, React.ReactNode> = {
   ),
 };
 
-// Colonnes de liens
 const footerColumns = [
   {
     title: "Application",
@@ -36,15 +34,14 @@ const footerColumns = [
   {
     title: "Légal",
     links: [
-      { label: "Mentions légales", href: "#" },
-      { label: "Confidentialité", href: "#" },
-      { label: "CGU", href: "#" },
-      { label: "Cookies", href: "#" },
+      { label: "Mentions légales", href: "/mentions-legales" },
+      { label: "Confidentialité", href: "/confidentialite" },
+      { label: "CGU", href: "/cgu" },
+      { label: "Cookies", href: "/cookies" },
     ],
   },
 ];
 
-// Instagram + LinkedIn uniquement
 const socials = [
   { platform: "instagram", href: "https://www.instagram.com/mood2fitapp?igsh=d3E2bmc1YnRjbnl0&utm_source=qr", ariaLabel: "Instagram Mood2Fit" },
   { platform: "linkedin", href: "https://www.linkedin.com/company/mood2fit/", ariaLabel: "LinkedIn Mood2Fit" },
@@ -52,15 +49,8 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer
-      className="bg-[#080010]"
-      role="contentinfo"
-      style={{ position: "sticky", bottom: 0, zIndex: 0 }}
-    >
-      {/* Ligne décorative haut */}
+    <footer className="bg-[#080010]" role="contentinfo" >
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(247,37,133,0.25)] to-transparent" />
-
-      {/* Contenu : colonnes + socials */}
       <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-8">
           {footerColumns.map((col) => (
@@ -71,10 +61,7 @@ export default function Footer() {
               <ul className="flex flex-col gap-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-[rgba(250,244,255,0.55)] hover:text-[#faf4ff] transition-colors duration-200 relative group inline-flex"
-                    >
+                    <Link href={link.href} className="text-sm text-[rgba(250,244,255,0.55)] hover:text-[#faf4ff] transition-colors duration-200 relative group inline-flex">
                       {link.label}
                       <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gradient-to-r from-[#f72585] to-[#9650CD] group-hover:w-full transition-all duration-300" />
                     </Link>
@@ -84,26 +71,17 @@ export default function Footer() {
             </nav>
           ))}
         </div>
-
-        {/* Réseaux sociaux uniquement */}
         <div className="mt-10 pt-6 border-t border-[rgba(250,244,255,0.06)] flex items-center">
           <div className="flex items-center gap-3" role="list">
             {socials.map((social) => (
-              <Link
-                key={social.platform}
-                href={social.href}
-                role="listitem"
-                aria-label={social.ariaLabel}
-                className="w-9 h-9 rounded-xl bg-[rgba(250,244,255,0.05)] border border-[rgba(250,244,255,0.08)] flex items-center justify-center text-[rgba(250,244,255,0.45)] hover:text-[#f72585] hover:border-[rgba(247,37,133,0.3)] hover:bg-[rgba(247,37,133,0.06)] active:scale-95 transition-all duration-200"
-              >
+              <Link key={social.platform} href={social.href} role="listitem" aria-label={social.ariaLabel}
+                className="w-9 h-9 rounded-xl bg-[rgba(250,244,255,0.05)] border border-[rgba(250,244,255,0.08)] flex items-center justify-center text-[rgba(250,244,255,0.45)] hover:text-[#f72585] hover:border-[rgba(247,37,133,0.3)] hover:bg-[rgba(247,37,133,0.06)] active:scale-95 transition-all duration-200">
                 {socialIcons[social.platform]}
               </Link>
             ))}
           </div>
         </div>
       </div>
-
-      {/* Grand MOOD2FIT centré horizontalement */}
       <div className="overflow-hidden select-none w-full text-center" style={{ paddingTop: "clamp(12px, 2vw, 24px)", paddingBottom: 0, whiteSpace: "nowrap", fontSize: "clamp(60px, 11vw, 170px)", fontFamily: "var(--font-roboto), 'Roboto', sans-serif", fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1 }}>
         <span style={{ color: "#faf4ff" }}>M</span>
         <span style={{ color: "#faf4ff", textTransform: "lowercase" }}>ood</span>
