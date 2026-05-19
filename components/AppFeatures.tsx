@@ -287,7 +287,6 @@ export default function AppFeatures() {
   }, [slideProgress]);
 
   const current = features[activeSlide];
-  const Icon = current.icon;
 
   return (
     <section
