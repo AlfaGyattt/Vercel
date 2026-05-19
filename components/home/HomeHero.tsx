@@ -68,7 +68,7 @@ export default function HomeHero() {
 
               {/* App Store */}
               <Link href="#" className="flex items-center gap-2.5 px-6 py-3 rounded-full bg-white hover:bg-white/90 active:scale-[0.97] transition-all duration-150" style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.2)" }}>
-                <Image src="/app/apple.png" alt="Apple" width={22} height={22} style={{ objectFit: "contain" }} />
+                <Image src="/app/apple.png" alt="Apple" width={22} height={22} style={{ objectFit: "contain", width: "22px", height: "22px" }} />
                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                   <span style={{ fontSize: "9px", color: "rgba(0,0,0,0.5)", lineHeight: 1 }}>Télécharger sur</span>
                   <span style={{ fontSize: "14px", fontWeight: 700, color: "#000", lineHeight: 1.2 }}>App Store</span>
@@ -77,7 +77,7 @@ export default function HomeHero() {
 
               {/* Google Play */}
               <Link href="#" className="flex items-center gap-2.5 px-6 py-3 rounded-full active:scale-[0.97] transition-all duration-150" style={{ background: "#000", border: "2px solid rgba(255,255,255,0.15)" }}>
-                <Image src="/app/android.png" alt="Google Play" width={22} height={22} style={{ objectFit: "contain" }} />
+                <Image src="/app/android.png" alt="Google Play" width={22} height={22} style={{ objectFit: "contain", width: "22px", height: "22px" }} />
                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                   <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.6)", lineHeight: 1 }}>Disponible sur</span>
                   <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Google Play</span>

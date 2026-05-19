@@ -73,268 +73,184 @@ const activities = [
 
 function Slide({ s }: { s: typeof SLIDES[0] }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const phoneRef     = useRef<HTMLDivElement>(null);
+  const phoneRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
-  const [arrow, setArrow] = useState<{ x1:number; y1:number; x2:number; y2:number } | null>(null);
 
-  const isDark      = s.bg === "#0A0A0F";
-  const arrowColor  = isDark ? "#f72585" : "rgba(255,210,0,0.95)";
+  const isDark     = s.bg === "#0A0A0F";
   const titleColors = isDark ? COLORS_DARK : COLORS_LIGHT;
-  const numColors = s.bg === "#0A0A0F" ? NUM_COLORS_DARK : s.bg === "#9650CD" ? NUM_COLORS_VIOLET : NUM_COLORS_LIGHT;
+  const numColors   = s.bg === "#0A0A0F" ? NUM_COLORS_DARK : s.bg === "#9650CD" ? NUM_COLORS_VIOLET : NUM_COLORS_LIGHT;
+  const dotColor    = isDark ? "#f72585" : "rgba(255,210,0,0.95)";
 
-  useEffect(() => {
-    setActiveIdx(null);
-    setArrow(null);
-  }, [s.id]);
+  useEffect(() => { setActiveIdx(null); }, [s.id]);
 
-  useEffect(() => {
-    if (activeIdx === null) { setArrow(null); return; }
-    const c = containerRef.current;
-    const p = phoneRef.current;
-    if (!c || !p) return;
-    const cR = c.getBoundingClientRect();
-    const pR = p.getBoundingClientRect();
-    const isLeft   = activeIdx < 3;
-    const row      = activeIdx % 3;
-    const colW     = cR.width * 0.22;
-    const colLeft  = cR.width * 0.02;
-    const cardH    = (cR.height - 64) / 3;
-    const cardMidY = cR.top + 32 + row * cardH + cardH / 2;
-    const startX = isLeft ? cR.left + colLeft + colW : cR.left + cR.width - colLeft - colW;
-    const startY = cardMidY;
-    const allBubbles = [...s.left, ...s.right];
-    const b = allBubbles[activeIdx];
-    const endX = pR.left + pR.width  * b.tx;
-    const endY = pR.top  + pR.height * b.ty;
-    setArrow({ x1: startX - cR.left, y1: startY - cR.top, x2: endX - cR.left, y2: endY - cR.top });
-  }, [activeIdx, s.id]);
 
-  const handleClick = (idx: number) => { setActiveIdx(prev => prev === idx ? null : idx); };
+  const allBubbles = [...s.left, ...s.right];
 
-  const renderCard = (b: typeof s.left[0], idx: number) => (
-    <motion.div
-      key={b.id}
-      onClick={() => handleClick(idx)}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 30 }}
-      transition={{ duration: 0.45, delay: 0.1 + idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+  const renderCard = (b: typeof s.left[0], idx: number, side: "left" | "right") => (
+    <motion.div key={b.id} onClick={() => setActiveIdx(prev => prev === idx ? null : idx)}
+      initial={{ opacity: 0, x: side === "left" ? -20 : 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4, delay: (idx % 3) * 0.08 }}
       style={{
-        background: activeIdx === idx ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0.18)",
-        border: `1px solid ${activeIdx === idx ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.13)"}`,
-        borderRadius: "6px",
-        padding: "13px 15px",
-        cursor: "pointer",
-        userSelect: "none",
+        background: activeIdx === idx ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.2)",
+        border: `1px solid ${activeIdx === idx ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.12)"}`,
+        borderRadius: "6px", padding: "12px 14px", cursor: "pointer",
         transition: "background 0.2s, border 0.2s",
       }}>
-      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:600, fontSize:"8.5px", letterSpacing:"0.2em", textTransform:"uppercase", color:numColors[idx], marginBottom:"6px" }}>
+      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"8px", letterSpacing:"0.2em", textTransform:"uppercase", color:numColors[idx], marginBottom:"5px" }}>
         — {b.num}
       </p>
-      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(13px,1.1vw,16px)", color:titleColors[idx], lineHeight:1.1, letterSpacing:"-0.01em", marginBottom:"6px", textTransform:"uppercase" }}>
+      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(12px,1vw,15px)", color:titleColors[idx], lineHeight:1.1, letterSpacing:"-0.01em", marginBottom:"5px", textTransform:"uppercase" }}>
         {b.title}
       </p>
-      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"clamp(9px,0.75vw,11px)", color:"#fff", lineHeight:1.5 }}>
+      <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"clamp(9px,0.7vw,11px)", color:"rgba(255,255,255,0.7)", lineHeight:1.5 }}>
         {b.desc}
       </p>
     </motion.div>
   );
 
   return (
-    <div ref={containerRef} className="relative w-full h-full">
+    <div ref={containerRef} className="relative w-full h-full flex flex-col">
 
-      {/* SVG flèche — desktop uniquement */}
-      <svg className="absolute inset-0 w-full h-full hidden md:block" style={{ zIndex: 30, pointerEvents: "none" }}>
-        <defs>
-          <marker id={`arr-${s.id}`} markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-            <polygon points="0 0,8 4,0 8" fill={arrowColor} />
-          </marker>
-        </defs>
-        <AnimatePresence mode="wait">
-          {arrow && (
-            <motion.g key={`arrow-group-${activeIdx}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-              {(() => {
-                const d = `M ${arrow.x1} ${arrow.y1} C ${arrow.x1 + (arrow.x2 - arrow.x1) * 0.45} ${arrow.y1} ${arrow.x2 - (arrow.x2 - arrow.x1) * 0.15} ${arrow.y2} ${arrow.x2} ${arrow.y2}`;
-                return (
-                  <>
-                    <motion.path d={d} fill="none" stroke={arrowColor} strokeWidth="2" markerEnd={`url(#arr-${s.id})`} initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.9 }} transition={{ duration: 0.7, ease: "linear" }} />
-                    <motion.circle cx={arrow.x1} cy={arrow.y1} r="4" fill={arrowColor} initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.2 }} />
-                    <motion.circle cx={arrow.x2} cy={arrow.y2} r="18" fill={arrowColor} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: [0, 0.15, 0, 0.1, 0], scale: [0.5, 1.2, 0.8, 1.1, 1] }} transition={{ duration: 1.2, delay: 0.65, repeat: Infinity, repeatDelay: 0.4 }} />
-                    <motion.circle cx={arrow.x2} cy={arrow.y2} r="12" fill="none" stroke={arrowColor} strokeWidth="1.5" initial={{ scale: 0, opacity: 0 }} animate={{ scale: [1, 1.3, 1], opacity: [0.8, 0.3, 0.8] }} transition={{ duration: 1, delay: 0.65, repeat: Infinity, ease: "easeInOut" }} />
-                    <motion.circle cx={arrow.x2} cy={arrow.y2} r="5" fill={arrowColor} initial={{ scale: 0, opacity: 0 }} animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }} transition={{ duration: 0.8, delay: 0.65, repeat: Infinity, ease: "easeInOut" }} />
-                  </>
-                );
-              })()}
-            </motion.g>
-          )}
-        </AnimatePresence>
-      </svg>
+      {/* ── Titre centré en haut ── */}
+      <div className="flex flex-col items-center text-center pt-2 pb-3 flex-shrink-0">
+        <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color: numColors[0], marginBottom:"5px" }}>
+          {s.id === "home" ? "ÉCRAN 01 — ACCUEIL" : s.id === "seance" ? "ÉCRAN 02 — SÉANCE" : "ÉCRAN 03 — PROFIL"}
+        </p>
+        <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(20px,2.8vw,38px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1, color:"#fff" }}>
+          {s.id === "home" ? <><span style={{color:"#fff"}}>L'accueil,</span> ton point de départ</> :
+           s.id === "seance" ? <><span style={{color: numColors[0]}}>La séance,</span> ton terrain de jeu</> :
+           <><span style={{color:"#fff"}}>Le profil,</span> ton miroir de progrès</>}
+        </h2>
+      </div>
 
-      {/* ── DESKTOP ── */}
-      <AnimatePresence mode="wait">
-        <motion.div key={`left-${s.id}`} className="absolute top-0 bottom-0 flex-col justify-around py-8 hidden md:flex" style={{ left: "2%", width: "22%", zIndex: 25 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
-          {s.left.map((b, i) => renderCard(b, i))}
-        </motion.div>
-      </AnimatePresence>
+      {/* ── Zone centrale : blocs gauche | mokup | blocs droite (desktop + paysage) ── */}
+      <div className="hidden md:flex flex-1 items-center gap-4 px-4 min-h-0">
 
-      <AnimatePresence mode="wait">
-        <motion.div key={`phone-${s.id}`} className="absolute inset-0 items-end justify-center hidden md:flex" style={{ zIndex: 10, pointerEvents: "none", transform: "translateY(10px)" }} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 10 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-          <div ref={phoneRef} style={{ height: "100%", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`mokup-${s.id}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Image
-                  src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
-                  alt={`Mockup ${s.label}`}
-                  width={220}
-                  height={476}
-                  style={{ width: "clamp(140px, 15vw, 220px)", height: "auto", objectFit: "contain", objectPosition: "bottom" }}
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-
-      <AnimatePresence mode="wait">
-        <motion.div key={`right-${s.id}`} className="absolute top-0 bottom-0 flex-col justify-around py-8 hidden md:flex" style={{ right: "2%", width: "22%", zIndex: 25 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
-          {s.right.map((b, i) => renderCard(b, i + 3))}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* ── MOBILE portrait & paysage — layout desktop adapté ── */}
-      <div className="md:hidden w-full h-full flex flex-col" style={{ paddingTop: "8px" }}>
-
-        {/* Titre centré tout en haut */}
-        <div className="flex flex-col items-center text-center px-3" style={{ flex: "0 0 auto", paddingBottom: "6px" }}>
-          <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"7px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"3px" }}>
-            {s.id === "home" ? "ÉCRAN 01 — ACCUEIL" : s.id === "seance" ? "ÉCRAN 02 — SÉANCE" : "ÉCRAN 03 — PROFIL"}
-          </p>
-          <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(13px,4vw,20px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1.1, color:"#fff" }}>
-            {s.id === "home" ? <><span style={{color:"#fff"}}>L'accueil,</span> ton point de départ</> :
-             s.id === "seance" ? <><span style={{color: NUM_COLORS_DARK[0]}}>La séance,</span> ton terrain de jeu</> :
-             <><span style={{color:"#fff"}}>Le profil,</span> ton miroir de progrès</>}
-          </h2>
+        {/* Blocs gauche */}
+        <div className="flex flex-col gap-3 w-[22%] flex-shrink-0">
+          {s.left.map((b, i) => renderCard(b, i, "left"))}
         </div>
 
-        {/* Zone principale : blocs gauche | mokup | blocs droite */}
-        <div className="flex flex-1 items-center overflow-hidden" style={{ gap: "4px", padding: "0 4px", minHeight: 0 }}>
+        {/* Mokup centré */}
+        <div ref={phoneRef} className="relative flex-1 flex justify-center items-center h-full min-h-0">
+          <AnimatePresence mode="wait">
+            <motion.div key={`mokup-${s.id}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+              style={{ height: "90%", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Image
+                src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
+                alt={`Mockup ${s.label}`}
+                width={220} height={476}
+                style={{ height: "100%", width: "auto", objectFit: "contain" }}
+              />
+            </motion.div>
+          </AnimatePresence>
 
-          {/* Blocs gauche */}
-          <div className="flex flex-col gap-1" style={{ width: "28%", flexShrink: 0 }}>
-            {s.left.map((b, i) => (
-              <motion.div key={b.id}
-                onClick={() => handleClick(i)}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.06 }}
-                style={{
-                  background: activeIdx === i ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
-                  border: `1px solid ${activeIdx === i ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.13)"}`,
-                  borderRadius: "5px", padding: "5px 6px", cursor: "pointer",
-                  transition: "background 0.2s, border 0.2s",
-                }}>
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.1em", textTransform:"uppercase", color:numColors[i], marginBottom:"2px" }}>
-                  {b.num.split(" — ")[1]}
-                </p>
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7px", color:titleColors[i], lineHeight:1.1, textTransform:"uppercase" }}>
-                  {b.title}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mokup central + pastille brillante au clic */}
-          <div ref={phoneRef} className="relative flex justify-center items-end" style={{ flex: 1, height: "100%", minHeight: 0 }}>
-            <AnimatePresence mode="wait">
-              <motion.div key={`mob-mokup-${s.id}`} style={{ height: "100%", width: "100%", position: "relative" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-                <Image
-                  src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
-                  alt={`Mockup ${s.label}`}
-                  fill
-                  style={{ objectFit: "contain", objectPosition: "bottom" }}
-                />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Pastille brillante sur le téléphone au clic */}
-            <AnimatePresence>
-              {activeIdx !== null && (() => {
-                const allBubbles = [...s.left, ...s.right];
-                const b = allBubbles[activeIdx];
-                return (
-                  <motion.div
-                    key={`dot-${activeIdx}`}
-                    className="absolute z-20 pointer-events-none"
-                    style={{ left: `${b.tx * 100}%`, top: `${b.ty * 100}%`, transform: "translate(-50%, -50%)" }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0 }}
-                  >
-                    <motion.div
-                      className="rounded-full"
-                      style={{ width: 14, height: 14, background: s.bg === "#0A0A0F" ? "#f72585" : "rgba(255,210,0,0.95)", boxShadow: `0 0 12px 4px ${s.bg === "#0A0A0F" ? "rgba(247,37,133,0.6)" : "rgba(255,210,0,0.5)"}` }}
-                      animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-                      transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                  </motion.div>
-                );
-              })()}
-            </AnimatePresence>
-          </div>
-
-          {/* Blocs droite */}
-          <div className="flex flex-col gap-1" style={{ width: "28%", flexShrink: 0 }}>
-            {s.right.map((b, i) => (
-              <motion.div key={b.id}
-                onClick={() => handleClick(i + 3)}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.06 }}
-                style={{
-                  background: activeIdx === i + 3 ? "rgba(0,0,0,0.45)" : "rgba(0,0,0,0.22)",
-                  border: `1px solid ${activeIdx === i + 3 ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.13)"}`,
-                  borderRadius: "5px", padding: "5px 6px", cursor: "pointer",
-                  transition: "background 0.2s, border 0.2s",
-                }}>
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.1em", textTransform:"uppercase", color:numColors[i+3], marginBottom:"2px" }}>
-                  {b.num.split(" — ")[1]}
-                </p>
-                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7px", color:titleColors[i+3], lineHeight:1.1, textTransform:"uppercase" }}>
-                  {b.title}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+          {/* Pastille */}
+          <AnimatePresence>
+            {activeIdx !== null && (() => {
+              const b = allBubbles[activeIdx];
+              return (
+                <motion.div key={`dot-${activeIdx}`} className="absolute z-20 pointer-events-none"
+                  style={{ left: `${b.tx * 100}%`, top: `${b.ty * 100}%`, transform: "translate(-50%,-50%)" }}
+                  initial={{ opacity:0, scale:0 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0, scale:0 }}>
+                  <motion.div className="rounded-full"
+                    style={{ width:16, height:16, background: dotColor, boxShadow:`0 0 14px 5px ${dotColor}80` }}
+                    animate={{ scale:[1,1.5,1], opacity:[1,0.6,1] }}
+                    transition={{ duration:0.9, repeat:Infinity, ease:"easeInOut" }} />
+                </motion.div>
+              );
+            })()}
+          </AnimatePresence>
         </div>
 
-        {/* Description du bloc actif en bas */}
+        {/* Blocs droite */}
+        <div className="flex flex-col gap-3 w-[22%] flex-shrink-0">
+          {s.right.map((b, i) => renderCard(b, i + 3, "right"))}
+        </div>
+      </div>
+
+      {/* ── MOBILE portrait ── */}
+      <div className="md:hidden flex flex-col flex-1 min-h-0">
+
+        {/* Mokup centré */}
+        <div ref={phoneRef} className="relative flex-1 flex justify-center items-center min-h-0 overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div key={`mob-mokup-${s.id}`} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.3 }}
+              style={{ height: "100%", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <Image
+                src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
+                alt={`Mockup ${s.label}`}
+                width={200} height={433}
+                style={{ height:"100%", width:"auto", objectFit:"contain", maxHeight:"100%" }}
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Pastille mobile */}
+          <AnimatePresence>
+            {activeIdx !== null && (() => {
+              const b = allBubbles[activeIdx];
+              return (
+                <motion.div key={`mob-dot-${activeIdx}`} className="absolute z-20 pointer-events-none"
+                  style={{ left:`${b.tx*100}%`, top:`${b.ty*100}%`, transform:"translate(-50%,-50%)" }}
+                  initial={{ opacity:0, scale:0 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0, scale:0 }}>
+                  <motion.div className="rounded-full"
+                    style={{ width:14, height:14, background:dotColor, boxShadow:`0 0 12px 4px ${dotColor}80` }}
+                    animate={{ scale:[1,1.5,1], opacity:[1,0.6,1] }}
+                    transition={{ duration:0.9, repeat:Infinity, ease:"easeInOut" }} />
+                </motion.div>
+              );
+            })()}
+          </AnimatePresence>
+        </div>
+
+        {/* Détail au clic */}
         <AnimatePresence>
-          {activeIdx !== null && (
-            <motion.div
-              key={`desc-${activeIdx}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.25 }}
-              style={{ padding: "6px 8px", background: "rgba(0,0,0,0.3)", borderTop: "1px solid rgba(255,255,255,0.1)", flexShrink: 0 }}
-            >
-              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"8px", color:"#fff", textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:"2px" }}>
-                {[...s.left, ...s.right][activeIdx].title}
+          {activeIdx !== null && (() => {
+            const c = numColors[activeIdx];
+            return (
+              <motion.div key={`mob-desc-${activeIdx}`}
+                initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:"auto" }} exit={{ opacity:0, height:0 }}
+                transition={{ duration:0.2 }}
+                style={{ flexShrink:0, overflow:"hidden", background:"rgba(0,0,0,0.5)", borderTop:`2px solid ${c}`, padding:"6px 10px" }}>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"9px", color:c, textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:"2px" }}>
+                  {allBubbles[activeIdx].title}
+                </p>
+                <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"8px", color:"rgba(255,255,255,0.7)", lineHeight:1.4 }}>
+                  {allBubbles[activeIdx].desc}
+                </p>
+              </motion.div>
+            );
+          })()}
+        </AnimatePresence>
+
+        {/* 6 blocs footer */}
+        <motion.div
+          animate={{ scale: activeIdx !== null ? 0.95 : 1, y: activeIdx !== null ? -2 : 0 }}
+          transition={{ duration: 0.2 }}
+          style={{ flexShrink:0, display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"3px", padding:"3px 3px 5px" }}>
+          {allBubbles.map((b, i) => (
+            <motion.div key={b.id} onClick={() => setActiveIdx(prev => prev === i ? null : i)}
+              initial={{ opacity:0, y:6 }} animate={{ opacity:1, y:0 }}
+              transition={{ duration:0.3, delay: i*0.04 }}
+              style={{
+                background: activeIdx===i ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.25)",
+                border:`1px solid ${activeIdx===i ? numColors[i] : "rgba(255,255,255,0.12)"}`,
+                borderRadius:"5px", padding:"5px 6px", cursor:"pointer",
+                transition:"background 0.2s, border 0.2s",
+              }}>
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:700, fontSize:"5px", letterSpacing:"0.1em", textTransform:"uppercase", color:numColors[i], marginBottom:"2px" }}>
+                {b.num.split(" — ")[1]}
               </p>
-              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"8px", color:"rgba(255,255,255,0.65)", lineHeight:1.4 }}>
-                {[...s.left, ...s.right][activeIdx].desc}
+              <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"7px", color:titleColors[i], lineHeight:1.1, textTransform:"uppercase" }}>
+                {b.title}
               </p>
             </motion.div>
-          )}
-        </AnimatePresence>
-
+          ))}
+        </motion.div>
       </div>
+
     </div>
   );
 }
@@ -445,21 +361,7 @@ function FullpageFeatures() {
           </div>
         )}
 
-        <AnimatePresence mode="wait">
-          <motion.div key={`title-${s.id}`} className="absolute top-0 left-0 right-0 z-30 flex-col items-center pt-14 hidden md:flex" initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-10 }} transition={{ duration:0.4 }}>
-            <p style={{ fontFamily:"Roboto,sans-serif", fontWeight:400, fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color: s.bg === "#0A0A0F" ? NUM_COLORS_DARK[0] : s.bg === "#9650CD" ? NUM_COLORS_VIOLET[0] : NUM_COLORS_LIGHT[0], marginBottom:"6px" }}>
-              {s.id === "home" ? "ÉCRAN 01 — ACCUEIL" : s.id === "seance" ? "ÉCRAN 02 — SÉANCE" : "ÉCRAN 03 — PROFIL"}
-            </p>
-            <h2 style={{ fontFamily:"Roboto,sans-serif", fontWeight:900, fontSize:"clamp(22px,2.8vw,36px)", textTransform:"uppercase", letterSpacing:"-0.02em", lineHeight:1, color:"#fff" }}>
-              {s.id === "home" ? <><span style={{color:"#fff"}}>L'accueil,</span> ton point de départ</> :
-               s.id === "seance" ? <><span style={{color: NUM_COLORS_DARK[0]}}>La séance,</span> ton terrain de jeu</> :
-               <><span style={{color:"#fff"}}>Le profil,</span> ton miroir de progrès</>}
-            </h2>
-          </motion.div>
-        </AnimatePresence>
-
-        <div className="absolute inset-0 z-10" style={{ padding:"48px 0", paddingTop:"130px" }} id="slide-wrapper">
-          <style>{`@media (max-width: 767px) { #slide-wrapper { padding-top: 80px !important; padding-bottom: 0 !important; } }`}</style>
+        <div className="absolute inset-0 z-10" style={{ padding:"0", paddingTop:"64px" }} id="slide-wrapper">
           <Slide s={s} />
         </div>
 
