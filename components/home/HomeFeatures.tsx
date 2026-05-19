@@ -124,7 +124,7 @@ export default function HomeFeatures() {
 
       {/* Dots */}
       <div className="flex items-center gap-3 mt-8 z-20">
-        {BASE_SLIDES.map((s, i) => (
+        {BASE_SLIDES.map((_s, i) => (
           <button key={i} onClick={() => { stopAuto(); goTo(i, i > current ? 1 : -1); setTimeout(startAuto, 5000); }}
             aria-label={`Slide ${i + 1}`} className="rounded-full transition-all duration-300"
             style={{ width: i === current ? 28 : 8, height: 8, background: i === current ? BASE_SLIDES[current].color : "rgba(0,0,0,0.15)" }} />
