@@ -179,12 +179,10 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
 
       <AnimatePresence mode="wait">
         <motion.div key={`phone-${s.id}`} className="absolute inset-0 items-end justify-center hidden md:flex" style={{ zIndex: 10, pointerEvents: "none", transform: "translateY(10px)" }} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 10 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-          <div ref={phoneRef} style={{ height: "100%", position: "relative" }}>
-            {/* Mockup PNG selon la slide */}
+          <div ref={phoneRef} style={{ height: "100%", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={`mokup-${s.id}`}
-                style={{ height: "100%", position: "relative" }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -193,8 +191,9 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
                 <Image
                   src={s.id === "home" ? "/mokup/mokup_1.png" : s.id === "seance" ? "/mokup/mokup_2.png" : "/mokup/mokup_3.png"}
                   alt={`Mockup ${s.label}`}
-                  fill
-                  style={{ objectFit: "contain", objectPosition: "bottom" }}
+                  width={220}
+                  height={476}
+                  style={{ width: "clamp(140px, 15vw, 220px)", height: "auto", objectFit: "contain", objectPosition: "bottom" }}
                 />
               </motion.div>
             </AnimatePresence>
@@ -294,6 +293,28 @@ function FullpageFeatures() {
     window.scrollTo({ top, behavior: "smooth" });
     setTimeout(() => { isAnimatingRef.current = false; }, 900);
   };
+
+  // ── Touch swipe mobile
+  useEffect(() => {
+    let touchStartY = 0;
+    const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
+    const onTouchEnd = (e: TouchEvent) => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top > 10 || rect.bottom < window.innerHeight - 10) return;
+      const diff = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(diff) < 50) return;
+      if (diff > 0 && currentRef.current < SLIDES.length - 1) goTo(currentRef.current + 1);
+      else if (diff < 0 && currentRef.current > 0) goTo(currentRef.current - 1);
+    };
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, []);
 
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
