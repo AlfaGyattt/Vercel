@@ -12,40 +12,40 @@ const SLIDES = [
   {
     id: "home", bg: "#f72585", img: "/home.png", label: "HOME · ACCUEIL", num: "01 / 03",
     left: [
-      { id:"l1", num:"01 — MOOD",        title:"Choisis ton humeur",    desc:"4 moods pour démarrer : chaud, calme, focus ou dépassement de soi.",      tx:0.18, ty:0.18 },
-      { id:"l2", num:"02 — COMMUNAUTÉ",  title:"La commu partage",      desc:"Vois ce que les autres terminent. Ici, hzziohf vient de finir sa séance.", tx:0.32, ty:0.73 },
-      { id:"l3", num:"03 — TEMPORALITÉ", title:"En direct, maintenant", desc:"Le badge En direct indique l'activité de la commu à l'instant t.",          tx:0.82, ty:0.67 },
+      { id:"l1", num:"01 — MOOD",        title:"Choisis ton humeur",    desc:"4 moods pour démarrer : chaud, calme, focus ou dépassement de soi.",      tx:0.4,  ty:0.25 },
+      { id:"l2", num:"02 — COMMUNAUTÉ",  title:"La commu partage",      desc:"Vois ce que les autres terminent. Ici, hzziohf vient de finir sa séance.", tx:0.39, ty:0.65 },
+      { id:"l3", num:"03 — TEMPORALITÉ", title:"En direct, maintenant", desc:"Le badge En direct indique l'activité de la commu à l'instant t.",          tx:0.57, ty:0.60 },
     ],
     right: [
-      { id:"r1", num:"04 — CARTE",        title:"Salles & street workout", desc:"L'onglet Carte recense les salles et spots de street workout en France.", tx:0.28, ty:0.95 },
-      { id:"r2", num:"05 — SURPREND-MOI", title:"Exos selon ton mood",     desc:"M2F choisit pour toi un exercice qui colle à ton humeur du jour.",        tx:0.44, ty:0.57 },
-      { id:"r3", num:"06 — SIGNALEMENT",  title:"Un bug ? Le drapeau",     desc:"Le drapeau en bas à droite permet de signaler un bug ou problème.",       tx:0.93, ty:0.87 },
+      { id:"r1", num:"04 — CARTE",        title:"Salles & street workout", desc:"L'onglet Carte recense les salles et spots de street workout en France.", tx:0.44, ty:0.86 },
+      { id:"r2", num:"05 — SURPREND-MOI", title:"Exos selon ton mood",     desc:"M2F choisit pour toi un exercice qui colle à ton humeur du jour.",        tx:0.44, ty:0.55 },
+      { id:"r3", num:"06 — SIGNALEMENT",  title:"Un bug ? Le drapeau",     desc:"Le drapeau en bas à droite permet de signaler un bug ou problème.",       tx:0.6,  ty:0.79 },
     ],
   },
   {
     id: "seance", bg: "#0A0A0F", img: "/sceance.png", label: "SÉANCES · TRAIN", num: "02 / 03",
     left: [
-      { id:"l1", num:"01 — CONNEXION", title:"Se connecter",              desc:"Connecte-toi pour suivre ta progression et débloquer les défis.",   tx:0.5,  ty:0.37 },
+      { id:"l1", num:"01 — CONNEXION", title:"Se connecter",              desc:"Connecte-toi pour suivre ta progression et débloquer les défis.",   tx:0.5,  ty:0.40 },
       { id:"l2", num:"02 — DÉMARRER",  title:"Mode libre, tout de suite", desc:"Un bouton, et l'entraînement commence. Aucun programme imposé.",    tx:0.5,  ty:0.61 },
-      { id:"l3", num:"03 — DÉFI XP",   title:"+80 XP à gagner",           desc:"Chaque défi rapporte de l'expérience pour progresser de niveau.",   tx:0.15, ty:0.26 },
+      { id:"l3", num:"03 — DÉFI XP",   title:"+80 XP à gagner",           desc:"Chaque défi rapporte de l'expérience pour progresser de niveau.",   tx:0.4,  ty:0.32 },
     ],
     right: [
-      { id:"r1", num:"04 — FILTRES",     title:"Filtre par niveau ou muscle", desc:"Choisis tes séances par niveau, durée ou groupe musculaire ciblé.", tx:0.88, ty:0.70 },
-      { id:"r2", num:"05 — MÉTADONNÉES", title:"Tout en un coup d'œil",       desc:"Type, durée, niveau et XP : la séance s'auto-décrit.",              tx:0.5,  ty:0.82 },
-      { id:"r3", num:"06 — MOTIVATION",  title:"1 en cours, tu rejoins ?",    desc:"Vois qui s'entraîne en même temps que toi pour rester motivé.",     tx:0.97,  ty:0.86 },
+      { id:"r1", num:"04 — FILTRES",     title:"Filtre par niveau ou muscle", desc:"Choisis tes séances par niveau, durée ou groupe musculaire ciblé.", tx:0.59, ty:0.67 },
+      { id:"r2", num:"05 — MÉTADONNÉES", title:"Tout en un coup d'œil",       desc:"Type, durée, niveau et XP : la séance s'auto-décrit.",              tx:0.5,  ty:0.76 },
+      { id:"r3", num:"06 — MOTIVATION",  title:"1 en cours, tu rejoins ?",    desc:"Vois qui s'entraîne en même temps que toi pour rester motivé.",     tx:0.55, ty:0.80 },
     ],
   },
   {
     id: "profil", bg: "#9650CD", img: "/profil.jpeg", label: "PROFIL · YOU", num: "03 / 03",
     left: [
-      { id:"l1", num:"01 — XP & NIVEAU", title:"20 XP, Niveau 1",         desc:"La barre d'XP visualise ta progression vers le prochain niveau.",   tx:0.06,  ty:0.147 },
-      { id:"l2", num:"02 — SÉANCES",     title:"Compte tes séances",       desc:"Le compteur SÉANCES totalise tous les entraînements terminés.",      tx:0.15,  ty:0.22 },
-      { id:"l3", num:"03 — ÉDITER",      title:"Stylo → tu personnalises", desc:"Modifie pseudo et photo de profil en un tap sur le stylo.",          tx:0.85, ty:0.09 },
+      { id:"l1", num:"01 — XP & NIVEAU", title:"20 XP, Niveau 1",         desc:"La barre d'XP visualise ta progression vers le prochain niveau.",   tx:0.39, ty:0.23  },
+      { id:"l2", num:"02 — SÉANCES",     title:"Compte tes séances",       desc:"Le compteur SÉANCES totalise tous les entraînements terminés.",      tx:0.39, ty:0.31  },
+      { id:"l3", num:"03 — ÉDITER",      title:"Stylo → tu personnalises", desc:"Modifie pseudo et photo de profil en un tap sur le stylo.",          tx:0.58, ty:0.155 },
     ],
     right: [
-      { id:"r1", num:"04 — POSTS",     title:"Tes posts publiés",           desc:"Le total des publications partagées avec la communauté.",            tx:0.52, ty:0.22 },
-      { id:"r2", num:"05 — RÉACTIONS", title:"Tes interactions communauté", desc:"Le compteur de réactions laissées sur les posts des autres.",        tx:0.85, ty:0.22 },
-      { id:"r3", num:"06 — BADGES",    title:"Défis relevés",               desc:"Chaque badge récompense un défi ou un palier franchi.",              tx:0.20, ty:0.45 },
+      { id:"r1", num:"04 — POSTS",     title:"Tes posts publiés",           desc:"Le total des publications partagées avec la communauté.",            tx:0.5,  ty:0.31 },
+      { id:"r2", num:"05 — RÉACTIONS", title:"Tes interactions communauté", desc:"Le compteur de réactions laissées sur les posts des autres.",        tx:0.58, ty:0.31 },
+      { id:"r3", num:"06 — BADGES",    title:"Défis relevés",               desc:"Chaque badge récompense un défi ou un palier franchi.",              tx:0.4,  ty:0.54 },
     ],
   },
 ];
@@ -82,7 +82,6 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
   const dotColor    = isDark ? "#f72585" : "rgba(255,210,0,0.95)";
 
   useEffect(() => { setActiveIdx(null); }, [s.id]);
-
 
   const allBubbles = [...s.left, ...s.right];
 
@@ -124,11 +123,11 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
         </h2>
       </div>
 
-      {/* ── Zone centrale : blocs gauche | mokup | blocs droite (desktop + paysage) ── */}
-      <div className="hidden md:flex flex-1 items-center gap-4 px-4 min-h-0">
+      {/* ── Zone centrale : blocs gauche | mokup | blocs droite (desktop) ── */}
+      <div className="hidden md:flex flex-1 items-stretch gap-8 px-8 min-h-0">
 
-        {/* Blocs gauche */}
-        <div className="flex flex-col gap-5 flex-shrink-0" style={{ width: "24%", paddingLeft: "2%" }}>
+        {/* Blocs gauche — centrés entre bord et téléphone */}
+        <div className="flex flex-col flex-shrink-0" style={{ width: "26%", paddingLeft: "1%", paddingRight: "2%", justifyContent: "space-between", paddingTop: "5%", paddingBottom: "5%" }}>
           {s.left.map((b, i) => renderCard(b, i, "left"))}
         </div>
 
@@ -164,8 +163,8 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
           </AnimatePresence>
         </div>
 
-        {/* Blocs droite */}
-        <div className="flex flex-col gap-5 flex-shrink-0" style={{ width: "24%", paddingRight: "2%" }}>
+        {/* Blocs droite — centrés entre téléphone et bord */}
+        <div className="flex flex-col flex-shrink-0" style={{ width: "26%", paddingLeft: "2%", paddingRight: "1%", justifyContent: "space-between", paddingTop: "5%", paddingBottom: "5%" }}>
           {s.right.map((b, i) => renderCard(b, i + 3, "right"))}
         </div>
       </div>
@@ -314,11 +313,9 @@ function FullpageFeatures() {
 
       const elTop = el.getBoundingClientRect().top + window.scrollY;
       const elBottom = elTop + el.offsetHeight;
-      // Marge genereusse : reste "dans les slides" tout le long du wrapper
       const isInSlides = window.scrollY >= elTop - window.innerHeight * 0.5
                       && window.scrollY < elBottom - window.innerHeight * 0.5;
 
-      // Dispatch uniquement hors animation pour eviter les faux slides-leave
       if (!isAnimatingRef.current) {
         if (isInSlides) {
           window.dispatchEvent(new Event("slides-enter"));
@@ -340,7 +337,6 @@ function FullpageFeatures() {
     return () => {
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("scroll", onScroll);
-      // S'assurer que la navbar réapparaît en quittant la page
       window.dispatchEvent(new Event("slides-leave"));
     };
   }, []);
