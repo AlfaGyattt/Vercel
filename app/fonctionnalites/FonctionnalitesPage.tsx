@@ -128,7 +128,7 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
       <div className="hidden md:flex flex-1 items-center gap-4 px-4 min-h-0">
 
         {/* Blocs gauche */}
-        <div className="flex flex-col gap-3 w-[22%] flex-shrink-0">
+        <div className="flex flex-col gap-5 flex-shrink-0" style={{ width: "24%", paddingLeft: "2%" }}>
           {s.left.map((b, i) => renderCard(b, i, "left"))}
         </div>
 
@@ -165,7 +165,7 @@ function Slide({ s }: { s: typeof SLIDES[0] }) {
         </div>
 
         {/* Blocs droite */}
-        <div className="flex flex-col gap-3 w-[22%] flex-shrink-0">
+        <div className="flex flex-col gap-5 flex-shrink-0" style={{ width: "24%", paddingRight: "2%" }}>
           {s.right.map((b, i) => renderCard(b, i + 3, "right"))}
         </div>
       </div>

@@ -1,32 +1,31 @@
 /**
- * lib/env.ts — Variables d'environnement validées au démarrage
+ * lib/env.ts — Variables d'environnement validées à l'exécution
  *
- * Au lieu de process.env.X! éparpillé partout,
- * toutes les vars sont validées ici une seule fois.
- * Si une variable manque → erreur claire au démarrage.
+ * La validation se fait au moment de l'appel (lazy),
+ * pas au build — évite les crashes sur Vercel Edge Runtime.
  */
 
-function requireEnv(key: string): string {
-  const value = process.env[key];
+function getEnv(key: string, fallback?: string): string {
+  const value = process.env[key] ?? fallback;
   if (!value) {
-    throw new Error(`❌ Variable d'environnement manquante : ${key}\nAjoute-la dans .env.local`);
+    throw new Error(`❌ Variable d'environnement manquante : ${key}\nAjoute-la dans .env.local ou Vercel`);
   }
   return value;
 }
 
 export const env = {
   // ── Brevo
-  BREVO_API_KEY:      requireEnv("BREVO_API_KEY"),
-  BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL ?? "hello@mood2fit.app",
-  BREVO_LIST_ID:      Number(process.env.BREVO_LIST_ID ?? 5),
+  get BREVO_API_KEY()      { return getEnv("BREVO_API_KEY"); },
+  get BREVO_SENDER_EMAIL() { return getEnv("BREVO_SENDER_EMAIL", "hello@mood2fit.com"); },
+  get BREVO_LIST_ID()      { return Number(process.env.BREVO_LIST_ID ?? 5); },
 
   // ── Upstash Redis (rate limiting)
-  UPSTASH_REDIS_REST_URL:   requireEnv("UPSTASH_REDIS_REST_URL"),
-  UPSTASH_REDIS_REST_TOKEN: requireEnv("UPSTASH_REDIS_REST_TOKEN"),
+  get UPSTASH_REDIS_REST_URL()   { return getEnv("UPSTASH_REDIS_REST_URL"); },
+  get UPSTASH_REDIS_REST_TOKEN() { return getEnv("UPSTASH_REDIS_REST_TOKEN"); },
 
   // ── Cron
-  CRON_SECRET: process.env.CRON_SECRET ?? "",
+  get CRON_SECRET() { return process.env.CRON_SECRET ?? ""; },
 
   // ── App
-  APP_URL: process.env.NEXT_PUBLIC_APP_URL ?? "https://mood2fit.app",
-} as const;
+  get APP_URL() { return process.env.NEXT_PUBLIC_APP_URL ?? "https://mood2fit.app"; },
+};
