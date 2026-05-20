@@ -49,7 +49,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#080010]" role="contentinfo" >
+    <footer className="bg-[#080010]" role="contentinfo" style={{ position: "sticky", bottom: 0, zIndex: 0 }}>
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(247,37,133,0.25)] to-transparent" />
       <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-8">
@@ -72,7 +72,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="mt-10 pt-6 border-t border-[rgba(250,244,255,0.06)] flex items-center">
-          <div className="flex items-center gap-3" role="list">
+          <div className="flex items-center gap-3" >
             {socials.map((social) => (
               <Link key={social.platform} href={social.href} role="listitem" aria-label={social.ariaLabel}
                 className="w-9 h-9 rounded-xl bg-[rgba(250,244,255,0.05)] border border-[rgba(250,244,255,0.08)] flex items-center justify-center text-[rgba(250,244,255,0.45)] hover:text-[#f72585] hover:border-[rgba(247,37,133,0.3)] hover:bg-[rgba(247,37,133,0.06)] active:scale-95 transition-all duration-200">
